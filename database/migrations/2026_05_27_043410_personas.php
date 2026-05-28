@@ -35,8 +35,9 @@ return new class extends Migration
 
             // Relación con hogar
             $table->foreignUuid('hogar_id')
+                  ->nullable()
                   ->constrained('hogares')
-                  ->cascadeOnDelete();
+                  ->nullOnDelete();
 
             $table->boolean('activo')->default(true);
             $table->timestamps();

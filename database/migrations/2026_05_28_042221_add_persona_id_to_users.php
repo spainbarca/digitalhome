@@ -21,7 +21,7 @@ return new class extends Migration
             // Proveedor OAuth (google, etc.)
             $table->string('provider', 30)->nullable()->after('remember_token');
             $table->string('provider_id')->nullable()->after('provider');
-            $table->string('provider_token')->nullable()->after('provider_id');
+            $table->text('provider_token')->nullable()->after('provider_id');
             $table->text('avatar_url')->nullable()->after('provider_token'); // URL larga de Google
 
             $table->index(['provider', 'provider_id']);
