@@ -11,9 +11,9 @@ return new class extends Migration
         Schema::create('ubigeo_distritos', function (Blueprint $table) {
             $table->string('inei', 6)->primary();
             $table->string('reniec', 6)->nullable()->unique();
-            $table->string('departamento_inei', 2);
+            $table->string('departamento_inei', 6);
             $table->foreign('departamento_inei')->references('inei')->on('ubigeo_departamentos')->restrictOnDelete();
-            $table->string('provincia_inei', 4);
+            $table->string('provincia_inei', 6);
             $table->foreign('provincia_inei')->references('inei')->on('ubigeo_provincias')->restrictOnDelete();
             $table->string('departamento', 100)->nullable();
             $table->string('provincia', 100)->nullable();

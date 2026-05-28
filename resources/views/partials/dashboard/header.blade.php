@@ -274,7 +274,7 @@
                                 {{ Auth::user()->persona->nombres ?? Auth::user()->name }}
                             </span>
                             <span class="block text-xs">
-                                {{ Auth::user()->email }}
+                                {{ Auth::user()->persona->apellido_paterno ?? '' }} {{ Auth::user()->persona->apellido_materno ?? '' }}
                             </span>
                         </div>
                     </div>

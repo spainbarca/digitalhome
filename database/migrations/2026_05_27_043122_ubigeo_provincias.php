@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ubigeo_provincias', function (Blueprint $table) {
-            $table->string('inei', 4)->primary();
-            $table->string('reniec', 4)->nullable()->unique();
-            $table->string('departamento_inei', 2);
+            $table->string('inei', 6)->primary();
+            $table->string('reniec', 6)->nullable()->unique();
+            $table->string('departamento_inei', 6);
             $table->foreign('departamento_inei')->references('inei')->on('ubigeo_departamentos')->restrictOnDelete();
             $table->string('departamento', 100)->nullable();
             $table->string('provincia', 100);

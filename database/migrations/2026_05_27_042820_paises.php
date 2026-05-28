@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('nombre_oficial', 150)->nullable();
             $table->string('iso3', 3)->nullable()->unique();
             $table->string('codigo_num', 3)->nullable();
-            $table->boolean('miembro_onu')->default(false);
+            $table->enum('miembro_onu', ['yes', 'no', 'some', 'former'])->nullable();
             $table->string('codigo_tel', 20)->nullable();
             $table->string('dominio', 10)->nullable();
             $table->timestamps();

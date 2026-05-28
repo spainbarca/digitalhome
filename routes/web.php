@@ -164,6 +164,7 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::get('/create-invoice', function () { return view('dashboard.create-invoice'); });
     Route::get('/edit-invoice', function () { return view('dashboard.edit-invoice'); });
     Route::get('/team-members', function () { return view('dashboard.team-members'); });
+    Route::get('/members', function () { return view('dashboard.members'); });
     Route::get('/users-list', function () { return view('dashboard.users-list'); });
     Route::get('/add-user', function () { return view('dashboard.add-user'); });
     Route::get('/user-profile', function () { return view('dashboard.user-profile'); });

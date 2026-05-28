@@ -17,7 +17,7 @@ class StorePersonaRequest extends FormRequest
             'nombres'            => ['required', 'string', 'max:100'],
             'apellido_paterno'   => ['nullable', 'string', 'max:80'],
             'apellido_materno'   => ['nullable', 'string', 'max:80'],
-            'tipo_documento_id'  => ['nullable', 'exists:tbl_tipos_documento,id'],
+            'tipo_documento_id'  => ['nullable', 'exists:tipos_documento,id'],
             'numero_documento'   => ['nullable', 'string', 'max:20'],
             'fecha_nacimiento'   => ['nullable', 'date'],
             'sexo'               => ['nullable', 'in:M,F,otro'],

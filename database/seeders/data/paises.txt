@@ -1,0 +1,251 @@
+id_pais	iso2	nombre	nombre_oficial	iso3	codigo_num	miembro_onu	codigo_tel	dominio
+1	AF	Afganistán	República Islámica de Afganistán	AFG	004	yes	93	.af
+2	AX	Islas Åland	Islas Åland	ALA	248	no	358	.ax
+3	AL	Albania	República de Albania	ALB	008	yes	355	.al
+4	DZ	Argelia	República Argelina Democrática y Popular	DZA	012	yes	213	.dz
+5	AS	Samoa Americana	Samoa Americana	ASM	016	no	1+684	.as
+6	AD	Andorra	Principado de Andorra	AND	020	yes	376	.ad
+7	AO	Angola	República de Angola	AGO	024	yes	244	.ao
+8	AI	Anguila	Anguila	AIA	660	no	1+264	.ai
+9	AQ	Antártida	Antártida	ATA	010	no	672	.aq
+10	AG	Antigua y Barbuda	Antigua y Barbuda	ATG	028	yes	1+268	.ag
+11	AR	Argentina	República Argentina	ARG	032	yes	54	.ar
+12	AM	Armenia	República de Armenia	ARM	051	yes	374	.am
+13	AW	Aruba	Aruba	ABW	533	no	297	.aw
+14	AU	Australia	Mancomunidad de Australia	AUS	036	yes	61	.au
+15	AT	Austria	República de Austria	AUT	040	yes	43	.at
+16	AZ	Azerbaiyán	República de Azerbaiyán	AZE	031	yes	994	.az
+17	BS	Bahamas	Mancomunidad de las Bahamas	BHS	044	yes	1+242	.bs
+18	BH	Baréin	Reino de Baréin	BHR	048	yes	973	.bh
+19	BD	Bangladés	República Popular de Bangladés	BGD	050	yes	880	.bd
+20	BB	Barbados	Barbados	BRB	052	yes	1+246	.bb
+21	BY	Bielorrusia	República de Bielorrusia	BLR	112	yes	375	.by
+22	BE	Bélgica	Reino de Bélgica	BEL	056	yes	32	.be
+23	BZ	Belice	Belice	BLZ	084	yes	501	.bz
+24	BJ	Benín	República de Benín	BEN	204	yes	229	.bj
+25	BM	Bermudas	Bermudas	BMU	060	no	1+441	.bm
+26	BT	Bután	Reino de Bután	BTN	064	yes	975	.bt
+27	BO	Bolivia	Estado Plurinacional de Bolivia	BOL	068	yes	591	.bo
+28	BQ	Caribe neerlandés	Bonaire, San Eustaquio y Saba	BES	535	no	599	.bq
+29	BA	Bosnia y Herzegovina	Bosnia y Herzegovina	BIH	070	yes	387	.ba
+30	BW	Botsuana	República de Botsuana	BWA	072	yes	267	.bw
+31	BV	Isla Bouvet	Isla Bouvet	BVT	074	no	NONE	.bv
+32	BR	Brasil	República Federativa de Brasil	BRA	076	yes	55	.br
+33	IO	Territorio Británico del Océano Índico	Territorio Británico del Océano Índico	IOT	086	no	246	.io
+34	BN	Brunéi	Estado de Brunéi Darussalam	BRN	096	yes	673	.bn
+35	BG	Bulgaria	República de Bulgaria	BGR	100	yes	359	.bg
+36	BF	Burkina Faso	Burkina Faso	BFA	854	yes	226	.bf
+37	BI	Burundi	República de Burundi	BDI	108	yes	257	.bi
+38	KH	Camboya	Reino de Camboya	KHM	116	yes	855	.kh
+39	CM	Camerún	República de Camerún	CMR	120	yes	237	.cm
+40	CA	Canadá	Canadá	CAN	124	yes	1	.ca
+41	CV	Cabo Verde	República de Cabo Verde	CPV	132	yes	238	.cv
+42	KY	Islas Caimán	Islas Caimán	CYM	136	no	1+345	.ky
+43	CF	República Centroafricana	República Centroafricana	CAF	140	yes	236	.cf
+44	TD	Chad	República del Chad	TCD	148	yes	235	.td
+45	CL	Chile	República de Chile	CHL	152	yes	56	.cl
+46	CN	China	República Popular China	CHN	156	yes	86	.cn
+47	CX	Isla de Navidad	Isla de Navidad	CXR	162	no	61	.cx
+48	CC	Islas Cocos	Islas Cocos	CCK	166	no	61	.cc
+49	CO	Colombia	República de Colombia	COL	170	yes	57	.co
+50	KM	Comoras	Unión de las Comoras	COM	174	yes	269	.km
+51	CG	Congo	República del Congo	COG	178	yes	242	.cg
+52	CK	Islas Cook	Islas Cook	COK	184	some	682	.ck
+53	CR	Costa Rica	República de Costa Rica	CRI	188	yes	506	.cr
+54	CI	Costa de Marfil	República de Costa de Marfil	CIV	384	yes	225	.ci
+55	HR	Croacia	República de Croacia	HRV	191	yes	385	.hr
+56	CU	Cuba	República de Cuba	CUB	192	yes	53	.cu
+57	CW	Curazao	Curazao	CUW	531	no	599	.cw
+58	CY	Chipre	República de Chipre	CYP	196	yes	357	.cy
+59	CZ	Chequia	República Checa	CZE	203	yes	420	.cz
+60	CD	República Democrática del Congo	República Democrática del Congo	COD	180	yes	243	.cd
+61	DK	Dinamarca	Reino de Dinamarca	DNK	208	yes	45	.dk
+62	DJ	Yibuti	República de Yibuti	DJI	262	yes	253	.dj
+63	DM	Dominica	Mancomunidad de Dominica	DMA	212	yes	1+767	.dm
+64	DO	República Dominicana	República Dominicana	DOM	214	yes	1+809, 8	.do
+65	EC	Ecuador	República del Ecuador	ECU	218	yes	593	.ec
+66	EG	Egipto	República Árabe de Egipto	EGY	818	yes	20	.eg
+67	SV	El Salvador	República de El Salvador	SLV	222	yes	503	.sv
+68	GQ	Guinea Ecuatorial	República de Guinea Ecuatorial	GNQ	226	yes	240	.gq
+69	ER	Eritrea	Estado de Eritrea	ERI	232	yes	291	.er
+70	EE	Estonia	República de Estonia	EST	233	yes	372	.ee
+71	ET	Etiopía	República Democrática Federal de Etiopía	ETH	231	yes	251	.et
+72	FK	Islas Malvinas	Islas Malvinas	FLK	238	no	500	.fk
+73	FO	Islas Feroe	Islas Feroe	FRO	234	no	298	.fo
+74	FJ	Fiyi	República de Fiyi	FJI	242	yes	679	.fj
+75	FI	Finlandia	República de Finlandia	FIN	246	yes	358	.fi
+76	FR	Francia	República Francesa	FRA	250	yes	33	.fr
+77	GF	Guayana Francesa	Guayana Francesa	GUF	254	no	594	.gf
+78	PF	Polinesia Francesa	Polinesia Francesa	PYF	258	no	689	.pf
+79	TF	Territorios Australes Franceses	Territorios Australes Franceses	ATF	260	no		.tf
+80	GA	Gabón	República Gabonesa	GAB	266	yes	241	.ga
+81	GM	Gambia	República de Gambia	GMB	270	yes	220	.gm
+82	GE	Georgia	Georgia	GEO	268	yes	995	.ge
+83	DE	Alemania	República Federal de Alemania	DEU	276	yes	49	.de
+84	GH	Ghana	República de Ghana	GHA	288	yes	233	.gh
+85	GI	Gibraltar	Gibraltar	GIB	292	no	350	.gi
+86	GR	Grecia	República Helénica	GRC	300	yes	30	.gr
+87	GL	Groenlandia	Groenlandia	GRL	304	no	299	.gl
+88	GD	Granada	Granada	GRD	308	yes	1+473	.gd
+89	GP	Guadalupe	Guadalupe	GLP	312	no	590	.gp
+90	GU	Guam	Guam	GUM	316	no	1+671	.gu
+91	GT	Guatemala	República de Guatemala	GTM	320	yes	502	.gt
+92	GG	Guernesey	Bailía de Guernesey	GGY	831	no	44	.gg
+93	GN	Guinea	República de Guinea	GIN	324	yes	224	.gn
+94	GW	Guinea-Bisáu	República de Guinea-Bisáu	GNB	624	yes	245	.gw
+95	GY	Guyana	República Cooperativa de Guyana	GUY	328	yes	592	.gy
+96	HT	Haití	República de Haití	HTI	332	yes	509	.ht
+97	HM	Islas Heard y McDonald	Islas Heard y McDonald	HMD	334	no	NONE	.hm
+98	HN	Honduras	República de Honduras	HND	340	yes	504	.hn
+99	HK	Hong Kong	Hong Kong	HKG	344	no	852	.hk
+100	HU	Hungría	Hungría	HUN	348	yes	36	.hu
+101	IS	Islandia	República de Islandia	ISL	352	yes	354	.is
+102	IN	India	República de la India	IND	356	yes	91	.in
+103	ID	Indonesia	República de Indonesia	IDN	360	yes	62	.id
+104	IR	Irán	República Islámica de Irán	IRN	364	yes	98	.ir
+105	IQ	Irak	República del Irak	IRQ	368	yes	964	.iq
+106	IE	Irlanda	Irlanda	IRL	372	yes	353	.ie
+107	IM	Isla de Man	Isla de Man	IMN	833	no	44	.im
+108	IL	Israel	Estado de Israel	ISR	376	yes	972	.il
+109	IT	Italia	República Italiana	ITA	380	yes	39	.jm
+110	JM	Jamaica	Jamaica	JAM	388	yes	1+876	.jm
+111	JP	Japón	Japón	JPN	392	yes	81	.jp
+112	JE	Jersey	Bailía de Jersey	JEY	832	no	44	.je
+113	JO	Jordania	Reino Hachemita de Jordania	JOR	400	yes	962	.jo
+114	KZ	Kazajistán	República de Kazajistán	KAZ	398	yes	7	.kz
+115	KE	Kenia	República de Kenia	KEN	404	yes	254	.ke
+116	KI	Kiribati	República de Kiribati	KIR	296	yes	686	.ki
+117	XK	Kosovo	Republic of Kosovo	---	---	some	381	
+118	KW	Kuwait	Estado de Kuwait	KWT	414	yes	965	.kw
+119	KG	Kirguistán	República Kirguisa	KGZ	417	yes	996	.kg
+120	LA	Laos	República Democrática Popular Lao	LAO	418	yes	856	.la
+121	LV	Letonia	República de Letonia	LVA	428	yes	371	.lv
+122	LB	Líbano	República Libanesa	LBN	422	yes	961	.lb
+123	LS	Lesoto	Reino de Lesoto	LSO	426	yes	266	.ls
+124	LR	Liberia	República de Liberia	LBR	430	yes	231	.lr
+125	LY	Libia	Libia	LBY	434	yes	218	.ly
+126	LI	Liechtenstein	Principado de Liechtenstein	LIE	438	yes	423	.li
+127	LT	Lituania	República de Lituania	LTU	440	yes	370	.lt
+128	LU	Luxemburgo	Gran Ducado de Luxemburgo	LUX	442	yes	352	.lu
+129	MO	Macao	Macao	MAC	446	no	853	.mo
+130	MK	Macedonia del Norte	República de Macedonia del Norte	MKD	807	yes	389	.mk
+131	MG	Madagascar	República de Madagascar	MDG	450	yes	261	.mg
+132	MW	Malaui	República de Malaui	MWI	454	yes	265	.mw
+133	MY	Malasia	Malasia	MYS	458	yes	60	.my
+134	MV	Maldivas	República de Maldivas	MDV	462	yes	960	.mv
+135	ML	Malí	República de Malí	MLI	466	yes	223	.ml
+136	MT	Malta	República de Malta	MLT	470	yes	356	.mt
+137	MH	Islas Marshall	República de las Islas Marshall	MHL	584	yes	692	.mh
+138	MQ	Martinica	Martinica	MTQ	474	no	596	.mq
+139	MR	Mauritania	República Islámica de Mauritania	MRT	478	yes	222	.mr
+140	MU	Mauricio	República de Mauricio	MUS	480	yes	230	.mu
+141	YT	Mayotte	Mayotte	MYT	175	no	262	.yt
+142	MX	México	Estados Unidos Mexicanos	MEX	484	yes	52	.mx
+143	FM	Micronesia	Estados Federados de Micronesia	FSM	583	yes	691	.fm
+144	MD	Moldavia	República de Moldavia	MDA	498	yes	373	.md
+145	MC	Mónaco	Principado de Mónaco	MCO	492	yes	377	.mc
+146	MN	Mongolia	Mongolia	MNG	496	yes	976	.mn
+147	ME	Montenegro	Montenegro	MNE	499	yes	382	.me
+148	MS	Montserrat	Montserrat	MSR	500	no	1+664	.ms
+149	MA	Marruecos	Reino de Marruecos	MAR	504	yes	212	.ma
+150	MZ	Mozambique	República de Mozambique	MOZ	508	yes	258	.mz
+151	MM	Myanmar	República de la Unión de Myanmar	MMR	104	yes	95	.mm
+152	NA	Namibia	República de Namibia	NAM	516	yes	264	.na
+153	NR	Nauru	República de Nauru	NRU	520	yes	674	.nr
+154	NP	Nepal	República Democrática Federal de Nepal	NPL	524	yes	977	.np
+155	NL	Países Bajos	Reino de los Países Bajos	NLD	528	yes	31	.nl
+156	NC	Nueva Caledonia	Nueva Caledonia	NCL	540	no	687	.nc
+157	NZ	Nueva Zelanda	Nueva Zelanda	NZL	554	yes	64	.nz
+158	NI	Nicaragua	República de Nicaragua	NIC	558	yes	505	.ni
+159	NE	Níger	República de Níger	NER	562	yes	227	.ne
+160	NG	Nigeria	República Federal de Nigeria	NGA	566	yes	234	.ng
+161	NU	Niue	Niue	NIU	570	some	683	.nu
+162	NF	Isla Norfolk	Isla Norfolk	NFK	574	no	672	.nf
+163	KP	Corea del Norte	República Popular Democrática de Corea	PRK	408	yes	850	.kp
+164	MP	Islas Marianas del Norte	Islas Marianas del Norte	MNP	580	no	1+670	.mp
+165	NO	Noruega	Reino de Noruega	NOR	578	yes	47	.no
+166	OM	Omán	Sultanato de Omán	OMN	512	yes	968	.om
+167	PK	Pakistán	República Islámica del Pakistán	PAK	586	yes	92	.pk
+168	PW	Palaos	República de Palaos	PLW	585	yes	680	.pw
+169	PS	Palestina	Territorio Palestino Ocupado	PSE	275	some	970	.ps
+170	PA	Panamá	República de Panamá	PAN	591	yes	507	.pa
+171	PG	Papúa Nueva Guinea	Estado Independiente de Papúa Nueva Guinea	PNG	598	yes	675	.pg
+172	PY	Paraguay	República del Paraguay	PRY	600	yes	595	.py
+173	PE	Perú	República del Perú	PER	604	yes	51	.pe
+174	PH	Filipinas	República de Filipinas	PHL	608	yes	63	.ph
+175	PN	Islas Pitcairn	Islas Pitcairn	PCN	612	no	NONE	.pn
+176	PL	Polonia	República de Polonia	POL	616	yes	48	.pl
+177	PT	Portugal	República Portuguesa	PRT	620	yes	351	.pt
+178	PR	Puerto Rico	Estado Libre Asociado de Puerto Rico	PRI	630	no	1+939	.pr
+179	QA	Catar	Estado de Catar	QAT	634	yes	974	.qa
+180	RE	Reunión	Reunión	REU	638	no	262	.re
+181	RO	Rumanía	Rumanía	ROU	642	yes	40	.ro
+182	RU	Rusia	Federación de Rusia	RUS	643	yes	7	.ru
+183	RW	Ruanda	República de Ruanda	RWA	646	yes	250	.rw
+184	BL	San Bartolomé	San Bartolomé	BLM	652	no	590	.bl
+185	SH	Santa Elena	Santa Elena	SHN	654	no	290	.sh
+186	KN	San Cristóbal y Nieves	Federación de San Cristóbal y Nieves	KNA	659	yes	1+869	.kn
+187	LC	Santa Lucía	Santa Lucía	LCA	662	yes	1+758	.lc
+188	MF	San Martín	San Martín	MAF	663	no	590	.mf
+189	PM	San Pedro y Miquelón	San Pedro y Miquelón	SPM	666	no	508	.pm
+190	VC	San Vicente y las Granadinas	San Vicente y las Granadinas	VCT	670	yes	1+784	.vc
+191	WS	Samoa	Estado Independiente de Samoa	WSM	882	yes	685	.ws
+192	SM	San Marino	República de San Marino	SMR	674	yes	378	.sm
+193	ST	Santo Tomé y Príncipe	República Democrática de Santo Tomé y Príncipe	STP	678	yes	239	.st
+194	SA	Arabia Saudí	Reino de Arabia Saudí	SAU	682	yes	966	.sa
+195	SN	Senegal	República de Senegal	SEN	686	yes	221	.sn
+196	RS	Serbia	República de Serbia	SRB	688	yes	381	.rs
+197	SC	Seychelles	República de Seychelles	SYC	690	yes	248	.sc
+198	SL	Sierra Leona	República de Sierra Leona	SLE	694	yes	232	.sl
+199	SG	Singapur	República de Singapur	SGP	702	yes	65	.sg
+200	SX	Sint Maarten	Sint Maarten	SXM	534	no	1+721	.sx
+201	SK	Eslovaquia	República Eslovaca	SVK	703	yes	421	.sk
+202	SI	Eslovenia	República de Eslovenia	SVN	705	yes	386	.si
+203	SB	Islas Salomón	Islas Salomón	SLB	090	yes	677	.sb
+204	SO	Somalia	República Federal de Somalia	SOM	706	yes	252	.so
+205	ZA	Sudáfrica	República de Sudáfrica	ZAF	710	yes	27	.za
+206	GS	Georgia del Sur y las Islas Sandwich del Sur	Georgia del Sur y las Islas Sandwich del Sur	SGS	239	no	500	.gs
+207	KR	Corea del Sur	República de Corea	KOR	410	yes	82	.kr
+208	SS	Sudán del Sur	República de Sudán del Sur	SSD	728	yes	211	.ss
+209	ES	España	Reino de España	ESP	724	yes	34	.es
+210	LK	Sri Lanka	República Democrática Socialista de Sri Lanka	LKA	144	yes	94	.lk
+211	SD	Sudán	República del Sudán	SDN	729	yes	249	.sd
+212	SR	Surinam	República de Surinam	SUR	740	yes	597	.sr
+213	SJ	Svalbard y Jan Mayen	Svalbard y Jan Mayen	SJM	744	no	47	.sj
+214	SZ	Esuatini	Reino de Esuatini	SWZ	748	yes	268	.sz
+215	SE	Suecia	Reino de Suecia	SWE	752	yes	46	.se
+216	CH	Suiza	Confederación Suiza	CHE	756	yes	41	.ch
+217	SY	Siria	República Árabe Siria	SYR	760	yes	963	.sy
+218	TW	Taiwán	Taiwán, provincia de China	TWN	158	former	886	.tw
+219	TJ	Tayikistán	República de Tayikistán	TJK	762	yes	992	.tj
+220	TZ	Tanzania	República Unida de Tanzania	TZA	834	yes	255	.tz
+221	TH	Tailandia	Reino de Tailandia	THA	764	yes	66	.th
+222	TL	Timor Oriental	República Democrática de Timor Oriental	TLS	626	yes	670	.tl
+223	TG	Togo	República Togolesa	TGO	768	yes	228	.tg
+224	TK	Tokelau	Tokelau	TKL	772	no	690	.tk
+225	TO	Tonga	Reino de Tonga	TON	776	yes	676	.to
+226	TT	Trinidad y Tobago	República de Trinidad y Tobago	TTO	780	yes	1+868	.tt
+227	TN	Túnez	República de Túnez	TUN	788	yes	216	.tn
+228	TR	Turquía	República de Turquía	TUR	792	yes	90	.tr
+229	TM	Turkmenistán	Turkmenistán	TKM	795	yes	993	.tm
+230	TC	Islas Turcas y Caicos	Islas Turcas y Caicos	TCA	796	no	1+649	.tc
+231	TV	Tuvalu	Tuvalu	TUV	798	yes	688	.tv
+232	UG	Uganda	República de Uganda	UGA	800	yes	256	.ug
+233	UA	Ucrania	Ucrania	UKR	804	yes	380	.ua
+234	AE	Emiratos Árabes Unidos	Emiratos Árabes Unidos	ARE	784	yes	971	.ae
+235	GB	Reino Unido	Reino Unido de Gran Bretaña e Irlanda del Norte	GBR	826	yes	44	.uk
+236	US	Estados Unidos	Estados Unidos de América	USA	840	yes	1	.us
+237	UM	Islas menores alejadas de EE. UU.	Islas menores alejadas de Estados Unidos	UMI	581	no	NONE	NONE
+238	UY	Uruguay	República Oriental del Uruguay	URY	858	yes	598	.uy
+239	UZ	Uzbekistán	República de Uzbekistán	UZB	860	yes	998	.uz
+240	VU	Vanuatu	República de Vanuatu	VUT	548	yes	678	.vu
+241	VA	Santa Sede	Santa Sede (Estado de la Ciudad del Vaticano)	VAT	336	no	39	.va
+242	VE	Venezuela	República Bolivariana de Venezuela	VEN	862	yes	58	.ve
+243	VN	Vietnam	República Socialista de Vietnam	VNM	704	yes	84	.vn
+244	VG	Islas Vírgenes Británicas	Islas Vírgenes Británicas	VGB	092	no	1+284	.vg
+245	VI	Islas Vírgenes de Estados Unidos	Islas Vírgenes de los Estados Unidos	VIR	850	no	1+340	.vi
+246	WF	Wallis y Futuna	Wallis y Futuna	WLF	876	no	681	.wf
+247	EH	Sáhara Occidental	Sáhara Occidental	ESH	732	no	212	.eh
+248	YE	Yemen	República del Yemen	YEM	887	yes	967	.ye
+249	ZM	Zambia	República de Zambia	ZMB	894	yes	260	.zm
+250	ZW	Zimbabue	República de Zimbabue	ZWE	716	yes	263	.zw

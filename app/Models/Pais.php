@@ -31,7 +31,6 @@ class Pais extends Model
     protected function casts(): array
     {
         return [
-            'miembro_onu' => 'boolean',
         ];
     }
 

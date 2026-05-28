@@ -519,4 +519,16 @@ return [
             ],
         ]
     ],
+    [
+        'type' => 'section',
+        'name' => 'Familia',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Personas',
+                'icon' => 'people',
+                'url' => '/dashboard/personas'
+            ],
+        ]
+    ],
 ];
