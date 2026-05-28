@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Dashboard\PersonaController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -29,7 +30,7 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 // ─── Rutas protegidas (requieren login) ────────────────────────────────────
-Route::middleware('auth')->prefix('dashboard')->name('dashboard')->group(function () {
+Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', function () { return view('dashboard.ecommerce'); })->name('');
 
     Route::get('/crm', function () { return view('dashboard.crm'); });
@@ -215,7 +216,7 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard')->group(functio
     Route::get('/widgets', function () { return view('dashboard.widgets'); });
     Route::get('/maps', function () { return view('dashboard.maps'); });
     Route::get('/notifications', function () { return view('dashboard.notifications'); });
-    Route::get('/members', function () { return view('dashboard.members'); });
+    Route::resource('personas', PersonaController::class);
     Route::get('/my-profile', function () { return view('dashboard.my-profile'); });
     Route::get('/settings', function () { return view('dashboard.settings'); });
     Route::get('/change-password', function () { return view('dashboard.change-password'); });
