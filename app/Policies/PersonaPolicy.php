@@ -9,7 +9,7 @@ class PersonaPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->persona !== null;
+        return true;
     }
 
     public function view(User $user, Persona $persona): bool
@@ -19,7 +19,7 @@ class PersonaPolicy
 
     public function create(User $user): bool
     {
-        return $user->persona?->hogar_id !== null;
+        return true;
     }
 
     public function update(User $user, Persona $persona): bool

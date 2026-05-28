@@ -529,6 +529,12 @@ return [
                 'icon' => 'people',
                 'url' => '/dashboard/personas'
             ],
+            [
+                'type' => 'link',
+                'name' => 'Hogares',
+                'icon' => 'home',
+                'url' => '/dashboard/hogares'
+            ],
         ]
     ],
 ];

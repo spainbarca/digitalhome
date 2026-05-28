@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Dashboard\HogarController;
+use App\Http\Controllers\Dashboard\HogarMiembroController;
 use App\Http\Controllers\Dashboard\PersonaController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
@@ -218,6 +220,10 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::get('/maps', function () { return view('dashboard.maps'); });
     Route::get('/notifications', function () { return view('dashboard.notifications'); });
     Route::resource('personas', PersonaController::class);
+    Route::resource('hogares', HogarController::class)
+        ->parameters(['hogares' => 'hogar']);
+    Route::resource('hogares.miembros', HogarMiembroController::class)
+        ->parameters(['hogares' => 'hogar', 'miembros' => 'miembro']);
     Route::get('/my-profile', function () { return view('dashboard.my-profile'); });
     Route::get('/settings', function () { return view('dashboard.settings'); });
     Route::get('/change-password', function () { return view('dashboard.change-password'); });
