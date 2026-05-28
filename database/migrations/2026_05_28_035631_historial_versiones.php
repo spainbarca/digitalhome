@@ -20,7 +20,7 @@ return new class extends Migration
                   ->references('extension')->on('tipo_archivo')->nullOnDelete();
             $table->unsignedBigInteger('tamano_bytes')->nullable();
 
-            $table->foreignUuid('subido_por')->constrained('users')->restrictOnDelete();
+            $table->foreignId('subido_por')->constrained('users')->restrictOnDelete();
             $table->text('motivo_cambio')->nullable(); // "Recibo corregido", "Versión actualizada"
             $table->unsignedSmallInteger('numero_version')->default(1);
 

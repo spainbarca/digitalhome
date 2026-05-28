@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('ciudades', function (Blueprint $table) {
             $table->id();
             $table->string('pais_iso2', 2);
-            $table->foreign('pais_iso2')->references('iso2')->on('tbl_paises')->restrictOnDelete();
+            $table->foreign('pais_iso2')->references('iso2')->on('paises')->restrictOnDelete();
             $table->string('nombre', 150);
             $table->string('region', 150)->nullable();
             $table->boolean('estado')->default(true);

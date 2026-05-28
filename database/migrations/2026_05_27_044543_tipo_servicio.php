@@ -14,7 +14,6 @@ return new class extends Migration
             $table->string('icono', 50)->nullable();
             $table->foreignUuid('unidad_medida_id')
                   ->nullable()
-                  ->after('icono')
                   ->constrained('unidad_medida')
                   ->nullOnDelete();
             $table->boolean('activo')->default(true);

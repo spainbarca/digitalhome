@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignUuid('tipo_documento_id')->constrained('tipo_documento_servicio')->restrictOnDelete();
             $table->foreignUuid('estado_pago_id')->constrained('estado_pago')->restrictOnDelete();
             $table->foreignUuid('metodo_pago_id')->nullable()->constrained('metodo_pago')->nullOnDelete();
-            $table->foreignId('moneda_id')->nullable()->constrained('tbl_monedas')->restrictOnDelete();
+            $table->foreignId('moneda_id')->nullable()->constrained('monedas')->restrictOnDelete();
             $table->foreignUuid('hogar_id')->nullable()->constrained('hogares')->nullOnDelete();
             $table->foreignUuid('visibilidad_id')->constrained('tipo_visibilidad')->restrictOnDelete();
 

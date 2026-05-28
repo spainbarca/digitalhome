@@ -14,7 +14,7 @@ return new class extends Migration
             // Polimórfico: funciona con documentos_servicio, medicos, etc.
             $table->uuidMorphs('documento');            // documento_id + documento_type
 
-            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->enum('permiso', ['ver', 'editar'])->default('ver');
             $table->timestamps();
 

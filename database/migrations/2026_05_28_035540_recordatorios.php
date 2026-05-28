@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('recordatorios', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignUuid('hogar_id')->constrained('hogares')->cascadeOnDelete();
 
             $table->string('titulo', 150);

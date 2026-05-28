@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('perfiles_miembro', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->unique()->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->unique()->constrained('users')->cascadeOnDelete();
 
             $table->date('fecha_nacimiento')->nullable();
             $table->enum('genero', ['masculino', 'femenino', 'otro', 'prefiero_no_decir'])->nullable();

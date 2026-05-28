@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('hogar_miembros', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('hogar_id')->constrained('hogares')->cascadeOnDelete();
-            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignUuid('parentesco_id')->nullable()->constrained('parentescos')->nullOnDelete();
 
             $table->enum('rol', ['admin', 'editor', 'viewer'])->default('viewer');

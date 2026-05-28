@@ -12,7 +12,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('nombre', 100);
             $table->string('descripcion')->nullable();
-            $table->foreignUuid('owner_id')->constrained('users')->restrictOnDelete();
+            $table->foreignId('owner_id')->constrained('users')->restrictOnDelete();
             $table->string('avatar_url')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -25,7 +25,7 @@ return new class extends Migration
             // Dirección fiscal (viene de SUNAT, usando ubigeo)
             $table->string('direccion_fiscal')->nullable();
             $table->string('distrito_inei', 6)->nullable();
-            $table->foreign('distrito_inei')->references('inei')->on('tbl_ubigeo_distritos')->nullOnDelete();
+            $table->foreign('distrito_inei')->references('inei')->on('ubigeo_distritos')->nullOnDelete();
 
             // Fecha de inicio de actividades
             $table->date('fecha_inicio_actividades')->nullable();
