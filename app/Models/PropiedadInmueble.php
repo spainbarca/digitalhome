@@ -21,6 +21,7 @@ class PropiedadInmueble extends Model
         'alias',
         'direccion',
         'referencia',
+        'avatar_url',
         'distrito_inei',
         'pais_iso2',
         'ciudad_id',

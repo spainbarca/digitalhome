@@ -537,4 +537,16 @@ return [
             ],
         ]
     ],
+    [
+        'type' => 'section',
+        'name' => 'Ïnmuebles',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Propiedades',
+                'icon' => 'apartment',
+                'url' => '/dashboard/propiedades'
+            ],
+        ]
+    ],
 ];

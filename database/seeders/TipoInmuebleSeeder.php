@@ -11,24 +11,27 @@ class TipoInmuebleSeeder extends Seeder
     public function run(): void
     {
         $tipos = [
-            ['nombre' => 'Casa',          'icono' => 'home'],
-            ['nombre' => 'Departamento',  'icono' => 'building'],
-            ['nombre' => 'Oficina',       'icono' => 'briefcase'],
-            ['nombre' => 'Local',         'icono' => 'store'],
-            ['nombre' => 'Terreno',       'icono' => 'map'],
-            ['nombre' => 'Cochera',       'icono' => 'car'],
-            ['nombre' => 'Otro',          'icono' => 'file'],
+            ['nombre' => 'Casa',            'icono' => 'home'],
+            ['nombre' => 'Departamento',    'icono' => 'building'],
+            ['nombre' => 'Oficina',         'icono' => 'briefcase'],
+            ['nombre' => 'Local Comercial', 'icono' => 'store'],
+            ['nombre' => 'Terreno',         'icono' => 'map'],
+            ['nombre' => 'Cochera',         'icono' => 'car'],
+            ['nombre' => 'Depósito',        'icono' => 'warehouse'],
+            ['nombre' => 'Otro',            'icono' => 'file'],
         ];
 
         foreach ($tipos as $tipo) {
-            DB::table('tipo_inmueble')->insert([
-                'id'         => Str::uuid(),
-                'nombre'     => $tipo['nombre'],
-                'icono'      => $tipo['icono'],
-                'activo'     => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            if (DB::table('tipo_inmueble')->where('nombre', $tipo['nombre'])->doesntExist()) {
+                DB::table('tipo_inmueble')->insert([
+                    'id'         => Str::uuid(),
+                    'nombre'     => $tipo['nombre'],
+                    'icono'      => $tipo['icono'],
+                    'activo'     => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\HogarController;
 use App\Http\Controllers\Dashboard\HogarMiembroController;
 use App\Http\Controllers\Dashboard\PersonaController;
+use App\Http\Controllers\Dashboard\PropiedadInmuebleController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -220,6 +221,8 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::get('/maps', function () { return view('dashboard.maps'); });
     Route::get('/notifications', function () { return view('dashboard.notifications'); });
     Route::resource('personas', PersonaController::class);
+    Route::resource('propiedades', PropiedadInmuebleController::class)
+        ->parameters(['propiedades' => 'propiedad']);
     Route::resource('hogares', HogarController::class)
         ->parameters(['hogares' => 'hogar']);
     Route::resource('hogares.miembros', HogarMiembroController::class)
