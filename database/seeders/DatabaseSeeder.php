@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             UbigeoProvinciasSeeder::class,
             UbigeoDistritosSeeder::class,
             CiudadSeeder::class,
+            UnidadMedidaSeeder::class,
+            TipoServicioSeeder::class,
         ]);
     }
 }

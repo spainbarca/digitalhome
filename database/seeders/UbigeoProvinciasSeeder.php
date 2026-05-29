@@ -19,7 +19,9 @@ class UbigeoProvinciasSeeder extends Seeder
         $rows = array_map('str_getcsv', file($path));
         $header = array_map('trim', array_shift($rows));
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
         DB::table('ubigeo_provincias')->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         $data = [];
 

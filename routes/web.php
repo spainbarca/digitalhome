@@ -5,7 +5,10 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\HogarController;
 use App\Http\Controllers\Dashboard\HogarMiembroController;
 use App\Http\Controllers\Dashboard\PersonaController;
+use App\Http\Controllers\Dashboard\CuentaServicioController;
 use App\Http\Controllers\Dashboard\PropiedadInmuebleController;
+use App\Http\Controllers\Dashboard\UnidadMedidaController;
+use App\Http\Controllers\Dashboard\TipoServicioController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -34,7 +37,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 // ─── Rutas protegidas (requieren login) ────────────────────────────────────
 Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(function () {
-    Route::get('/', function () { return view('dashboard.ecommerce'); })->name('');
+    Route::get('/', function () { return view('dashboard.ecommerce'); })->name('dashboard.ecommerce');
 
     Route::get('/crm', function () { return view('dashboard.crm'); });
     Route::get('/project-management', function () { return view('dashboard.project-management'); });
@@ -220,9 +223,20 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::get('/widgets', function () { return view('dashboard.widgets'); });
     Route::get('/maps', function () { return view('dashboard.maps'); });
     Route::get('/notifications', function () { return view('dashboard.notifications'); });
+    Route::resource('unidades-medida', UnidadMedidaController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('unidades-medida')
+        ->parameters(['unidades-medida' => 'unidad']);
+    Route::resource('tipos-servicio', TipoServicioController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipos-servicio')
+        ->parameters(['tipos-servicio' => 'tipo']);
     Route::resource('personas', PersonaController::class);
     Route::resource('propiedades', PropiedadInmuebleController::class)
         ->parameters(['propiedades' => 'propiedad']);
+    Route::resource('propiedades.cuentas', CuentaServicioController::class)
+        ->parameters(['propiedades' => 'propiedad', 'cuentas' => 'cuenta'])
+        ->names('propiedades.cuentas');
     Route::resource('hogares', HogarController::class)
         ->parameters(['hogares' => 'hogar']);
     Route::resource('hogares.miembros', HogarMiembroController::class)

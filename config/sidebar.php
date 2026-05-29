@@ -549,4 +549,22 @@ return [
             ],
         ]
     ],
+    [
+        'type' => 'section',
+        'name' => 'Catálogos',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Unidades de Medida',
+                'icon' => 'straighten',
+                'url'  => '/dashboard/unidades-medida'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Servicio',
+                'icon' => 'category',
+                'url'  => '/dashboard/tipos-servicio'
+            ],
+        ]
+    ],
 ];

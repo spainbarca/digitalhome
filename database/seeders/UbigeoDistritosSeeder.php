@@ -19,7 +19,9 @@ class UbigeoDistritosSeeder extends Seeder
         $rows = array_map('str_getcsv', file($path));
         $header = array_map('trim', array_shift($rows));
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
         DB::table('ubigeo_distritos')->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         $departamentos = DB::table('ubigeo_departamentos')->pluck('inei')->toArray();
         $provincias = DB::table('ubigeo_provincias')->pluck('inei')->toArray();

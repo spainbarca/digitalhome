@@ -2,30 +2,28 @@
 
 namespace Database\Seeders;
 
+use App\Models\UnidadMedida;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class UnidadMedidaSeeder extends Seeder
 {
     public function run(): void
     {
         $unidades = [
-            ['nombre' => 'Kilovatio hora', 'simbolo' => 'kWh'],   // Electricidad
-            ['nombre' => 'Metro cúbico',   'simbolo' => 'm³'],    // Agua y Gas
-            ['nombre' => 'Galón',          'simbolo' => 'gal'],   // Agua (algunos casos)
-            ['nombre' => 'Litro',          'simbolo' => 'L'],
+            ['nombre' => 'Kilovatio-hora',      'simbolo' => 'kWh',  'icono' => 'bolt'],
+            ['nombre' => 'Metro cúbico',         'simbolo' => 'm³',   'icono' => 'water_drop'],
+            ['nombre' => 'Megabit por segundo',  'simbolo' => 'Mbps', 'icono' => 'wifi'],
+            ['nombre' => 'Minuto',               'simbolo' => 'min',  'icono' => 'phone'],
+            ['nombre' => 'Canal',                'simbolo' => 'ch',   'icono' => 'tv'],
+            ['nombre' => 'Dispositivo',          'simbolo' => 'disp', 'icono' => 'security'],
+            ['nombre' => 'Unidad',               'simbolo' => 'u',    'icono' => 'category'],
         ];
 
-        foreach ($unidades as $unidad) {
-            DB::table('unidad_medida')->insert([
-                'id'         => Str::uuid(),
-                'nombre'     => $unidad['nombre'],
-                'simbolo'    => $unidad['simbolo'],
-                'activo'     => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        foreach ($unidades as $datos) {
+            UnidadMedida::updateOrCreate(
+                ['nombre' => $datos['nombre']],
+                array_merge($datos, ['activo' => true])
+            );
         }
     }
 }
