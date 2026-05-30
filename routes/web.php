@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\CuentaServicioController;
 use App\Http\Controllers\Dashboard\PropiedadInmuebleController;
 use App\Http\Controllers\Dashboard\EmpresaController;
 use App\Http\Controllers\Dashboard\ProveedorServicioController;
+use App\Http\Controllers\Dashboard\CuentasServicioController;
 use App\Http\Controllers\Dashboard\SectorController;
 use App\Http\Controllers\Dashboard\UnidadMedidaController;
 use App\Http\Controllers\Dashboard\TipoServicioController;
@@ -227,6 +228,9 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::get('/maps', function () { return view('dashboard.maps'); });
     Route::get('/notifications', function () { return view('dashboard.notifications'); });
     Route::get('empresas/buscar-ruc', [EmpresaController::class, 'buscarRuc'])->name('empresas.buscar-ruc');
+    Route::resource('cuentas-servicio', CuentasServicioController::class)
+        ->parameters(['cuentas-servicio' => 'cuentaServicio'])
+        ->names('cuentas-servicio');
     Route::resource('sectores', SectorController::class)
         ->parameters(['sectores' => 'sector'])
         ->names('sectores');

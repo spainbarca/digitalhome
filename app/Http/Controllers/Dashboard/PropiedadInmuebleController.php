@@ -86,7 +86,11 @@ class PropiedadInmuebleController extends Controller
     {
         $this->authorize('view', $propiedad);
 
-        $propiedad->load(['tipoInmueble', 'persona', 'distrito', 'pais', 'ciudad', 'cuentasServicio.proveedor.tipoServicio']);
+        $propiedad->load([
+            'tipoInmueble', 'persona', 'distrito', 'pais', 'ciudad',
+            'cuentasServicio.proveedor.tipoServicio',
+            'cuentasServicio.proveedor.empresa',
+        ]);
 
         return view('dashboard.propiedades.show', compact('propiedad'));
     }

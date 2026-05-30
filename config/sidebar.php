@@ -545,7 +545,13 @@ return [
                 'type' => 'link',
                 'name' => 'Propiedades',
                 'icon' => 'apartment',
-                'url' => '/dashboard/propiedades'
+                'url'  => '/dashboard/propiedades'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Cuentas de Servicio',
+                'icon' => 'electrical_services',
+                'url'  => '/dashboard/cuentas-servicio'
             ],
         ]
     ],
