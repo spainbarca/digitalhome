@@ -16,11 +16,11 @@ class Empresa extends Model
     protected $table = 'empresas';
 
     protected $fillable = [
-        'categoria_id',
+        'sector_id',
+        'tipo_contribuyente_id',
         'ruc',
         'razon_social',
         'nombre_comercial',
-        'tipo_contribuyente',
         'estado_sunat',
         'condicion_sunat',
         'direccion_fiscal',
@@ -43,9 +43,14 @@ class Empresa extends Model
         ];
     }
 
-    public function categoria(): BelongsTo
+    public function sector(): BelongsTo
     {
-        return $this->belongsTo(Categoria::class, 'categoria_id');
+        return $this->belongsTo(Sector::class, 'sector_id');
+    }
+
+    public function tipoContribuyente(): BelongsTo
+    {
+        return $this->belongsTo(TipoContribuyente::class, 'tipo_contribuyente_id');
     }
 
     public function distrito(): BelongsTo

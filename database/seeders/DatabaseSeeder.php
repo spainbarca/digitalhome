@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             CiudadSeeder::class,
             UnidadMedidaSeeder::class,
             TipoServicioSeeder::class,
+            TipoContribuyenteSeeder::class,
+            SectorSeeder::class,
         ]);
     }
 }

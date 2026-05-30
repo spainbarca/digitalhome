@@ -539,7 +539,7 @@ return [
     ],
     [
         'type' => 'section',
-        'name' => 'Ïnmuebles',
+        'name' => 'Inmuebles',
         'items' => [
             [
                 'type' => 'link',
@@ -551,8 +551,26 @@ return [
     ],
     [
         'type' => 'section',
-        'name' => 'Catálogos',
+        'name' => 'Empresas',
         'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Sectores',
+                'icon' => 'category',
+                'url'  => '/dashboard/sectores'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Empresas',
+                'icon' => 'business',
+                'url'  => '/dashboard/empresas'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Proveedores',
+                'icon' => 'handshake',
+                'url'  => '/dashboard/proveedores'
+            ],
             [
                 'type' => 'link',
                 'name' => 'Unidades de Medida',

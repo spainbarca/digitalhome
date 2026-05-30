@@ -7,6 +7,9 @@ use App\Http\Controllers\Dashboard\HogarMiembroController;
 use App\Http\Controllers\Dashboard\PersonaController;
 use App\Http\Controllers\Dashboard\CuentaServicioController;
 use App\Http\Controllers\Dashboard\PropiedadInmuebleController;
+use App\Http\Controllers\Dashboard\EmpresaController;
+use App\Http\Controllers\Dashboard\ProveedorServicioController;
+use App\Http\Controllers\Dashboard\SectorController;
 use App\Http\Controllers\Dashboard\UnidadMedidaController;
 use App\Http\Controllers\Dashboard\TipoServicioController;
 
@@ -223,6 +226,14 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::get('/widgets', function () { return view('dashboard.widgets'); });
     Route::get('/maps', function () { return view('dashboard.maps'); });
     Route::get('/notifications', function () { return view('dashboard.notifications'); });
+    Route::get('empresas/buscar-ruc', [EmpresaController::class, 'buscarRuc'])->name('empresas.buscar-ruc');
+    Route::resource('sectores', SectorController::class)
+        ->parameters(['sectores' => 'sector'])
+        ->names('sectores');
+    Route::resource('empresas', EmpresaController::class)->names('empresas');
+    Route::resource('proveedores', ProveedorServicioController::class)
+        ->parameters(['proveedores' => 'proveedor'])
+        ->names('proveedores');
     Route::resource('unidades-medida', UnidadMedidaController::class)
         ->except(['create', 'edit', 'show'])
         ->names('unidades-medida')

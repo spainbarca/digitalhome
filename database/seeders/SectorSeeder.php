@@ -1,0 +1,110 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Sector;
+use Illuminate\Database\Seeder;
+
+class SectorSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $sectores = [
+            ['nombre' => 'Agricultura',                       'icono' => 'ri-plant-line',           'descripcion' => 'Cultivo de tierras para producción de alimentos y materias primas vegetales.'],
+            ['nombre' => 'Ganadería',                         'icono' => 'ri-cow-line',              'descripcion' => 'Crianza y explotación de animales para carne, leche, lana y otros productos.'],
+            ['nombre' => 'Apicultura',                        'icono' => 'ri-bug-line',              'descripcion' => 'Producción y manejo de colmenas para obtención de miel y derivados.'],
+            ['nombre' => 'Pesca',                             'icono' => 'ri-ship-line',             'descripcion' => 'Extracción de recursos pesqueros en ríos, lagos y mar.'],
+            ['nombre' => 'Acuicultura',                       'icono' => 'ri-water-flash-line',      'descripcion' => 'Cultivo controlado de organismos acuáticos como peces, moluscos y algas.'],
+            ['nombre' => 'Piscicultura',                      'icono' => 'ri-fish-line',             'descripcion' => 'Crianza y reproducción de peces en ambientes controlados.'],
+            ['nombre' => 'Caza',                              'icono' => 'ri-crosshair-line',        'descripcion' => 'Captura controlada de fauna silvestre con fines alimentarios o comerciales.'],
+            ['nombre' => 'Silvicultura',                      'icono' => 'ri-tree-line',             'descripcion' => 'Gestión y explotación sostenible de bosques y recursos forestales.'],
+            ['nombre' => 'Minería',                           'icono' => 'ri-hammer-line',           'descripcion' => 'Extracción de minerales metálicos y no metálicos del subsuelo.'],
+            ['nombre' => 'Extracción de petróleo y gas',      'icono' => 'ri-oil-line',              'descripcion' => 'Exploración y extracción de hidrocarburos líquidos y gaseosos.'],
+            ['nombre' => 'Destilación de hidrocarburos',      'icono' => 'ri-flask-line',            'descripcion' => 'Refinación y procesamiento de petróleo y gas en derivados combustibles.'],
+            ['nombre' => 'Industria Automotriz',              'icono' => 'ri-car-line',              'descripcion' => 'Diseño, fabricación y ensamblaje de vehículos y autopartes.'],
+            ['nombre' => 'Construcción',                      'icono' => 'ri-building-line',         'descripcion' => 'Edificación de viviendas, infraestructura civil y obras de ingeniería.'],
+            ['nombre' => 'Industria Textil',                  'icono' => 'ri-scissors-line',         'descripcion' => 'Producción de fibras, telas, hilos y confección de prendas.'],
+            ['nombre' => 'Industria Alimentaria',             'icono' => 'ri-restaurant-line',       'descripcion' => 'Procesamiento y transformación de alimentos para consumo humano y animal.'],
+            ['nombre' => 'Industria Farmacéutica',            'icono' => 'ri-medicine-bottle-line',  'descripcion' => 'Investigación, producción y comercialización de medicamentos.'],
+            ['nombre' => 'Industria Química',                 'icono' => 'ri-test-tube-line',        'descripcion' => 'Fabricación de productos químicos, fertilizantes, pinturas y plásticos.'],
+            ['nombre' => 'Industria Electrónica',             'icono' => 'ri-cpu-line',              'descripcion' => 'Manufactura de componentes electrónicos, circuitos y dispositivos.'],
+            ['nombre' => 'Electrodomésticos',                 'icono' => 'ri-tv-line',               'descripcion' => 'Fabricación de aparatos eléctricos para uso doméstico.'],
+            ['nombre' => 'Industria del Plástico',            'icono' => 'ri-recycle-line',          'descripcion' => 'Producción de materiales y productos plásticos para múltiples usos.'],
+            ['nombre' => 'Industria del Papel y Cartón',      'icono' => 'ri-file-paper-line',       'descripcion' => 'Fabricación de papel, cartón y productos derivados.'],
+            ['nombre' => 'Industria Maderera',                'icono' => 'ri-ancient-gate-line',     'descripcion' => 'Procesamiento de madera para construcción, muebles y derivados.'],
+            ['nombre' => 'Artesanías',                        'icono' => 'ri-hand-heart-line',       'descripcion' => 'Elaboración manual de objetos decorativos, utilitarios y culturales.'],
+            ['nombre' => 'Cerveceras',                        'icono' => 'ri-goblet-line',           'descripcion' => 'Producción y comercialización de cervezas y bebidas fermentadas.'],
+            ['nombre' => 'Tabacaleras',                       'icono' => 'ri-fire-line',             'descripcion' => 'Cultivo, procesamiento y fabricación de productos de tabaco.'],
+            ['nombre' => 'Industria del Calzado',             'icono' => 'ri-footprint-line',        'descripcion' => 'Diseño y fabricación de calzado y artículos de cuero.'],
+            ['nombre' => 'Metalurgia y Siderurgia',           'icono' => 'ri-settings-3-line',       'descripcion' => 'Producción y transformación de metales, acero y aleaciones.'],
+            ['nombre' => 'Juguetes',                          'icono' => 'ri-gamepad-line',          'descripcion' => 'Diseño y fabricación de juguetes y artículos de entretenimiento infantil.'],
+            ['nombre' => 'Energía Eléctrica',                 'icono' => 'ri-flashlight-line',       'descripcion' => 'Generación, transmisión y distribución de energía eléctrica.'],
+            ['nombre' => 'Energía Renovable',                 'icono' => 'ri-sun-line',              'descripcion' => 'Aprovechamiento de fuentes limpias como solar, eólica e hídrica.'],
+            ['nombre' => 'Agua y Saneamiento',                'icono' => 'ri-drop-line',             'descripcion' => 'Tratamiento y distribución de agua potable y gestión de aguas residuales.'],
+            ['nombre' => 'Telecomunicaciones',                'icono' => 'ri-signal-tower-line',     'descripcion' => 'Infraestructura y servicios de transmisión de datos y señales.'],
+            ['nombre' => 'Telefonía',                         'icono' => 'ri-phone-line',            'descripcion' => 'Servicios de comunicación telefónica fija y móvil.'],
+            ['nombre' => 'Televisión por Cable',              'icono' => 'ri-tv-2-line',             'descripcion' => 'Distribución de contenidos televisivos por cable o satélite.'],
+            ['nombre' => 'Internet y Banda Ancha',            'icono' => 'ri-wifi-line',             'descripcion' => 'Provisión de acceso a internet y servicios de conectividad.'],
+            ['nombre' => 'Transporte Terrestre',              'icono' => 'ri-bus-line',              'descripcion' => 'Traslado de personas y mercancías por carretera y vías férreas.'],
+            ['nombre' => 'Transporte Aéreo',                  'icono' => 'ri-plane-line',            'descripcion' => 'Transporte de pasajeros y carga mediante aeronaves.'],
+            ['nombre' => 'Transporte Marítimo y Fluvial',     'icono' => 'ri-ship-2-line',           'descripcion' => 'Transporte por mar, ríos y vías navegables.'],
+            ['nombre' => 'Logística y Almacenamiento',        'icono' => 'ri-truck-line',            'descripcion' => 'Gestión de cadena de suministro, distribución y warehousing.'],
+            ['nombre' => 'Comercio Minorista',                'icono' => 'ri-store-line',            'descripcion' => 'Venta directa de productos al consumidor final.'],
+            ['nombre' => 'Comercio Mayorista',                'icono' => 'ri-store-2-line',          'descripcion' => 'Distribución y venta de productos en grandes volúmenes a revendedores.'],
+            ['nombre' => 'Importación y Exportación',         'icono' => 'ri-global-line',           'descripcion' => 'Comercio internacional de bienes y servicios entre países.'],
+            ['nombre' => 'Restaurantes y Gastronomía',        'icono' => 'ri-restaurant-2-line',     'descripcion' => 'Preparación y servicio de alimentos y bebidas al público.'],
+            ['nombre' => 'Hoteles y Turismo',                 'icono' => 'ri-hotel-line',            'descripcion' => 'Servicios de hospedaje, recreación y atención al turista.'],
+            ['nombre' => 'Agencias de Viaje',                 'icono' => 'ri-map-pin-line',          'descripcion' => 'Planificación y venta de paquetes turísticos y servicios de viaje.'],
+            ['nombre' => 'Salud y Medicina',                  'icono' => 'ri-heart-pulse-line',      'descripcion' => 'Prestación de servicios médicos, diagnóstico y tratamiento de enfermedades.'],
+            ['nombre' => 'Clínicas y Hospitales',             'icono' => 'ri-hospital-line',         'descripcion' => 'Centros de atención médica especializada y hospitalización.'],
+            ['nombre' => 'Farmacéutica y Boticas',            'icono' => 'ri-capsule-line',          'descripcion' => 'Comercialización de medicamentos, suplementos y productos de salud.'],
+            ['nombre' => 'Seguros',                           'icono' => 'ri-shield-check-line',     'descripcion' => 'Gestión de pólizas y cobertura de riesgos personales, vehiculares y empresariales.'],
+            ['nombre' => 'Servicios Bancarios y Financieros', 'icono' => 'ri-bank-line',             'descripcion' => 'Captación de ahorros, créditos, inversiones y servicios financieros.'],
+            ['nombre' => 'Fondos de Inversión',               'icono' => 'ri-funds-line',            'descripcion' => 'Gestión colectiva de capital para inversión en activos financieros.'],
+            ['nombre' => 'Planificación Financiera',          'icono' => 'ri-pie-chart-line',        'descripcion' => 'Asesoría y estructuración de estrategias para el manejo del patrimonio.'],
+            ['nombre' => 'Inmobiliarias',                     'icono' => 'ri-home-office-line',      'descripcion' => 'Compra, venta, alquiler y administración de bienes inmuebles.'],
+            ['nombre' => 'Servicios de Seguridad',            'icono' => 'ri-shield-line',           'descripcion' => 'Vigilancia, custodia y protección de personas, bienes e instalaciones.'],
+            ['nombre' => 'Entretenimiento y Recreación',      'icono' => 'ri-movie-line',            'descripcion' => 'Producción y distribución de contenido de ocio, cine, música y espectáculos.'],
+            ['nombre' => 'Medios de Comunicación',            'icono' => 'ri-newspaper-line',        'descripcion' => 'Producción y difusión de noticias, radio, televisión y prensa digital.'],
+            ['nombre' => 'Publicidad',                        'icono' => 'ri-megaphone-line',        'descripcion' => 'Diseño y ejecución de campañas de comunicación y marketing.'],
+            ['nombre' => 'Consultoría Empresarial',           'icono' => 'ri-briefcase-line',        'descripcion' => 'Asesoría estratégica para optimización de procesos y gestión organizacional.'],
+            ['nombre' => 'Consultoría Legal',                 'icono' => 'ri-scales-line',           'descripcion' => 'Asesoría jurídica en contratos, litigios y cumplimiento normativo.'],
+            ['nombre' => 'Consultoría Tecnológica',           'icono' => 'ri-computer-line',         'descripcion' => 'Orientación en transformación digital, sistemas y arquitectura tecnológica.'],
+            ['nombre' => 'Tecnología de la Información',      'icono' => 'ri-server-line',           'descripcion' => 'Gestión de infraestructura tecnológica, redes y sistemas de información.'],
+            ['nombre' => 'Desarrollo de Software',            'icono' => 'ri-code-s-slash-line',     'descripcion' => 'Diseño, programación y mantenimiento de aplicaciones y sistemas.'],
+            ['nombre' => 'Inteligencia Artificial',           'icono' => 'ri-brain-line',            'descripcion' => 'Desarrollo de modelos, algoritmos y soluciones basadas en IA y machine learning.'],
+            ['nombre' => 'Investigación Científica',          'icono' => 'ri-microscope-line',       'descripcion' => 'Estudios y experimentos orientados al avance del conocimiento científico.'],
+            ['nombre' => 'Investigación y Desarrollo',        'icono' => 'ri-lightbulb-line',        'descripcion' => 'Innovación aplicada para crear nuevos productos, procesos y tecnologías.'],
+            ['nombre' => 'Educación',                         'icono' => 'ri-book-open-line',        'descripcion' => 'Enseñanza y formación en todos los niveles: escolar, técnico y superior.'],
+            ['nombre' => 'Universidades e Institutos',        'icono' => 'ri-graduation-cap-line',   'descripcion' => 'Educación superior, investigación académica y formación profesional.'],
+            ['nombre' => 'Generación de Información y Big Data', 'icono' => 'ri-database-line',      'descripcion' => 'Recopilación, análisis y monetización de grandes volúmenes de datos.'],
+            ['nombre' => 'Diseño Gráfico y Multimedia',       'icono' => 'ri-palette-line',          'descripcion' => 'Creación visual de marcas, interfaces, videos y contenido digital.'],
+            ['nombre' => 'Arquitectura',                      'icono' => 'ri-compass-3-line',        'descripcion' => 'Diseño y planificación de espacios, edificios y entornos urbanos.'],
+            ['nombre' => 'Ingeniería y Proyectos',            'icono' => 'ri-tools-line',            'descripcion' => 'Aplicación de ciencias técnicas para diseño y ejecución de proyectos.'],
+            ['nombre' => 'Servicios Contables y Auditoría',   'icono' => 'ri-calculator-line',       'descripcion' => 'Registro contable, declaraciones tributarias y auditoría financiera.'],
+            ['nombre' => 'Recursos Humanos',                  'icono' => 'ri-group-line',            'descripcion' => 'Gestión del talento, selección, capacitación y bienestar laboral.'],
+            ['nombre' => 'Marketing Digital',                 'icono' => 'ri-bar-chart-line',        'descripcion' => 'Estrategias de promoción en redes sociales, SEO, SEM y canales digitales.'],
+            ['nombre' => 'E-commerce',                        'icono' => 'ri-shopping-cart-line',    'descripcion' => 'Comercio electrónico y venta de productos o servicios por internet.'],
+            ['nombre' => 'Delivery y Mensajería',             'icono' => 'ri-e-bike-line',           'descripcion' => 'Entrega a domicilio de productos, paquetes y documentos.'],
+            ['nombre' => 'Servicios de Limpieza',             'icono' => 'ri-brush-line',            'descripcion' => 'Limpieza y mantenimiento de espacios residenciales y comerciales.'],
+            ['nombre' => 'Servicios de Mantenimiento',        'icono' => 'ri-wrench-line',           'descripcion' => 'Reparación y mantenimiento preventivo de equipos, maquinaria e instalaciones.'],
+            ['nombre' => 'Gestión de Residuos y Reciclaje',   'icono' => 'ri-recycle-line',          'descripcion' => 'Recolección, tratamiento y aprovechamiento de residuos sólidos.'],
+            ['nombre' => 'Fotografía y Producción Audiovisual', 'icono' => 'ri-camera-line',         'descripcion' => 'Producción de fotografía, video, podcasts y contenido multimedia.'],
+            ['nombre' => 'Moda e Indumentaria',               'icono' => 'ri-t-shirt-line',          'descripcion' => 'Diseño, producción y comercialización de ropa y accesorios de moda.'],
+            ['nombre' => 'Joyería y Accesorios',              'icono' => 'ri-gem-line',              'descripcion' => 'Fabricación y venta de joyas, relojes y accesorios de lujo.'],
+            ['nombre' => 'Deporte y Fitness',                 'icono' => 'ri-run-line',              'descripcion' => 'Servicios deportivos, gimnasios, entrenamiento y equipamiento deportivo.'],
+            ['nombre' => 'Bienestar y Spa',                   'icono' => 'ri-mental-health-line',    'descripcion' => 'Servicios de relajación, estética, masajes y cuidado personal.'],
+            ['nombre' => 'Veterinaria y Mascotas',            'icono' => 'ri-bear-smile-line',       'descripcion' => 'Atención médica veterinaria, tiendas y servicios para animales de compañía.'],
+            ['nombre' => 'Arte y Cultura',                    'icono' => 'ri-artboard-line',         'descripcion' => 'Producción y difusión de expresiones artísticas, museos y patrimonio cultural.'],
+            ['nombre' => 'Organizaciones sin fines de lucro', 'icono' => 'ri-community-line',        'descripcion' => 'Entidades sociales, fundaciones y ONG orientadas al bien común.'],
+            ['nombre' => 'Sector Público y Gobierno',         'icono' => 'ri-government-line',       'descripcion' => 'Instituciones estatales, ministerios y entidades de administración pública.'],
+        ];
+
+        foreach ($sectores as $s) {
+            Sector::updateOrCreate(
+                ['nombre' => $s['nombre']],
+                ['icono' => $s['icono'], 'descripcion' => $s['descripcion'], 'activo' => true]
+            );
+        }
+    }
+}
