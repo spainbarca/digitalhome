@@ -59,6 +59,120 @@ return [
     ],
     [
         'type' => 'section',
+        'name' => 'Familia',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Personas',
+                'icon' => 'people',
+                'url'  => '/dashboard/personas'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Hogares',
+                'icon' => 'home',
+                'url'  => '/dashboard/hogares'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Miembros',
+                'icon' => 'group',
+                'url'  => '/dashboard/miembros'
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
+        'name' => 'Inmuebles',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Propiedades',
+                'icon' => 'apartment',
+                'url'  => '/dashboard/propiedades'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Inmueble',
+                'icon' => 'home_work',
+                'url'  => '/dashboard/tipo-inmueble'
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
+        'name' => 'Servicios Básicos',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Servicio',
+                'icon' => 'category',
+                'url'  => '/dashboard/tipos-servicio'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Cuentas de Servicio',
+                'icon' => 'electrical_services',
+                'url'  => '/dashboard/cuentas-servicio'
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
+        'name' => 'Empresas',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Empresas',
+                'icon' => 'business',
+                'url'  => '/dashboard/empresas'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Sectores',
+                'icon' => 'category',
+                'url'  => '/dashboard/sectores'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Contribuyente',
+                'icon' => 'receipt_long',
+                'url'  => '/dashboard/tipo-contribuyente'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Proveedores',
+                'icon' => 'handshake',
+                'url'  => '/dashboard/proveedores'
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
+        'name' => 'Catálogo',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Documento',
+                'icon' => 'badge',
+                'url'  => '/dashboard/tipo-documento'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Parentescos',
+                'icon' => 'family_restroom',
+                'url'  => '/dashboard/parentesco'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Unidades de Medida',
+                'icon' => 'straighten',
+                'url'  => '/dashboard/unidades-medida'
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
         'name' => 'Apps & Pages',
         'items' => [
             [
@@ -516,78 +630,6 @@ return [
                 'name' => 'Logout',
                 'icon' => 'logout',
                 'url' => '/'
-            ],
-        ]
-    ],
-    [
-        'type' => 'section',
-        'name' => 'Familia',
-        'items' => [
-            [
-                'type' => 'link',
-                'name' => 'Personas',
-                'icon' => 'people',
-                'url' => '/dashboard/personas'
-            ],
-            [
-                'type' => 'link',
-                'name' => 'Hogares',
-                'icon' => 'home',
-                'url' => '/dashboard/hogares'
-            ],
-        ]
-    ],
-    [
-        'type' => 'section',
-        'name' => 'Inmuebles',
-        'items' => [
-            [
-                'type' => 'link',
-                'name' => 'Propiedades',
-                'icon' => 'apartment',
-                'url'  => '/dashboard/propiedades'
-            ],
-            [
-                'type' => 'link',
-                'name' => 'Cuentas de Servicio',
-                'icon' => 'electrical_services',
-                'url'  => '/dashboard/cuentas-servicio'
-            ],
-        ]
-    ],
-    [
-        'type' => 'section',
-        'name' => 'Empresas',
-        'items' => [
-            [
-                'type' => 'link',
-                'name' => 'Sectores',
-                'icon' => 'category',
-                'url'  => '/dashboard/sectores'
-            ],
-            [
-                'type' => 'link',
-                'name' => 'Empresas',
-                'icon' => 'business',
-                'url'  => '/dashboard/empresas'
-            ],
-            [
-                'type' => 'link',
-                'name' => 'Proveedores',
-                'icon' => 'handshake',
-                'url'  => '/dashboard/proveedores'
-            ],
-            [
-                'type' => 'link',
-                'name' => 'Unidades de Medida',
-                'icon' => 'straighten',
-                'url'  => '/dashboard/unidades-medida'
-            ],
-            [
-                'type' => 'link',
-                'name' => 'Tipos de Servicio',
-                'icon' => 'category',
-                'url'  => '/dashboard/tipos-servicio'
             ],
         ]
     ],

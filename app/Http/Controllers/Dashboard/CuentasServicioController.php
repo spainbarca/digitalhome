@@ -60,7 +60,7 @@ class CuentasServicioController extends Controller
         $propiedadSeleccionada = $propiedadId ? $propiedades->firstWhere('id', $propiedadId) : null;
 
         $cuentas = CuentaServicio::whereHas('propiedad.persona', fn ($q) => $q->where('hogar_id', $hogarId))
-            ->with(['proveedor.tipoServicio', 'proveedor.empresa', 'propiedad'])
+            ->with(['proveedor.tipoServicio', 'proveedor.empresa', 'propiedad.tipoInmueble'])
             ->when($propiedadSeleccionada, fn ($q) => $q->where('propiedad_id', $propiedadSeleccionada->id))
             ->latest()
             ->paginate(12)

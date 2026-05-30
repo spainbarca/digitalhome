@@ -10,7 +10,12 @@ use App\Http\Controllers\Dashboard\PropiedadInmuebleController;
 use App\Http\Controllers\Dashboard\EmpresaController;
 use App\Http\Controllers\Dashboard\ProveedorServicioController;
 use App\Http\Controllers\Dashboard\CuentasServicioController;
+use App\Http\Controllers\Dashboard\MiembrosController;
 use App\Http\Controllers\Dashboard\SectorController;
+use App\Http\Controllers\Dashboard\TipoContribuyenteController;
+use App\Http\Controllers\Dashboard\ParentescoController;
+use App\Http\Controllers\Dashboard\TipoDocumentoController;
+use App\Http\Controllers\Dashboard\TipoInmuebleController;
 use App\Http\Controllers\Dashboard\UnidadMedidaController;
 use App\Http\Controllers\Dashboard\TipoServicioController;
 
@@ -238,6 +243,22 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::resource('proveedores', ProveedorServicioController::class)
         ->parameters(['proveedores' => 'proveedor'])
         ->names('proveedores');
+    Route::resource('parentesco', ParentescoController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('parentesco')
+        ->parameters(['parentesco' => 'parentesco']);
+    Route::resource('tipo-documento', TipoDocumentoController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-documento')
+        ->parameters(['tipo-documento' => 'tipoDocumento']);
+    Route::resource('tipo-contribuyente', TipoContribuyenteController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-contribuyente')
+        ->parameters(['tipo-contribuyente' => 'tipoContribuyente']);
+    Route::resource('tipo-inmueble', TipoInmuebleController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-inmueble')
+        ->parameters(['tipo-inmueble' => 'tipo']);
     Route::resource('unidades-medida', UnidadMedidaController::class)
         ->except(['create', 'edit', 'show'])
         ->names('unidades-medida')
@@ -252,6 +273,10 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::resource('propiedades.cuentas', CuentaServicioController::class)
         ->parameters(['propiedades' => 'propiedad', 'cuentas' => 'cuenta'])
         ->names('propiedades.cuentas');
+    Route::resource('miembros', MiembrosController::class)
+        ->except(['show'])
+        ->parameters(['miembros' => 'miembro'])
+        ->names('miembros');
     Route::resource('hogares', HogarController::class)
         ->parameters(['hogares' => 'hogar']);
     Route::resource('hogares.miembros', HogarMiembroController::class)

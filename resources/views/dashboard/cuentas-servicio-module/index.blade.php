@@ -65,7 +65,7 @@
                            {{ $propiedadSeleccionada?->id === $prop->id
                                ? 'bg-primary-500 border-primary-500 text-white'
                                : 'border-gray-200 dark:border-[#172036] text-gray-600 dark:text-gray-400 hover:border-primary-500 hover:text-primary-500' }}">
-                        <i class="material-symbols-outlined !text-[16px]">home</i>
+                        <i class="material-symbols-outlined !text-[16px]">{{ $prop->tipoInmueble?->icono ?? 'home' }}</i>
                         <span class="max-w-[160px] truncate">{{ $prop->alias }}</span>
                     </a>
                     @endforeach
@@ -215,7 +215,7 @@
                                 <!-- Propiedad (visible en vista "Todas") -->
                                 <div class="mt-[10px] pt-[8px] border-t border-white/30 dark:border-white/5">
                                     <span class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-[4px] truncate">
-                                        <i class="material-symbols-outlined !text-[13px] flex-shrink-0">home</i>
+                                        <i class="material-symbols-outlined !text-[13px] flex-shrink-0">{{ $cuenta->propiedad?->tipoInmueble?->icono ?? 'home' }}</i>
                                         {{ $cuenta->propiedad?->alias ?? '—' }}
                                     </span>
                                 </div>
