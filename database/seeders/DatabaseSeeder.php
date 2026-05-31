@@ -24,6 +24,15 @@ class DatabaseSeeder extends Seeder
             TipoServicioSeeder::class,
             TipoContribuyenteSeeder::class,
             SectorSeeder::class,
+            CategoriaSeeder::class,
+            EstadoPagoSeeder::class,
+            MetodoPagoSeeder::class,
+            MonedaSeeder::class,
+            ParentescoSeeder::class,
+            TipoArchivoSeeder::class,
+            TipoDocumentoServicioSeeder::class,
+            TipoInmuebleSeeder::class,
+            TipoVisibilidadSeeder::class,
         ]);
     }
 }
