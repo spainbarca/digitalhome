@@ -50,6 +50,15 @@
                                 <span class="title leading-none">
                                     {{ $item['name'] }}
                                 </span>
+                                @if(isset($item['badge']))
+                                    <span class="rounded-full font-medium inline-block text-center w-[20px] h-[20px] text-[11px] leading-[20px] text-{{ $item['badge']['class'] }}-500 bg-{{ $item['badge']['class'] }}-50 dark:bg-[#ffffff14] ltr:ml-auto rtl:mr-auto">
+                                        {{ $item['badge']['text'] }}
+                                    </span>
+                                @elseif($item['url'] === '/dashboard/recordatorios' && !empty($recordatoriosBadge))
+                                    <span class="rounded-full font-medium inline-block text-center min-w-[20px] h-[20px] text-[11px] leading-[20px] px-[3px] text-danger-500 bg-danger-50 dark:bg-[#ffffff14] ltr:ml-auto rtl:mr-auto">
+                                        {{ $recordatoriosBadge }}
+                                    </span>
+                                @endif
                             </a>
                         </div>
                     @elseif($item['type'] === 'accordion')

@@ -121,6 +121,12 @@ return [
                 'icon' => 'receipt_long',
                 'url'  => '/dashboard/documentos-servicio'
             ],
+            [
+                'type' => 'link',
+                'name' => 'Recordatorios',
+                'icon' => 'notifications',
+                'url'  => '/dashboard/recordatorios'
+            ],
         ]
     ],
     [

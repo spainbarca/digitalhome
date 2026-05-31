@@ -19,6 +19,7 @@ use App\Http\Controllers\Dashboard\TipoInmuebleController;
 use App\Http\Controllers\Dashboard\UnidadMedidaController;
 use App\Http\Controllers\Dashboard\TipoServicioController;
 use App\Http\Controllers\Dashboard\DocumentoServicioController;
+use App\Http\Controllers\Dashboard\RecordatorioController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -237,6 +238,10 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::resource('cuentas-servicio', CuentasServicioController::class)
         ->parameters(['cuentas-servicio' => 'cuentaServicio'])
         ->names('cuentas-servicio');
+    Route::patch('recordatorios/{recordatorio}/descartar', [RecordatorioController::class, 'descartar'])->name('recordatorios.descartar');
+    Route::patch('recordatorios/{recordatorio}/renovar',   [RecordatorioController::class, 'renovar'])->name('recordatorios.renovar');
+    Route::patch('recordatorios/{recordatorio}/restaurar', [RecordatorioController::class, 'restaurar'])->name('recordatorios.restaurar');
+    Route::resource('recordatorios', RecordatorioController::class)->names('recordatorios');
     Route::patch('documentos-servicio/{documentoServicio}/marcar-pagado', [DocumentoServicioController::class, 'marcarPagado'])
         ->name('documentos-servicio.marcar-pagado');
     Route::resource('documentos-servicio', DocumentoServicioController::class)
