@@ -34,18 +34,22 @@ class DocumentoServicio extends Model
         'archivo_url',
         'extension',
         'tamano_bytes',
+        'documento_url',
+        'documento_extension',
+        'documento_tamano_bytes',
         'notas',
     ];
 
     protected function casts(): array
     {
         return [
-            'periodo_inicio'    => 'date',
-            'periodo_fin'       => 'date',
-            'fecha_vencimiento' => 'date',
-            'fecha_pago'        => 'date',
-            'monto_total'       => 'decimal:2',
-            'tamano_bytes'      => 'integer',
+            'periodo_inicio'         => 'date',
+            'periodo_fin'            => 'date',
+            'fecha_vencimiento'      => 'date',
+            'fecha_pago'             => 'date',
+            'monto_total'            => 'decimal:2',
+            'tamano_bytes'           => 'integer',
+            'documento_tamano_bytes' => 'integer',
         ];
     }
 

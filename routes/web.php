@@ -18,6 +18,7 @@ use App\Http\Controllers\Dashboard\TipoDocumentoController;
 use App\Http\Controllers\Dashboard\TipoInmuebleController;
 use App\Http\Controllers\Dashboard\UnidadMedidaController;
 use App\Http\Controllers\Dashboard\TipoServicioController;
+use App\Http\Controllers\Dashboard\DocumentoServicioController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -236,6 +237,11 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::resource('cuentas-servicio', CuentasServicioController::class)
         ->parameters(['cuentas-servicio' => 'cuentaServicio'])
         ->names('cuentas-servicio');
+    Route::patch('documentos-servicio/{documentoServicio}/marcar-pagado', [DocumentoServicioController::class, 'marcarPagado'])
+        ->name('documentos-servicio.marcar-pagado');
+    Route::resource('documentos-servicio', DocumentoServicioController::class)
+        ->parameters(['documentos-servicio' => 'documentoServicio'])
+        ->names('documentos-servicio');
     Route::resource('sectores', SectorController::class)
         ->parameters(['sectores' => 'sector'])
         ->names('sectores');

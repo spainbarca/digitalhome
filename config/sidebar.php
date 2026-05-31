@@ -115,6 +115,12 @@ return [
                 'icon' => 'electrical_services',
                 'url'  => '/dashboard/cuentas-servicio'
             ],
+            [
+                'type' => 'link',
+                'name' => 'Recibos y Facturas',
+                'icon' => 'receipt_long',
+                'url'  => '/dashboard/documentos-servicio'
+            ],
         ]
     ],
     [
