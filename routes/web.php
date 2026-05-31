@@ -20,6 +20,7 @@ use App\Http\Controllers\Dashboard\UnidadMedidaController;
 use App\Http\Controllers\Dashboard\TipoServicioController;
 use App\Http\Controllers\Dashboard\DocumentoServicioController;
 use App\Http\Controllers\Dashboard\RecordatorioController;
+use App\Http\Controllers\Dashboard\EtiquetaController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -238,6 +239,15 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::resource('cuentas-servicio', CuentasServicioController::class)
         ->parameters(['cuentas-servicio' => 'cuentaServicio'])
         ->names('cuentas-servicio');
+    Route::resource('etiquetas', EtiquetaController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('etiquetas');
+    Route::post('documentos-servicio/{documentoServicio}/etiquetas',
+        [DocumentoServicioController::class, 'asignarEtiqueta'])
+        ->name('documentos-servicio.etiquetas.asignar');
+    Route::delete('documentos-servicio/{documentoServicio}/etiquetas',
+        [DocumentoServicioController::class, 'quitarEtiqueta'])
+        ->name('documentos-servicio.etiquetas.quitar');
     Route::patch('recordatorios/{recordatorio}/descartar', [RecordatorioController::class, 'descartar'])->name('recordatorios.descartar');
     Route::patch('recordatorios/{recordatorio}/renovar',   [RecordatorioController::class, 'renovar'])->name('recordatorios.renovar');
     Route::patch('recordatorios/{recordatorio}/restaurar', [RecordatorioController::class, 'restaurar'])->name('recordatorios.restaurar');

@@ -283,22 +283,68 @@
                     @endif
 
                     <!-- Etiquetas -->
-                    @if($documento->etiquetas->isNotEmpty())
-                    <div class="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
-                        <h6 class="font-semibold text-black dark:text-white mb-[12px] flex items-center gap-[8px]">
-                            <i class="material-symbols-outlined !text-[18px] text-primary-500">label</i>
-                            Etiquetas
-                        </h6>
-                        <div class="flex flex-wrap gap-[8px]">
-                            @foreach($documento->etiquetas as $etiqueta)
-                            <span class="inline-flex items-center gap-[4px] text-xs font-medium py-[3px] px-[10px] rounded-full text-white"
-                                  style="background-color: {{ $etiqueta->color ?? '#6366f1' }}">
-                                {{ $etiqueta->nombre }}
-                            </span>
-                            @endforeach
+                    <div class="trezo-card bg-white dark:bg-[#0c1427] p-[20px] rounded-md">
+                        <div class="flex items-center justify-between mb-[15px]">
+                            <div class="flex items-center gap-2">
+                                <i class="material-symbols-outlined text-primary-500">label</i>
+                                <h6 class="!mb-0">Etiquetas</h6>
+                            </div>
+                            <button type="button" id="btnAgregarEtiqueta"
+                                    class="inline-flex items-center gap-1 transition-all rounded-md font-medium px-[10px] py-[4px] text-xs text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white">
+                                <i class="material-symbols-outlined !text-[16px]">add</i> Agregar
+                            </button>
+                        </div>
+
+                        <!-- Etiquetas asignadas -->
+                        <div id="etiquetasContainer" class="flex flex-wrap gap-2">
+                            @forelse($documento->etiquetas as $etiqueta)
+                                <span class="etiqueta-badge inline-flex items-center gap-1 px-3 py-1 rounded-full text-white text-sm font-medium"
+                                      style="background-color: {{ $etiqueta->color }}"
+                                      data-id="{{ $etiqueta->id }}">
+                                    @if($etiqueta->icono)
+                                        <i class="material-symbols-outlined !text-[13px] leading-none">{{ $etiqueta->icono }}</i>
+                                    @endif
+                                    {{ $etiqueta->nombre }}
+                                    <button type="button"
+                                            class="btn-quitar-etiqueta ml-1 hover:opacity-70 transition"
+                                            data-id="{{ $etiqueta->id }}"
+                                            title="Quitar etiqueta">
+                                        <i class="material-symbols-outlined !text-[13px] leading-none">close</i>
+                                    </button>
+                                </span>
+                            @empty
+                                <p class="text-gray-400 text-sm" id="sinEtiquetas">Sin etiquetas asignadas.</p>
+                            @endforelse
+                        </div>
+
+                        <!-- Dropdown para agregar etiqueta -->
+                        <div id="dropdownEtiquetas" class="hidden mt-[15px] border border-gray-100 dark:border-[#172036] rounded-md p-[15px] bg-gray-50 dark:bg-[#15203c]">
+                            <p class="text-sm text-gray-500 mb-2">Selecciona una etiqueta para agregar:</p>
+                            <div class="flex flex-wrap gap-2" id="listaEtiquetasDisponibles">
+                                @php $asignadasIds = $documento->etiquetas->pluck('id')->toArray(); @endphp
+                                @foreach($etiquetasDisponibles as $etiqueta)
+                                    <button type="button"
+                                            class="btn-agregar-etiqueta inline-flex items-center gap-1 px-3 py-1 rounded-full text-white text-sm {{ in_array($etiqueta->id, $asignadasIds) ? 'opacity-40 cursor-not-allowed' : 'hover:opacity-80' }}"
+                                            style="background-color: {{ $etiqueta->color }}"
+                                            data-id="{{ $etiqueta->id }}"
+                                            data-nombre="{{ $etiqueta->nombre }}"
+                                            data-color="{{ $etiqueta->color }}"
+                                            data-icono="{{ $etiqueta->icono ?? '' }}"
+                                            {{ in_array($etiqueta->id, $asignadasIds) ? 'disabled' : '' }}>
+                                        @if($etiqueta->icono)
+                                            <i class="material-symbols-outlined !text-[13px] leading-none">{{ $etiqueta->icono }}</i>
+                                        @endif
+                                        {{ $etiqueta->nombre }}
+                                    </button>
+                                @endforeach
+                                @if($etiquetasDisponibles->isEmpty())
+                                    <p class="text-sm text-gray-400">No tienes etiquetas creadas.
+                                        <a href="{{ route('dashboard.etiquetas.index') }}" class="text-primary-500 hover:underline">Crear etiquetas</a>
+                                    </p>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                    @endif
 
                     <!-- Historial de versiones -->
                     @if($documento->historialVersiones->isNotEmpty())
@@ -414,6 +460,95 @@
         </div>
 
         @include('partials.front.scripts')
+        <script>
+            /* ── Etiquetas ──────────────────────────────────────── */
+            (function() {
+                var csrfToken  = '{{ csrf_token() }}';
+                var urlAsignar = '{{ route('dashboard.documentos-servicio.etiquetas.asignar', $documento) }}';
+                var urlQuitar  = '{{ route('dashboard.documentos-servicio.etiquetas.quitar', $documento) }}';
+
+                document.getElementById('btnAgregarEtiqueta').addEventListener('click', function() {
+                    document.getElementById('dropdownEtiquetas').classList.toggle('hidden');
+                });
+
+                function quitarEtiqueta() {
+                    var etiquetaId = this.dataset.id;
+                    var btn = this;
+                    fetch(urlQuitar, {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+                        body: JSON.stringify({ etiqueta_id: etiquetaId })
+                    })
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        if (!data.success) return;
+                        var badge = document.querySelector('.etiqueta-badge[data-id="' + etiquetaId + '"]');
+                        if (badge) badge.remove();
+                        var btnDropdown = document.querySelector('.btn-agregar-etiqueta[data-id="' + etiquetaId + '"]');
+                        if (btnDropdown) {
+                            btnDropdown.disabled = false;
+                            btnDropdown.classList.remove('opacity-40', 'cursor-not-allowed');
+                            btnDropdown.classList.add('hover:opacity-80');
+                        }
+                        if (document.querySelectorAll('.etiqueta-badge').length === 0) {
+                            var p = document.createElement('p');
+                            p.id = 'sinEtiquetas';
+                            p.className = 'text-gray-400 text-sm';
+                            p.textContent = 'Sin etiquetas asignadas.';
+                            document.getElementById('etiquetasContainer').appendChild(p);
+                        }
+                    });
+                }
+
+                document.querySelectorAll('.btn-quitar-etiqueta').forEach(function(btn) {
+                    btn.addEventListener('click', quitarEtiqueta);
+                });
+
+                document.querySelectorAll('.btn-agregar-etiqueta').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        if (this.disabled) return;
+                        var etiquetaId = this.dataset.id;
+                        var nombre     = this.dataset.nombre;
+                        var color      = this.dataset.color;
+                        var icono      = this.dataset.icono || '';
+                        var btnAgregar = this;
+                        fetch(urlAsignar, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+                            body: JSON.stringify({ etiqueta_id: etiquetaId })
+                        })
+                        .then(function(r) { return r.json(); })
+                        .then(function(data) {
+                            if (!data.success) return;
+                            btnAgregar.disabled = true;
+                            btnAgregar.classList.add('opacity-40', 'cursor-not-allowed');
+                            btnAgregar.classList.remove('hover:opacity-80');
+                            var sinEtiquetas = document.getElementById('sinEtiquetas');
+                            if (sinEtiquetas) sinEtiquetas.remove();
+                            var badge = document.createElement('span');
+                            badge.className = 'etiqueta-badge inline-flex items-center gap-1 px-3 py-1 rounded-full text-white text-sm font-medium';
+                            badge.style.backgroundColor = color;
+                            badge.dataset.id = etiquetaId;
+                            var iconoHtml = icono
+                                ? '<i class="material-symbols-outlined !text-[13px] leading-none">' + escHtml(icono) + '</i>'
+                                : '';
+                            badge.innerHTML = iconoHtml + escHtml(nombre)
+                                + '<button type="button" class="btn-quitar-etiqueta ml-1 hover:opacity-70 transition"'
+                                + ' data-id="' + etiquetaId + '" title="Quitar etiqueta">'
+                                + '<i class="material-symbols-outlined !text-[13px] leading-none">close</i></button>';
+                            document.getElementById('etiquetasContainer').appendChild(badge);
+                            badge.querySelector('.btn-quitar-etiqueta').addEventListener('click', quitarEtiqueta);
+                        });
+                    });
+                });
+
+                function escHtml(str) {
+                    var d = document.createElement('div');
+                    d.appendChild(document.createTextNode(str != null ? str : ''));
+                    return d.innerHTML;
+                }
+            })();
+        </script>
         <script>
             function marcarPagado(url) {
                 if (!confirm('¿Marcar este documento como pagado?')) return;

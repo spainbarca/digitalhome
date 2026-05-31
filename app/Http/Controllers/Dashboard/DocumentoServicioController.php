@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateDocumentoServicioRequest;
 use App\Models\CuentaServicio;
 use App\Models\DocumentoServicio;
 use App\Models\EstadoPago;
+use App\Models\Etiqueta;
 use App\Models\HistorialVersion;
 use App\Models\MetodoPago;
 use App\Models\Moneda;
@@ -207,7 +208,13 @@ class DocumentoServicioController extends Controller
             'historialVersiones',
         ]);
 
-        return view('dashboard.documentos-servicio.show', ['documento' => $documentoServicio]);
+        $etiquetasDisponibles = Etiqueta::where('hogar_id', Auth::user()->persona?->hogar_id)
+            ->orderBy('nombre')->get();
+
+        return view('dashboard.documentos-servicio.show', [
+            'documento'            => $documentoServicio,
+            'etiquetasDisponibles' => $etiquetasDisponibles,
+        ]);
     }
 
     public function edit(DocumentoServicio $documentoServicio): View
@@ -355,6 +362,33 @@ class DocumentoServicioController extends Controller
             'estado_pago_id' => $estadoPagado->id,
             'fecha_pago'     => $documentoServicio->fecha_pago ?? today(),
         ]);
+
+        return response()->json(['success' => true]);
+    }
+
+    public function asignarEtiqueta(Request $request, DocumentoServicio $documentoServicio): JsonResponse
+    {
+        $this->autorizarDocumento($documentoServicio);
+
+        $hogarId = Auth::user()->persona?->hogar_id;
+        $etiqueta = Etiqueta::where('hogar_id', $hogarId)->findOrFail($request->etiqueta_id);
+
+        // Evitar duplicados
+        if (!$documentoServicio->etiquetas()->where('etiqueta_id', $etiqueta->id)->exists()) {
+            $documentoServicio->etiquetas()->attach($etiqueta->id);
+        }
+
+        return response()->json([
+            'success'  => true,
+            'etiqueta' => ['id' => $etiqueta->id, 'nombre' => $etiqueta->nombre, 'color' => $etiqueta->color],
+        ]);
+    }
+
+    public function quitarEtiqueta(Request $request, DocumentoServicio $documentoServicio): JsonResponse
+    {
+        $this->autorizarDocumento($documentoServicio);
+
+        $documentoServicio->etiquetas()->detach($request->etiqueta_id);
 
         return response()->json(['success' => true]);
     }

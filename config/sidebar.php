@@ -127,6 +127,12 @@ return [
                 'icon' => 'notifications',
                 'url'  => '/dashboard/recordatorios'
             ],
+            [
+                'type' => 'link',
+                'name' => 'Etiquetas',
+                'icon' => 'label',
+                'url'  => '/dashboard/etiquetas'
+            ],
         ]
     ],
     [

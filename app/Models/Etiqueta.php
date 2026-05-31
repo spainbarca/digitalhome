@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphedByMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Etiqueta extends Model
 {
@@ -18,6 +18,7 @@ class Etiqueta extends Model
         'hogar_id',
         'nombre',
         'color',
+        'icono',
     ];
 
     public function hogar(): BelongsTo
@@ -25,7 +26,7 @@ class Etiqueta extends Model
         return $this->belongsTo(Hogar::class, 'hogar_id');
     }
 
-    public function documentosServicio(): MorphedByMany
+    public function documentosServicio(): MorphToMany
     {
         return $this->morphedByMany(
             DocumentoServicio::class,
