@@ -186,10 +186,121 @@
 
             </div>
 
+            @php
+            $unidadSimbolo = $cuentaServicio->proveedor?->tipoServicio?->unidadMedida?->simbolo ?? '';
+            @endphp
+
+            {{-- ─── Historial de Consumo ─────────────────────────────────── --}}
+            <div class="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+                <div class="flex items-center gap-[8px] mb-[20px]">
+                    <i class="material-symbols-outlined !text-[22px] text-primary-500">bar_chart</i>
+                    <h6 class="!mb-0">Historial de Consumo</h6>
+                    @if($unidadSimbolo)
+                    <span class="text-xs text-gray-400 ml-[2px]">({{ $unidadSimbolo }})</span>
+                    @endif
+                </div>
+
+                @if($lecturas->count() > 0)
+                    <canvas id="graficaConsumo" height="100" class="mb-[25px]"></canvas>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-100 dark:border-[#172036]">
+                                    <th class="text-left py-[8px] px-[12px] text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wide">Período</th>
+                                    <th class="text-right py-[8px] px-[12px] text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wide">Lect. anterior</th>
+                                    <th class="text-right py-[8px] px-[12px] text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wide">Lect. actual</th>
+                                    <th class="text-right py-[8px] px-[12px] text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wide">Consumo</th>
+                                    <th class="text-left py-[8px] px-[12px] text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wide">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50 dark:divide-[#172036]">
+                                @foreach($lecturas as $lec)
+                                <tr class="hover:bg-gray-50 dark:hover:bg-[#15203c] transition-colors">
+                                    <td class="py-[10px] px-[12px] font-medium text-black dark:text-white">{{ $lec['periodo'] }}</td>
+                                    <td class="py-[10px] px-[12px] text-right font-mono text-gray-600 dark:text-gray-400">{{ number_format($lec['anterior'], 2) }}</td>
+                                    <td class="py-[10px] px-[12px] text-right font-mono text-gray-600 dark:text-gray-400">{{ number_format($lec['actual'], 2) }}</td>
+                                    <td class="py-[10px] px-[12px] text-right font-mono font-semibold text-primary-600">
+                                        {{ number_format($lec['consumo'], 2) }}
+                                        @if($unidadSimbolo)<span class="text-xs font-normal text-gray-400 ml-[2px]">{{ $unidadSimbolo }}</span>@endif
+                                    </td>
+                                    <td class="py-[10px] px-[12px]">
+                                        @if($lec['estado'])
+                                        <span class="inline-block text-xs font-medium py-[2px] px-[8px] rounded-full text-white whitespace-nowrap"
+                                              style="background-color: {{ $lec['color'] }}">
+                                            {{ $lec['estado'] }}
+                                        </span>
+                                        @else
+                                        <span class="text-gray-400 text-xs">—</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="text-center py-[40px]">
+                        <i class="material-symbols-outlined !text-[48px] text-gray-300 dark:text-gray-600 block mb-[10px]">bar_chart</i>
+                        <p class="text-gray-400 dark:text-gray-500 text-sm">Sin lecturas de consumo registradas aún.</p>
+                    </div>
+                @endif
+            </div>
+
             <div class="grow"></div>
             @include('partials.dashboard.footer')
         </div>
 
         @include('partials.front.scripts')
+
+        @if($lecturas->count() > 0)
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+        <script>
+        (function () {
+            var lecturas = @json($lecturas);
+            if (!lecturas.length) return;
+
+            var ctx = document.getElementById('graficaConsumo').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: lecturas.map(function (l) { return l.periodo; }),
+                    datasets: [{
+                        label: 'Consumo',
+                        data: lecturas.map(function (l) { return l.consumo; }),
+                        backgroundColor: 'rgba(99, 102, 241, 0.75)',
+                        borderColor:     'rgba(99, 102, 241, 1)',
+                        borderWidth: 1,
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function (ctx) {
+                                    return ctx.parsed.y + ' {{ $unidadSimbolo }}';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(156, 163, 175, 0.15)' },
+                            ticks: { font: { size: 11 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+        })();
+        </script>
+        @endif
     </body>
 </html>

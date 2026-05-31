@@ -82,7 +82,7 @@ class DocumentoServicioController extends Controller
 
         if ($cuentaId = $request->get('cuenta')) {
             $cuentaSeleccionada = CuentaServicio::whereHas('propiedad.persona', fn ($q) => $q->where('hogar_id', $hogarId))
-                ->with(['proveedor.tipoServicio', 'propiedad'])
+                ->with(['proveedor.tipoServicio.unidadMedida', 'propiedad'])
                 ->find($cuentaId);
             if ($cuentaSeleccionada) {
                 $propiedadSeleccionada = $propiedades->firstWhere('id', $cuentaSeleccionada->propiedad_id);
@@ -93,10 +93,17 @@ class DocumentoServicioController extends Controller
 
         if ($propiedadSeleccionada) {
             $cuentas = CuentaServicio::where('propiedad_id', $propiedadSeleccionada->id)
-                ->with(['proveedor.tipoServicio'])
+                ->with(['proveedor.tipoServicio.unidadMedida'])
                 ->orderBy('numero_cuenta')
                 ->get();
         }
+
+        $cuentasConUnidad = $cuentas->mapWithKeys(function ($c) {
+            return [$c->id => [
+                'simbolo' => $c->proveedor?->tipoServicio?->unidadMedida?->simbolo ?? '',
+                'nombre'  => $c->proveedor?->tipoServicio?->unidadMedida?->nombre ?? '',
+            ]];
+        });
 
         $cuentasJson = $cuentas->map(function ($c) {
             return [
@@ -133,7 +140,8 @@ class DocumentoServicioController extends Controller
         return view('dashboard.documentos-servicio.create', compact(
             'propiedades', 'propiedadSeleccionada', 'cuentas', 'cuentaSeleccionada',
             'cuentasJson', 'tiposDocumento', 'estadosPago', 'metodosPago', 'monedas', 'visibilidades',
-            'tiposDocumentoJson', 'visibilidadesJson', 'metodosPagoJson', 'estadosPagoJson'
+            'tiposDocumentoJson', 'visibilidadesJson', 'metodosPagoJson', 'estadosPagoJson',
+            'cuentasConUnidad'
         ));
     }
 
@@ -164,7 +172,15 @@ class DocumentoServicioController extends Controller
             $data['documento_tamano_bytes']  = $doc->getSize();
         }
 
-        DocumentoServicio::create($data);
+        $documento = DocumentoServicio::create($data);
+
+        if ($request->filled('lectura_anterior') && $request->filled('lectura_actual')) {
+            $documento->lecturaConsumo()->create([
+                'lectura_anterior' => $request->lectura_anterior,
+                'lectura_actual'   => $request->lectura_actual,
+                'consumo'          => $request->consumo ?? ($request->lectura_actual - $request->lectura_anterior),
+            ]);
+        }
 
         return redirect()->route('dashboard.documentos-servicio.index', [
             'propiedad' => $cuenta->propiedad_id,
@@ -177,7 +193,7 @@ class DocumentoServicioController extends Controller
         $this->autorizarDocumento($documentoServicio);
 
         $documentoServicio->load([
-            'cuenta.proveedor.tipoServicio',
+            'cuenta.proveedor.tipoServicio.unidadMedida',
             'cuenta.proveedor.empresa',
             'cuenta.propiedad.tipoInmueble',
             'tipoDocumento',
@@ -199,10 +215,11 @@ class DocumentoServicioController extends Controller
         $this->autorizarDocumento($documentoServicio);
 
         $documentoServicio->load([
-            'cuenta.proveedor.tipoServicio',
+            'cuenta.proveedor.tipoServicio.unidadMedida',
             'cuenta.proveedor.empresa',
             'cuenta.propiedad.tipoInmueble',
             'tipoDocumento', 'estadoPago', 'metodoPago', 'moneda', 'visibilidad',
+            'lecturaConsumo',
         ]);
 
         $tiposDocumento = TipoDocumentoServicio::orderBy('nombre')->get();
@@ -227,6 +244,11 @@ class DocumentoServicioController extends Controller
             return ['id' => $e->id, 'nombre' => $e->nombre, 'color' => $e->color ?? '#6b7280'];
         })->values();
 
+        $cuentasConUnidad = collect([$documentoServicio->cuenta_id => [
+            'simbolo' => $documentoServicio->cuenta?->proveedor?->tipoServicio?->unidadMedida?->simbolo ?? '',
+            'nombre'  => $documentoServicio->cuenta?->proveedor?->tipoServicio?->unidadMedida?->nombre ?? '',
+        ]]);
+
         return view('dashboard.documentos-servicio.edit', [
             'documento'          => $documentoServicio,
             'tiposDocumento'     => $tiposDocumento,
@@ -238,6 +260,7 @@ class DocumentoServicioController extends Controller
             'visibilidadesJson'  => $visibilidadesJson,
             'metodosPagoJson'    => $metodosPagoJson,
             'estadosPagoJson'    => $estadosPagoJson,
+            'cuentasConUnidad'   => $cuentasConUnidad,
         ]);
     }
 
@@ -287,6 +310,17 @@ class DocumentoServicioController extends Controller
         }
 
         $documentoServicio->update($data);
+
+        if ($request->filled('lectura_anterior') && $request->filled('lectura_actual')) {
+            $documentoServicio->lecturaConsumo()->updateOrCreate(
+                ['documento_id' => $documentoServicio->id],
+                [
+                    'lectura_anterior' => $request->lectura_anterior,
+                    'lectura_actual'   => $request->lectura_actual,
+                    'consumo'          => $request->consumo ?? ($request->lectura_actual - $request->lectura_anterior),
+                ]
+            );
+        }
 
         return redirect()->route('dashboard.documentos-servicio.show', $documentoServicio)
             ->with('success', 'Documento actualizado correctamente.');

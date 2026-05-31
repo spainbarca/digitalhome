@@ -351,6 +351,38 @@
                 </div>
             </div>
 
+            @if($documento->lecturaConsumo)
+            @php
+            $unidadSimbolo = $documento->cuenta?->proveedor?->tipoServicio?->unidadMedida?->simbolo ?? '';
+            @endphp
+            <div class="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+                <div class="flex items-center gap-[8px] mb-[20px]">
+                    <i class="material-symbols-outlined !text-[22px] text-primary-500">speed</i>
+                    <h6 class="!mb-0">Lectura de Consumo</h6>
+                    @if($unidadSimbolo)
+                    <span class="text-xs text-gray-400 ml-[2px]">({{ $unidadSimbolo }})</span>
+                    @endif
+                </div>
+                <div class="grid grid-cols-3 gap-[16px] text-center">
+                    <div class="bg-gray-50 dark:bg-[#15203c] rounded-md p-[16px]">
+                        <span class="block text-xs text-gray-400 dark:text-gray-500 mb-[6px]">Lectura anterior</span>
+                        <span class="block text-2xl font-bold text-black dark:text-white">{{ number_format($documento->lecturaConsumo->lectura_anterior, 2) }}</span>
+                        @if($unidadSimbolo)<span class="block text-xs text-gray-400 mt-[4px]">{{ $unidadSimbolo }}</span>@endif
+                    </div>
+                    <div class="bg-gray-50 dark:bg-[#15203c] rounded-md p-[16px]">
+                        <span class="block text-xs text-gray-400 dark:text-gray-500 mb-[6px]">Lectura actual</span>
+                        <span class="block text-2xl font-bold text-black dark:text-white">{{ number_format($documento->lecturaConsumo->lectura_actual, 2) }}</span>
+                        @if($unidadSimbolo)<span class="block text-xs text-gray-400 mt-[4px]">{{ $unidadSimbolo }}</span>@endif
+                    </div>
+                    <div class="bg-primary-50 dark:bg-[#15203c] rounded-md p-[16px] border border-primary-200 dark:border-primary-800">
+                        <span class="block text-xs text-primary-500 mb-[6px]">Consumo del período</span>
+                        <span class="block text-2xl font-bold text-primary-600">{{ number_format($documento->lecturaConsumo->consumo, 2) }}</span>
+                        @if($unidadSimbolo)<span class="block text-xs text-primary-400 mt-[4px]">{{ $unidadSimbolo }}</span>@endif
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <!-- Botones de acción -->
             <div class="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
                 <div class="flex items-center justify-between flex-wrap gap-[12px]">

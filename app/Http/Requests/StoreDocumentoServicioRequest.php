@@ -30,6 +30,9 @@ class StoreDocumentoServicioRequest extends FormRequest
             'documento'                => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png,webp', 'max:10240'],
             'documento_extension'      => ['nullable'],
             'documento_tamano_bytes'   => ['nullable'],
+            'lectura_anterior'         => ['nullable', 'numeric', 'min:0'],
+            'lectura_actual'           => ['nullable', 'numeric', 'min:0', 'gte:lectura_anterior'],
+            'consumo'                  => ['nullable', 'numeric', 'min:0'],
         ];
     }
 

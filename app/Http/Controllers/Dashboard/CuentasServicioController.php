@@ -120,9 +120,37 @@ class CuentasServicioController extends Controller
     public function show(CuentaServicio $cuentaServicio): View
     {
         $this->autorizarCuenta($cuentaServicio);
-        $cuentaServicio->load(['proveedor.tipoServicio', 'proveedor.empresa', 'titular.persona', 'propiedad']);
+        $cuentaServicio->load([
+            'proveedor.tipoServicio.unidadMedida',
+            'proveedor.empresa',
+            'titular.persona',
+            'propiedad',
+            'documentosServicio' => function ($q) {
+                $q->whereHas('lecturaConsumo')
+                  ->with(['lecturaConsumo', 'estadoPago'])
+                  ->orderBy('periodo_inicio', 'asc');
+            },
+        ]);
 
-        return view('dashboard.cuentas-servicio-module.show', compact('cuentaServicio'));
+        $meses = ['01'=>'Ene','02'=>'Feb','03'=>'Mar','04'=>'Abr','05'=>'May','06'=>'Jun','07'=>'Jul','08'=>'Ago','09'=>'Sep','10'=>'Oct','11'=>'Nov','12'=>'Dic'];
+
+        $lecturas = $cuentaServicio->documentosServicio
+            ->filter(function ($d) { return $d->lecturaConsumo !== null; })
+            ->map(function ($d) use ($meses) {
+                $periodo = $d->periodo_inicio
+                    ? ($meses[$d->periodo_inicio->format('m')] . ' ' . $d->periodo_inicio->format('Y'))
+                    : '—';
+                return [
+                    'periodo'  => $periodo,
+                    'anterior' => (float) $d->lecturaConsumo->lectura_anterior,
+                    'actual'   => (float) $d->lecturaConsumo->lectura_actual,
+                    'consumo'  => (float) $d->lecturaConsumo->consumo,
+                    'estado'   => $d->estadoPago?->nombre ?? '',
+                    'color'    => $d->estadoPago?->color ?? '#6B7280',
+                ];
+            })->values();
+
+        return view('dashboard.cuentas-servicio-module.show', compact('cuentaServicio', 'lecturas'));
     }
 
     public function edit(CuentaServicio $cuentaServicio): View

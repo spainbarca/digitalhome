@@ -352,6 +352,69 @@
                             </div>
                         </div>
 
+                        {{-- ─── SECCIÓN 4: Lectura de Consumo (colapsable) ──────── --}}
+                        @php
+                        $lectura = $documento->lecturaConsumo;
+                        @endphp
+                        <div class="mt-[8px] mb-[25px] border border-gray-100 dark:border-[#172036] rounded-md overflow-hidden">
+                            <div class="flex items-center justify-between px-[16px] py-[12px] cursor-pointer bg-gray-50 dark:bg-[#15203c] select-none"
+                                 id="toggleLectura">
+                                <div class="flex items-center gap-[8px]">
+                                    <i class="material-symbols-outlined !text-[20px] text-primary-500">speed</i>
+                                    <h6 class="!mb-0 text-[14px]">Lectura de Consumo
+                                        <span class="text-gray-400 text-sm font-normal">(opcional)</span>
+                                    </h6>
+                                </div>
+                                <i class="material-symbols-outlined !text-[20px] text-gray-400 transition-transform duration-200" id="iconToggleLectura">expand_more</i>
+                            </div>
+
+                            <div id="seccionLectura" class="hidden px-[16px] py-[16px]">
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-[14px] flex items-center gap-[6px]">
+                                    <i class="material-symbols-outlined !text-[15px]">straighten</i>
+                                    Unidad: <span id="unidadLabel" class="font-medium text-black dark:text-white">
+                                        @php
+                                        $simboloUnidad = $documento->cuenta?->proveedor?->tipoServicio?->unidadMedida?->simbolo ?? '';
+                                        $nombreUnidad  = $documento->cuenta?->proveedor?->tipoServicio?->unidadMedida?->nombre ?? '';
+                                        @endphp
+                                        {{ $nombreUnidad ? $nombreUnidad . ($simboloUnidad ? ' ('.$simboloUnidad.')' : '') : '—' }}
+                                    </span>
+                                </p>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-[20px]">
+                                    <div>
+                                        <label class="mb-[10px] text-black dark:text-white font-medium block text-sm">Lectura anterior</label>
+                                        <input type="number" name="lectura_anterior" id="lectura_anterior"
+                                               step="0.0001" min="0"
+                                               value="{{ old('lectura_anterior', $lectura?->lectura_anterior ?? '') }}"
+                                               placeholder="Ej: 1500.0000"
+                                               class="h-[55px] rounded-md text-black dark:text-white border {{ $errors->has('lectura_anterior') ? 'border-danger-500' : 'border-gray-200 dark:border-[#172036]' }} bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 focus:border-primary-500">
+                                        @error('lectura_anterior')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
+                                    </div>
+                                    <div>
+                                        <label class="mb-[10px] text-black dark:text-white font-medium block text-sm">Lectura actual</label>
+                                        <input type="number" name="lectura_actual" id="lectura_actual"
+                                               step="0.0001" min="0"
+                                               value="{{ old('lectura_actual', $lectura?->lectura_actual ?? '') }}"
+                                               placeholder="Ej: 1620.0000"
+                                               class="h-[55px] rounded-md text-black dark:text-white border {{ $errors->has('lectura_actual') ? 'border-danger-500' : 'border-gray-200 dark:border-[#172036]' }} bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 focus:border-primary-500">
+                                        @error('lectura_actual')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
+                                    </div>
+                                    <div>
+                                        <label class="mb-[10px] text-black dark:text-white font-medium block text-sm">Consumo <span class="text-gray-400 font-normal text-xs">(calculado)</span></label>
+                                        <div class="relative">
+                                            <input type="number" name="consumo" id="consumo"
+                                                   step="0.0001" min="0"
+                                                   value="{{ old('consumo', $lectura?->consumo ?? '') }}"
+                                                   placeholder="Auto"
+                                                   readonly
+                                                   class="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-gray-50 dark:bg-[#15203c] px-[17px] pr-[52px] block w-full outline-0 cursor-default">
+                                            <span class="absolute right-[12px] top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium pointer-events-none"
+                                                  id="unidadSufijo">{{ $simboloUnidad }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="flex justify-end gap-[15px]">
                             <a href="{{ route('dashboard.documentos-servicio.show', $documento) }}"
                                 class="rounded-md inline-block transition-all font-medium px-[26.5px] py-[12px] bg-danger-500 text-white hover:bg-danger-400">
@@ -463,6 +526,29 @@
         }
         function handleArchivoPreview(input) { if (!buildPreview('arch', input.files[0])) input.value = ''; }
         function handleDocumentoPreview(input) { if (!buildPreview('doc', input.files[0])) input.value = ''; }
+
+        // ── Lectura de consumo ────────────────────────────────────────────────
+        document.getElementById('toggleLectura').addEventListener('click', function () {
+            var sec  = document.getElementById('seccionLectura');
+            var icon = document.getElementById('iconToggleLectura');
+            sec.classList.toggle('hidden');
+            icon.style.transform = sec.classList.contains('hidden') ? '' : 'rotate(180deg)';
+        });
+
+        function calcularConsumo() {
+            var ant = parseFloat(document.getElementById('lectura_anterior').value) || 0;
+            var act = parseFloat(document.getElementById('lectura_actual').value) || 0;
+            var c   = act - ant;
+            document.getElementById('consumo').value = (c >= 0) ? c.toFixed(4) : '';
+        }
+        document.getElementById('lectura_anterior').addEventListener('input', calcularConsumo);
+        document.getElementById('lectura_actual').addEventListener('input', calcularConsumo);
+
+        // En edit la cuenta es fija — abrir si ya tiene lectura o error previo
+        if (document.getElementById('lectura_anterior').value || document.getElementById('lectura_actual').value) {
+            document.getElementById('seccionLectura').classList.remove('hidden');
+            document.getElementById('iconToggleLectura').style.transform = 'rotate(180deg)';
+        }
         </script>
     </body>
 </html>
