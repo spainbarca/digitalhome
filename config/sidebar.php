@@ -178,7 +178,7 @@ return [
             [
                 'type' => 'link',
                 'name' => 'Documentos',
-                'icon' => 'folder_open',
+                'icon' => 'diagnosis',
                 'url'  => '/dashboard/documentos-medicos'
             ],
         ]
