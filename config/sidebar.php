@@ -148,7 +148,7 @@ return [
             [
                 'type' => 'link',
                 'name' => 'Tipos de Centro',
-                'icon' => 'local_hospital',
+                'icon' => 'help_clinic',
                 'url'  => '/dashboard/tipos-centro-medico'
             ],
             [
@@ -157,6 +157,12 @@ return [
                 'icon' => 'description',
                 'url'  => '/dashboard/tipos-documento-medico'
             ],
+            [
+                'type' => 'link',
+                'name' => 'Centros Médicos',
+                'icon' => 'local_hospital',
+                'url'  => '/dashboard/centros-medicos'
+            ]
         ]
     ],
     [

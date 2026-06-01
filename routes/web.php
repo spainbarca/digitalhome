@@ -24,6 +24,7 @@ use App\Http\Controllers\Dashboard\EtiquetaController;
 use App\Http\Controllers\Dashboard\EspecialidadMedicaController;
 use App\Http\Controllers\Dashboard\TipoCentroMedicoController;
 use App\Http\Controllers\Dashboard\TipoDocumentoMedicoController;
+use App\Http\Controllers\Dashboard\CentroMedicoController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -291,6 +292,9 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->except(['create', 'edit', 'show'])
         ->names('tipos-servicio')
         ->parameters(['tipos-servicio' => 'tipo']);
+    Route::resource('centros-medicos', CentroMedicoController::class)
+        ->parameters(['centros-medicos' => 'centro'])
+        ->names('centros-medicos');
     Route::resource('especialidades-medicas', EspecialidadMedicaController::class)
         ->except(['create', 'edit', 'show'])
         ->names('especialidades-medicas')
