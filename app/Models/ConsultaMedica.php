@@ -22,10 +22,11 @@ class ConsultaMedica extends Model
         'centro_medico_id',
         'especialidad_medica_id',
         'moneda_id',
-        'fecha_consulta',
+        'fecha',
+        'hora',
         'motivo',
         'diagnostico',
-        'tratamiento',
+        'tratamiento_indicado',
         'costo',
         'notas',
     ];
@@ -33,8 +34,8 @@ class ConsultaMedica extends Model
     protected function casts(): array
     {
         return [
-            'fecha_consulta' => 'date',
-            'costo'          => 'decimal:2',
+            'fecha'   => 'date',
+            'costo'   => 'decimal:2',
         ];
     }
 

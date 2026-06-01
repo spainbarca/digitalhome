@@ -17,6 +17,8 @@ class EspecialidadMedica extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
+        'icono',
+        'imagen_path',
         'activo',
     ];
 

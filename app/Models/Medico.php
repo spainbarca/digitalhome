@@ -23,6 +23,8 @@ class Medico extends Model
         'cmp',
         'telefono',
         'email',
+        'imagen_path',
+        'notas',
         'activo',
     ];
 

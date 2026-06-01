@@ -19,10 +19,9 @@ class CentroMedico extends Model
         'hogar_id',
         'empresa_id',
         'tipo_centro_medico_id',
-        'nombre',
-        'direccion',
-        'telefono',
-        'sitio_web',
+        'nombre_referencial',
+        'imagen_path',
+        'notas',
         'activo',
     ];
 

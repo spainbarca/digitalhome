@@ -17,6 +17,7 @@ class TipoDocumentoMedico extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
+        'icono',
         'activo',
     ];
 

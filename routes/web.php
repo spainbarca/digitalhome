@@ -21,6 +21,9 @@ use App\Http\Controllers\Dashboard\TipoServicioController;
 use App\Http\Controllers\Dashboard\DocumentoServicioController;
 use App\Http\Controllers\Dashboard\RecordatorioController;
 use App\Http\Controllers\Dashboard\EtiquetaController;
+use App\Http\Controllers\Dashboard\EspecialidadMedicaController;
+use App\Http\Controllers\Dashboard\TipoCentroMedicoController;
+use App\Http\Controllers\Dashboard\TipoDocumentoMedicoController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -288,6 +291,18 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->except(['create', 'edit', 'show'])
         ->names('tipos-servicio')
         ->parameters(['tipos-servicio' => 'tipo']);
+    Route::resource('especialidades-medicas', EspecialidadMedicaController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('especialidades-medicas')
+        ->parameters(['especialidades-medicas' => 'especialidadMedica']);
+    Route::resource('tipos-centro-medico', TipoCentroMedicoController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipos-centro-medico')
+        ->parameters(['tipos-centro-medico' => 'tipoCentroMedico']);
+    Route::resource('tipos-documento-medico', TipoDocumentoMedicoController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipos-documento-medico')
+        ->parameters(['tipos-documento-medico' => 'tipoDocumentoMedico']);
     Route::resource('personas', PersonaController::class);
     Route::resource('propiedades', PropiedadInmuebleController::class)
         ->parameters(['propiedades' => 'propiedad']);

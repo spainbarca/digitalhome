@@ -19,16 +19,20 @@ class DocumentoMedico extends Model
         'hogar_miembro_id',
         'consulta_medica_id',
         'tipo_documento_medico_id',
-        'nombre',
-        'descripcion',
-        'archivo_url',
+        'titulo',
         'fecha_documento',
+        'archivo_path',
+        'archivo_nombre_original',
+        'archivo_mime',
+        'archivo_size',
+        'notas',
     ];
 
     protected function casts(): array
     {
         return [
             'fecha_documento' => 'date',
+            'archivo_size'    => 'integer',
         ];
     }
 

@@ -137,6 +137,30 @@ return [
     ],
     [
         'type' => 'section',
+        'name' => 'Centro Médico',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Especialidades',
+                'icon' => 'stethoscope',
+                'url'  => '/dashboard/especialidades-medicas'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Centro',
+                'icon' => 'local_hospital',
+                'url'  => '/dashboard/tipos-centro-medico'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Documento',
+                'icon' => 'description',
+                'url'  => '/dashboard/tipos-documento-medico'
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
         'name' => 'Empresas',
         'items' => [
             [
