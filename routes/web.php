@@ -26,6 +26,8 @@ use App\Http\Controllers\Dashboard\TipoCentroMedicoController;
 use App\Http\Controllers\Dashboard\TipoDocumentoMedicoController;
 use App\Http\Controllers\Dashboard\CentroMedicoController;
 use App\Http\Controllers\Dashboard\MedicoController;
+use App\Http\Controllers\Dashboard\ConsultaMedicaController;
+use App\Http\Controllers\Dashboard\DocumentoMedicoController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -293,6 +295,14 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->except(['create', 'edit', 'show'])
         ->names('tipos-servicio')
         ->parameters(['tipos-servicio' => 'tipo']);
+    Route::get('consultas-medicas/por-miembro/{miembro}', [ConsultaMedicaController::class, 'porMiembro'])
+        ->name('consultas-medicas.por-miembro');
+    Route::resource('consultas-medicas', ConsultaMedicaController::class)
+        ->parameters(['consultas-medicas' => 'consulta'])
+        ->names('consultas-medicas');
+    Route::resource('documentos-medicos', DocumentoMedicoController::class)
+        ->parameters(['documentos-medicos' => 'documento'])
+        ->names('documentos-medicos');
     Route::resource('medicos', MedicoController::class)
         ->parameters(['medicos' => 'medico'])
         ->names('medicos');

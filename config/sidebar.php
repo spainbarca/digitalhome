@@ -169,6 +169,18 @@ return [
                 'icon' => 'patient_list',
                 'url'  => '/dashboard/medicos'
             ],
+            [
+                'type' => 'link',
+                'name' => 'Consultas',
+                'icon' => 'clinical_notes',
+                'url'  => '/dashboard/consultas-medicas'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Documentos',
+                'icon' => 'folder_open',
+                'url'  => '/dashboard/documentos-medicos'
+            ],
         ]
     ],
     [

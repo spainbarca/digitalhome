@@ -194,7 +194,7 @@
                                     {{ $consulta->fecha?->format('d/m/Y') ?? '—' }}
                                 </td>
                                 <td class="ltr:text-left whitespace-nowrap px-[20px] py-[13px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r text-sm">
-                                    {{ $consulta->hogarMiembro?->apodo ?? $consulta->hogarMiembro?->rol ?? '—' }}
+                                    {{ trim(implode(' ', array_filter([$consulta->hogarMiembro?->user?->persona?->nombres, $consulta->hogarMiembro?->user?->persona?->apellido_paterno, $consulta->hogarMiembro?->user?->persona?->apellido_materno]))) ?: ($consulta->hogarMiembro?->user?->name ?? '—') }}
                                 </td>
                                 <td class="ltr:text-left whitespace-nowrap px-[20px] py-[13px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r text-sm">
                                     @if($consulta->medico)

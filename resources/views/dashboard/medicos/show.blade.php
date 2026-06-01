@@ -198,7 +198,7 @@
                                                 {{ $consulta->fecha?->format('d/m/Y') ?? '—' }}
                                             </td>
                                             <td class="ltr:text-left whitespace-nowrap px-[20px] py-[12.5px] border-b border-primary-50 dark:border-[#172036] text-xs font-semibold text-gray-600 dark:text-gray-400">
-                                                {{ $consulta->hogarMiembro?->apodo ?? $consulta->hogarMiembro?->rol ?? '—' }}
+                                                {{ trim(implode(' ', array_filter([$consulta->hogarMiembro?->user?->persona?->nombres, $consulta->hogarMiembro?->user?->persona?->apellido_paterno, $consulta->hogarMiembro?->user?->persona?->apellido_materno]))) ?: ($consulta->hogarMiembro?->user?->name ?? '—') }}
                                             </td>
                                             <td class="ltr:text-left px-[20px] py-[12.5px] ltr:last:pr-0 border-b border-primary-50 dark:border-[#172036] text-xs text-gray-500 dark:text-gray-400 max-w-[280px] truncate">
                                                 {{ $consulta->motivo ?: '—' }}
