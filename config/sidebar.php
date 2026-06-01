@@ -162,7 +162,13 @@ return [
                 'name' => 'Centros Médicos',
                 'icon' => 'local_hospital',
                 'url'  => '/dashboard/centros-medicos'
-            ]
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Médicos',
+                'icon' => 'patient_list',
+                'url'  => '/dashboard/medicos'
+            ],
         ]
     ],
     [
