@@ -33,6 +33,9 @@ class DatabaseSeeder extends Seeder
             TipoDocumentoServicioSeeder::class,
             TipoInmuebleSeeder::class,
             TipoVisibilidadSeeder::class,
+            EspecialidadesMedicasSeeder::class,
+            TiposCentroMedicoSeeder::class,
+            TipoDocumentoMedicoSeeder::class
         ]);
     }
 }

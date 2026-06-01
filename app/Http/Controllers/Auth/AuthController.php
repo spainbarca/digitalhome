@@ -43,7 +43,7 @@ class AuthController extends BaseController
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard.crm'));
+        return redirect()->intended(route('dashboard.dashboard.ecommerce'));
     }
 
     // ─── Logout ────────────────────────────────────────────────────────────
@@ -121,6 +121,6 @@ class AuthController extends BaseController
 
         Auth::login($user);
 
-        return redirect()->intended(route('dashboard.crm'));
+        return redirect()->intended(route('dashboard.dashboard.ecommerce'));
     }
 }
