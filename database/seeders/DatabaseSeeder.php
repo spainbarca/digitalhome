@@ -35,7 +35,12 @@ class DatabaseSeeder extends Seeder
             TipoVisibilidadSeeder::class,
             EspecialidadesMedicasSeeder::class,
             TiposCentroMedicoSeeder::class,
-            TipoDocumentoMedicoSeeder::class
+            TipoDocumentoMedicoSeeder::class,
+            TipoInstitucionEducativaSeeder::class,
+            TipoDocumentoEducativoSeeder::class,
+            NivelesEducativosSeeder::class,
+            TurnosEducativosSeeder::class,
+            EstadosMatriculaSeeder::class,
         ]);
     }
 }
