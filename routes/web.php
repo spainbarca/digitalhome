@@ -34,6 +34,7 @@ use App\Http\Controllers\Dashboard\NivelEducativoController;
 use App\Http\Controllers\Dashboard\TurnoEducativoController;
 use App\Http\Controllers\Dashboard\EstadoMatriculaController;
 use App\Http\Controllers\Dashboard\InstitucionEducativaController;
+use App\Http\Controllers\Dashboard\MatriculaController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -350,6 +351,11 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::resource('instituciones-educativas', InstitucionEducativaController::class)
         ->parameters(['instituciones-educativas' => 'institucion'])
         ->names('instituciones-educativas');
+    Route::get('matriculas/por-miembro/{miembro}', [MatriculaController::class, 'porMiembro'])
+        ->name('matriculas.por-miembro');
+    Route::resource('matriculas', MatriculaController::class)
+        ->parameters(['matriculas' => 'matricula'])
+        ->names('matriculas');
     Route::resource('personas', PersonaController::class);
     Route::resource('propiedades', PropiedadInmuebleController::class)
         ->parameters(['propiedades' => 'propiedad']);

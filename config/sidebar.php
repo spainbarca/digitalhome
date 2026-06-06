@@ -223,6 +223,12 @@ return [
                 'icon' => 'account_balance',
                 'url'  => '/dashboard/instituciones-educativas'
             ],
+            [
+                'type' => 'link',
+                'name' => 'Matrículas',
+                'icon' => 'school',
+                'url'  => '/dashboard/matriculas'
+            ],
         ]
     ],
     [
