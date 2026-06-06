@@ -39,8 +39,6 @@
             @php
                 $inst      = $matricula->institucionEducativa;
                 $tipoIco   = $inst?->tipoInstitucionEducativa?->icono ?? 'school';
-                $bgColors  = ['bg-primary-500','bg-orange-500','bg-success-500','bg-purple-500','bg-pink-500'];
-                $bgCard    = $bgColors[abs(crc32($matricula->id)) % count($bgColors)];
                 $nombreMiembro = trim(implode(' ', array_filter([
                     $matricula->hogarMiembro?->user?->persona?->nombres,
                     $matricula->hogarMiembro?->user?->persona?->apellido_paterno,
@@ -68,11 +66,11 @@
             <div class="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] rounded-md overflow-hidden">
 
                 {{-- Banner institución --}}
-                <div class="relative h-[140px]">
-                    @if($inst?->imagen_path)
-                        <img src="{{ Storage::url($inst->imagen_path) }}" class="w-full h-full object-cover" alt="">
+                <div class="relative h-[250px]">
+                    @if($inst?->banner_path)
+                        <img src="{{ asset('storage/' . $inst->banner_path) }}" class="w-full h-full object-top" alt="">
                     @else
-                        <div class="w-full h-full {{ $bgCard }} flex items-center justify-center">
+                        <div class="w-full h-full bg-gradient-to-r from-slate-600 to-slate-500 flex items-center justify-center">
                             <i class="material-symbols-outlined !text-[60px] text-white opacity-20">{{ $tipoIco }}</i>
                         </div>
                     @endif

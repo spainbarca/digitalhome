@@ -69,6 +69,11 @@ class InstitucionEducativaController extends Controller
         }
         unset($data['imagen']);
 
+        if ($request->hasFile('banner')) {
+            $data['banner_path'] = $request->file('banner')->store('instituciones-educativas/banners', 'public');
+        }
+        unset($data['banner']);
+
         InstitucionEducativa::create($data);
 
         return redirect()->route('dashboard.instituciones-educativas.index')
@@ -123,6 +128,14 @@ class InstitucionEducativaController extends Controller
         }
         unset($data['imagen']);
 
+        if ($request->hasFile('banner')) {
+            if ($institucion->banner_path) {
+                Storage::disk('public')->delete($institucion->banner_path);
+            }
+            $data['banner_path'] = $request->file('banner')->store('instituciones-educativas/banners', 'public');
+        }
+        unset($data['banner']);
+
         $institucion->update($data);
 
         return redirect()->route('dashboard.instituciones-educativas.show', $institucion)
@@ -138,6 +151,9 @@ class InstitucionEducativaController extends Controller
         }
         if ($institucion->imagen_path) {
             Storage::disk('public')->delete($institucion->imagen_path);
+        }
+        if ($institucion->banner_path) {
+            Storage::disk('public')->delete($institucion->banner_path);
         }
 
         $institucion->delete();

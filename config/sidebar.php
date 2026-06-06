@@ -229,6 +229,18 @@ return [
                 'icon' => 'school',
                 'url'  => '/dashboard/matriculas'
             ],
+            [
+                'type' => 'link',
+                'name' => 'Pagos Educativos',
+                'icon' => 'payments',
+                'url'  => '/dashboard/pagos-educativos'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Documentos Educ.',
+                'icon' => 'folder_open',
+                'url'  => '/dashboard/documentos-educativos'
+            ],
         ]
     ],
     [

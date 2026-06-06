@@ -35,6 +35,8 @@ use App\Http\Controllers\Dashboard\TurnoEducativoController;
 use App\Http\Controllers\Dashboard\EstadoMatriculaController;
 use App\Http\Controllers\Dashboard\InstitucionEducativaController;
 use App\Http\Controllers\Dashboard\MatriculaController;
+use App\Http\Controllers\Dashboard\PagoEducativoController;
+use App\Http\Controllers\Dashboard\DocumentoEducativoController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -356,6 +358,16 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::resource('matriculas', MatriculaController::class)
         ->parameters(['matriculas' => 'matricula'])
         ->names('matriculas');
+    Route::get('pagos-educativos/datos-matricula/{matricula}', [PagoEducativoController::class, 'datosMatricula'])
+        ->name('pagos-educativos.datos-matricula');
+    Route::resource('pagos-educativos', PagoEducativoController::class)
+        ->parameters(['pagos-educativos' => 'pago'])
+        ->names('pagos-educativos');
+    Route::get('documentos-educativos/por-miembro/{miembro}', [DocumentoEducativoController::class, 'porMiembro'])
+        ->name('documentos-educativos.por-miembro');
+    Route::resource('documentos-educativos', DocumentoEducativoController::class)
+        ->parameters(['documentos-educativos' => 'documento'])
+        ->names('documentos-educativos');
     Route::resource('personas', PersonaController::class);
     Route::resource('propiedades', PropiedadInmuebleController::class)
         ->parameters(['propiedades' => 'propiedad']);

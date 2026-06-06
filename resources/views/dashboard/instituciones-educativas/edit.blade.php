@@ -201,6 +201,29 @@
                                     @error('imagen')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
                                 </div>
 
+                                {{-- Banner --}}
+                                <div>
+                                    <label class="mb-[10px] text-black dark:text-white font-medium block">
+                                        Banner <span class="text-xs text-gray-400 font-normal">(PNG/JPG, máx. 10 MB)</span>
+                                    </label>
+                                    <p class="text-xs text-gray-400 mb-[8px]">Imagen horizontal para el detalle de matrículas. Dimensión recomendada: 1200×300 px.</p>
+                                    @if($institucion->banner_path)
+                                    <div class="mb-[10px] flex items-center gap-[10px]">
+                                        <img src="{{ asset('storage/' . $institucion->banner_path) }}" id="bannerPreview"
+                                            class="w-[180px] h-[48px] rounded-md object-cover" alt="Banner actual">
+                                        <span class="text-xs text-gray-400">Banner actual. Sube uno nuevo para reemplazarlo.</span>
+                                    </div>
+                                    @else
+                                    <div id="bannerPreviewWrap" class="hidden mb-[10px]">
+                                        <img id="bannerPreview" src="" alt="Preview banner" class="w-[180px] h-[48px] rounded-md object-cover">
+                                    </div>
+                                    @endif
+                                    <input type="file" name="banner" id="bannerInput" accept="image/*"
+                                        onchange="previewFile(this,'bannerPreview','bannerPreviewWrap')"
+                                        class="block w-full text-sm text-gray-600 dark:text-gray-400 file:mr-[12px] file:py-[8px] file:px-[16px] file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-500 hover:file:bg-primary-100 cursor-pointer">
+                                    @error('banner')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
+                                </div>
+
                                 <div class="flex items-center gap-[12px] pt-[10px] lg:pt-[30px]">
                                     <span class="text-black dark:text-white font-medium">Activo</span>
                                     <label class="relative cursor-pointer">
