@@ -28,6 +28,12 @@ use App\Http\Controllers\Dashboard\CentroMedicoController;
 use App\Http\Controllers\Dashboard\MedicoController;
 use App\Http\Controllers\Dashboard\ConsultaMedicaController;
 use App\Http\Controllers\Dashboard\DocumentoMedicoController;
+use App\Http\Controllers\Dashboard\TipoInstitucionEducativaController;
+use App\Http\Controllers\Dashboard\TipoDocumentoEducativoController;
+use App\Http\Controllers\Dashboard\NivelEducativoController;
+use App\Http\Controllers\Dashboard\TurnoEducativoController;
+use App\Http\Controllers\Dashboard\EstadoMatriculaController;
+use App\Http\Controllers\Dashboard\InstitucionEducativaController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -321,6 +327,29 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->except(['create', 'edit', 'show'])
         ->names('tipos-documento-medico')
         ->parameters(['tipos-documento-medico' => 'tipoDocumentoMedico']);
+    Route::resource('tipo-institucion-educativa', TipoInstitucionEducativaController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-institucion-educativa')
+        ->parameters(['tipo-institucion-educativa' => 'tipo']);
+    Route::resource('tipo-documento-educativo', TipoDocumentoEducativoController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-documento-educativo')
+        ->parameters(['tipo-documento-educativo' => 'tipo']);
+    Route::resource('niveles-educativos', NivelEducativoController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('niveles-educativos')
+        ->parameters(['niveles-educativos' => 'nivel']);
+    Route::resource('turnos-educativos', TurnoEducativoController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('turnos-educativos')
+        ->parameters(['turnos-educativos' => 'turno']);
+    Route::resource('estados-matricula', EstadoMatriculaController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('estados-matricula')
+        ->parameters(['estados-matricula' => 'estado']);
+    Route::resource('instituciones-educativas', InstitucionEducativaController::class)
+        ->parameters(['instituciones-educativas' => 'institucion'])
+        ->names('instituciones-educativas');
     Route::resource('personas', PersonaController::class);
     Route::resource('propiedades', PropiedadInmuebleController::class)
         ->parameters(['propiedades' => 'propiedad']);

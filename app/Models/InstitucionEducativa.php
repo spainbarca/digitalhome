@@ -21,6 +21,7 @@ class InstitucionEducativa extends Model
         'tipo_institucion_educativa_id',
         'nombre_referencial',
         'imagen_path',
+        'logo_path',
         'notas',
         'activo',
     ];

@@ -185,6 +185,48 @@ return [
     ],
     [
         'type' => 'section',
+        'name' => 'Educativo',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Institución',
+                'icon' => 'school',
+                'url'  => '/dashboard/tipo-institucion-educativa'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Documento',
+                'icon' => 'description',
+                'url'  => '/dashboard/tipo-documento-educativo'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Niveles Educativos',
+                'icon' => 'layers',
+                'url'  => '/dashboard/niveles-educativos'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Turnos Educativos',
+                'icon' => 'schedule',
+                'url'  => '/dashboard/turnos-educativos'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Estados de Matrícula',
+                'icon' => 'badge',
+                'url'  => '/dashboard/estados-matricula'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Instituciones',
+                'icon' => 'account_balance',
+                'url'  => '/dashboard/instituciones-educativas'
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
         'name' => 'Empresas',
         'items' => [
             [
