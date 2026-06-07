@@ -245,6 +245,36 @@ return [
     ],
     [
         'type' => 'section',
+        'name' => 'Compras',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Comercios',
+                'icon' => 'storefront',
+                'url'  => '/dashboard/comercios'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Categorías',
+                'icon' => 'category',
+                'url'  => '/dashboard/categorias-compra'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Documento',
+                'icon' => 'receipt',
+                'url'  => '/dashboard/tipo-documento-compra'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Comercio',
+                'icon' => 'store',
+                'url'  => '/dashboard/tipo-comercio'
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
         'name' => 'Empresas',
         'items' => [
             [

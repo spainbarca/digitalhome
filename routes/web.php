@@ -37,6 +37,11 @@ use App\Http\Controllers\Dashboard\InstitucionEducativaController;
 use App\Http\Controllers\Dashboard\MatriculaController;
 use App\Http\Controllers\Dashboard\PagoEducativoController;
 use App\Http\Controllers\Dashboard\DocumentoEducativoController;
+use App\Http\Controllers\Dashboard\ComercioController;
+use App\Http\Controllers\Dashboard\CategoriaCompraController;
+use App\Http\Controllers\Dashboard\TipoDocumentoCompraController;
+use App\Http\Controllers\Dashboard\TipoComercioController;
+use App\Http\Controllers\Dashboard\UbigeoController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -368,6 +373,22 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::resource('documentos-educativos', DocumentoEducativoController::class)
         ->parameters(['documentos-educativos' => 'documento'])
         ->names('documentos-educativos');
+    Route::get('ubigeo/distritos', [UbigeoController::class, 'buscarDistritos'])->name('ubigeo.distritos');
+    Route::resource('comercios', ComercioController::class)
+        ->parameters(['comercios' => 'comercio'])
+        ->names('comercios');
+    Route::resource('categorias-compra', CategoriaCompraController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('categorias-compra')
+        ->parameters(['categorias-compra' => 'categoria']);
+    Route::resource('tipo-documento-compra', TipoDocumentoCompraController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-documento-compra')
+        ->parameters(['tipo-documento-compra' => 'tipoDocumentoCompra']);
+    Route::resource('tipo-comercio', TipoComercioController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-comercio')
+        ->parameters(['tipo-comercio' => 'tipoComercio']);
     Route::resource('personas', PersonaController::class);
     Route::resource('propiedades', PropiedadInmuebleController::class)
         ->parameters(['propiedades' => 'propiedad']);
