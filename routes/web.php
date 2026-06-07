@@ -42,6 +42,9 @@ use App\Http\Controllers\Dashboard\CategoriaCompraController;
 use App\Http\Controllers\Dashboard\TipoDocumentoCompraController;
 use App\Http\Controllers\Dashboard\TipoComercioController;
 use App\Http\Controllers\Dashboard\UbigeoController;
+use App\Http\Controllers\Dashboard\CompraController;
+use App\Http\Controllers\Dashboard\DocumentoCompraController;
+use App\Http\Controllers\Dashboard\MetodoPagoController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -389,6 +392,19 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->except(['create', 'edit', 'show'])
         ->names('tipo-comercio')
         ->parameters(['tipo-comercio' => 'tipoComercio']);
+    Route::resource('metodos-pago', MetodoPagoController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('metodos-pago')
+        ->parameters(['metodos-pago' => 'metodo']);
+    Route::resource('compras', CompraController::class)
+        ->parameters(['compras' => 'compra'])
+        ->names('compras');
+    Route::post('compras/{compra}/documentos', [DocumentoCompraController::class, 'store'])
+        ->name('compras.documentos.store');
+    Route::put('documentos-compra/{documento}', [DocumentoCompraController::class, 'update'])
+        ->name('compras.documentos.update');
+    Route::delete('documentos-compra/{documento}', [DocumentoCompraController::class, 'destroy'])
+        ->name('compras.documentos.destroy');
     Route::resource('personas', PersonaController::class);
     Route::resource('propiedades', PropiedadInmuebleController::class)
         ->parameters(['propiedades' => 'propiedad']);

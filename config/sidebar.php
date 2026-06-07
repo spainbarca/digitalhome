@@ -249,6 +249,12 @@ return [
         'items' => [
             [
                 'type' => 'link',
+                'name' => 'Compras',
+                'icon' => 'shopping_cart',
+                'url'  => '/dashboard/compras'
+            ],
+            [
+                'type' => 'link',
                 'name' => 'Comercios',
                 'icon' => 'storefront',
                 'url'  => '/dashboard/comercios'
@@ -270,6 +276,12 @@ return [
                 'name' => 'Tipos de Comercio',
                 'icon' => 'store',
                 'url'  => '/dashboard/tipo-comercio'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Métodos de Pago',
+                'icon' => 'payments',
+                'url'  => '/dashboard/metodos-pago'
             ],
         ]
     ],
