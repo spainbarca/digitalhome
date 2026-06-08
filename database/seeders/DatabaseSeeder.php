@@ -41,6 +41,9 @@ class DatabaseSeeder extends Seeder
             NivelesEducativosSeeder::class,
             TurnosEducativosSeeder::class,
             EstadosMatriculaSeeder::class,
+            TipoDocumentoLegalSeeder::class,
+            TipoEntidadLegalSeeder::class,
+            EstadoDocumentoLegalSeeder::class,
         ]);
     }
 }

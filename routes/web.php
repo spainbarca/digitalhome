@@ -45,6 +45,9 @@ use App\Http\Controllers\Dashboard\UbigeoController;
 use App\Http\Controllers\Dashboard\CompraController;
 use App\Http\Controllers\Dashboard\DocumentoCompraController;
 use App\Http\Controllers\Dashboard\MetodoPagoController;
+use App\Http\Controllers\Dashboard\TipoDocumentoLegalController;
+use App\Http\Controllers\Dashboard\TipoEntidadLegalController;
+use App\Http\Controllers\Dashboard\EstadoDocumentoLegalController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -419,6 +422,20 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->parameters(['hogares' => 'hogar']);
     Route::resource('hogares.miembros', HogarMiembroController::class)
         ->parameters(['hogares' => 'hogar', 'miembros' => 'miembro']);
+    // ── Módulo Legal ─────────────────────────────────────────────────────────
+    Route::resource('tipo-documento-legal', TipoDocumentoLegalController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-documento-legal')
+        ->parameters(['tipo-documento-legal' => 'tipoDocumentoLegal']);
+    Route::resource('tipo-entidad-legal', TipoEntidadLegalController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-entidad-legal')
+        ->parameters(['tipo-entidad-legal' => 'tipoEntidadLegal']);
+    Route::resource('estado-documento-legal', EstadoDocumentoLegalController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('estado-documento-legal')
+        ->parameters(['estado-documento-legal' => 'estadoDocumentoLegal']);
+
     Route::get('/my-profile', function () { return view('dashboard.my-profile'); });
     Route::get('/settings', function () { return view('dashboard.settings'); });
     Route::get('/change-password', function () { return view('dashboard.change-password'); });

@@ -287,6 +287,30 @@ return [
     ],
     [
         'type' => 'section',
+        'name' => 'Legal',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Documento',
+                'icon' => 'gavel',
+                'url'  => '/dashboard/tipo-documento-legal'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Entidad',
+                'icon' => 'business',
+                'url'  => '/dashboard/tipo-entidad-legal'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Estados de Documento',
+                'icon' => 'check_circle',
+                'url'  => '/dashboard/estado-documento-legal'
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
         'name' => 'Empresas',
         'items' => [
             [
