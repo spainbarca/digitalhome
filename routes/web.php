@@ -47,7 +47,9 @@ use App\Http\Controllers\Dashboard\DocumentoCompraController;
 use App\Http\Controllers\Dashboard\MetodoPagoController;
 use App\Http\Controllers\Dashboard\TipoDocumentoLegalController;
 use App\Http\Controllers\Dashboard\TipoEntidadLegalController;
+use App\Http\Controllers\Dashboard\EntidadLegalController;
 use App\Http\Controllers\Dashboard\EstadoDocumentoLegalController;
+use App\Http\Controllers\Dashboard\DocumentoLegalController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -435,6 +437,12 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->except(['create', 'edit', 'show'])
         ->names('estado-documento-legal')
         ->parameters(['estado-documento-legal' => 'estadoDocumentoLegal']);
+    Route::resource('entidades-legales', EntidadLegalController::class)
+        ->names('entidades-legales')
+        ->parameters(['entidades-legales' => 'entidadLegal']);
+    Route::resource('documentos-legales', DocumentoLegalController::class)
+        ->names('documentos-legales')
+        ->parameters(['documentos-legales' => 'documentoLegal']);
 
     Route::get('/my-profile', function () { return view('dashboard.my-profile'); });
     Route::get('/settings', function () { return view('dashboard.settings'); });

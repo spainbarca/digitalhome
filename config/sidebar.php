@@ -307,6 +307,18 @@ return [
                 'icon' => 'check_circle',
                 'url'  => '/dashboard/estado-documento-legal'
             ],
+            [
+                'type' => 'link',
+                'name' => 'Entidades Legales',
+                'icon' => 'account_balance',
+                'url'  => '/dashboard/entidades-legales'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Documentos Legales',
+                'icon' => 'description',
+                'url'  => '/dashboard/documentos-legales'
+            ],
         ]
     ],
     [
