@@ -116,7 +116,7 @@
                                     {{ $entidad->tipoEntidadLegal->nombre }}
                                 </span>
                                 @if($entidad->empresa)
-                                <span class="block text-xs text-primary-500 truncate px-[4px] mb-[4px]">{{ $entidad->empresa->razon_social }}</span>
+                                <span class="block text-xs text-primary-500 truncate px-[4px] mb-[4px]">{{ $entidad->direccion }}</span>
                                 @endif
 
                                 <div class="h-[1px] bg-primary-50 dark:bg-[#172036] my-[12px]"></div>

@@ -34,66 +34,116 @@
             </div>
             @endif
 
-            <!-- Filtros -->
+            <!-- Filtros tipo pill -->
             <div class="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-                <form method="GET" action="{{ route('dashboard.documentos-legales.index') }}" class="flex flex-wrap items-end gap-[12px]">
+                @php
+                $pillUrl = fn(string $key, $value) => route('dashboard.documentos-legales.index', array_filter([
+                    'categoria'             => $key === 'categoria'             ? $value : $categoria,
+                    'hogar_miembro_id'      => $key === 'hogar_miembro_id'      ? $value : $miembroId,
+                    'propiedad_inmueble_id' => $key === 'propiedad_inmueble_id' ? $value : $propiedadId,
+                ], fn($v) => $v !== '' && $v !== null));
 
-                    <div class="min-w-[140px]">
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-[6px]">Categoría</label>
-                        <select name="categoria"
-                            class="h-[36px] text-xs rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#15203c] text-black dark:text-white px-[10px] outline-0 cursor-pointer w-full">
-                            <option value="">Todas</option>
-                            @foreach($categorias as $val => $lbl)
-                                <option value="{{ $val }}" {{ $categoria === $val ? 'selected' : '' }}>{{ $lbl }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                $pillBase   = 'inline-flex items-center gap-[6px] px-[14px] py-[7px] rounded-[8px] border text-sm font-medium transition-all';
+                $pillActive = 'bg-primary-500 border-primary-500 text-white';
+                $pillInact  = 'border-gray-200 dark:border-[#172036] text-gray-600 dark:text-gray-400 hover:border-primary-500 hover:text-primary-500';
 
-                    <div class="min-w-[160px]">
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-[6px]">Estado</label>
-                        <select name="estado_documento_legal_id"
-                            class="h-[36px] text-xs rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#15203c] text-black dark:text-white px-[10px] outline-0 cursor-pointer w-full">
-                            <option value="">Todos</option>
-                            @foreach($estados as $e)
-                                <option value="{{ $e->id }}" {{ $estadoId == $e->id ? 'selected' : '' }}>{{ $e->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                $catIconos = [
+                    'personal'  => 'person',
+                    'propiedad' => 'home',
+                    'seguro'    => 'shield',
+                    'contrato'  => 'handshake',
+                    'denuncia'  => 'gavel',
+                    'otro'      => 'folder',
+                ];
+                @endphp
 
-                    <div class="min-w-[150px]">
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-[6px]">Miembro</label>
-                        <select name="hogar_miembro_id"
-                            class="h-[36px] text-xs rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#15203c] text-black dark:text-white px-[10px] outline-0 cursor-pointer w-full">
-                            <option value="">Todos</option>
-                            @foreach($miembros as $m)
-                                @php $lbl = trim(implode(' ', array_filter([$m->user?->persona?->nombres, $m->user?->persona?->apellido_paterno]))) ?: ($m->user?->name ?? 'Sin nombre'); @endphp
-                                <option value="{{ $m->id }}" {{ $miembroId == $m->id ? 'selected' : '' }}>{{ $lbl }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="min-w-[160px]">
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-[6px]">Propiedad</label>
-                        <select name="propiedad_inmueble_id"
-                            class="h-[36px] text-xs rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#15203c] text-black dark:text-white px-[10px] outline-0 cursor-pointer w-full">
-                            <option value="">Todas</option>
-                            @foreach($propiedades as $prop)
-                                <option value="{{ $prop->id }}" {{ $propiedadId == $prop->id ? 'selected' : '' }}>{{ $prop->alias }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="flex gap-[8px]">
-                        <button type="submit" class="h-[36px] px-[14px] bg-primary-500 text-white rounded-md text-xs hover:bg-primary-400 transition-all">Filtrar</button>
-                        @if($categoria || $estadoId || $miembroId || $propiedadId)
-                        <a href="{{ route('dashboard.documentos-legales.index') }}"
-                            class="h-[36px] px-[14px] border border-gray-200 dark:border-[#172036] text-gray-500 dark:text-gray-400 rounded-md text-xs hover:bg-gray-50 dark:hover:bg-[#15203c] transition-all flex items-center">
-                            Limpiar
+                {{-- Grupo 1: PROPIEDAD --}}
+                <div class="mb-[18px]">
+                    <p class="text-[10px] font-bold uppercase tracking-[1px] text-gray-400 dark:text-gray-500 mb-[10px]">Propiedad</p>
+                    <div class="flex flex-wrap gap-[8px]">
+                        <a href="{{ $pillUrl('propiedad_inmueble_id', '') }}"
+                           class="{{ $pillBase }} {{ !$propiedadId ? $pillActive : $pillInact }}">
+                            <i class="material-symbols-outlined !text-[16px]">domain</i>
+                            Todas
                         </a>
-                        @endif
+                        @foreach($propiedades as $prop)
+                        <a href="{{ $pillUrl('propiedad_inmueble_id', $prop->id) }}"
+                           class="{{ $pillBase }} {{ $propiedadId === $prop->id ? $pillActive : $pillInact }}">
+                            <i class="material-symbols-outlined !text-[16px]">{{ $prop->tipoInmueble?->icono ?? 'home' }}</i>
+                            {{ $prop->alias }}
+                        </a>
+                        @endforeach
+                        <a href="{{ $pillUrl('propiedad_inmueble_id', 'none') }}"
+                           class="{{ $pillBase }} {{ $propiedadId === 'none' ? $pillActive : $pillInact }}">
+                            <i class="material-symbols-outlined !text-[16px]">person_outline</i>
+                            Sin propiedad
+                        </a>
                     </div>
+                </div>
 
-                </form>
+                <div class="border-t border-gray-100 dark:border-[#172036] mb-[18px]"></div>
+
+                {{-- Grupo 2: CATEGORÍA --}}
+                <div class="mb-[18px]">
+                    <p class="text-[10px] font-bold uppercase tracking-[1px] text-gray-400 dark:text-gray-500 mb-[10px]">Categoría</p>
+                    <div class="flex flex-wrap gap-[8px]">
+                        <a href="{{ $pillUrl('categoria', '') }}"
+                           class="{{ $pillBase }} {{ !$categoria ? $pillActive : $pillInact }}">
+                            <i class="material-symbols-outlined !text-[16px]">category</i>
+                            Todas
+                        </a>
+                        @foreach($categorias as $catVal => $catLbl)
+                        <a href="{{ $pillUrl('categoria', $catVal) }}"
+                           class="{{ $pillBase }} {{ $categoria === $catVal ? $pillActive : $pillInact }}">
+                            <i class="material-symbols-outlined !text-[16px]">{{ $catIconos[$catVal] ?? 'folder' }}</i>
+                            {{ $catLbl }}
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-100 dark:border-[#172036] mb-[18px]"></div>
+
+                {{-- Grupo 3: MIEMBRO --}}
+                <div class="flex items-start justify-between gap-[12px]">
+                    <div class="flex-1">
+                        <p class="text-[10px] font-bold uppercase tracking-[1px] text-gray-400 dark:text-gray-500 mb-[10px]">Miembro</p>
+                        <div class="flex flex-wrap gap-[8px]">
+                            <a href="{{ $pillUrl('hogar_miembro_id', '') }}"
+                               class="{{ $pillBase }} {{ !$miembroId ? $pillActive : $pillInact }}">
+                                <i class="material-symbols-outlined !text-[16px]">groups</i>
+                                Todos
+                            </a>
+                            @foreach($miembros as $m)
+                                @php
+                                    $nombreM = trim(implode(' ', array_filter([
+                                        $m->user?->persona?->nombres,
+                                        $m->user?->persona?->apellido_paterno,
+                                    ]))) ?: ($m->user?->name ?? 'Sin nombre');
+                                    $avatarM = $m->user?->persona?->avatar_url ?? null;
+                                @endphp
+                                <a href="{{ $pillUrl('hogar_miembro_id', $m->id) }}"
+                                   class="{{ $pillBase }} {{ $miembroId === $m->id ? $pillActive : $pillInact }}">
+                                    @if($avatarM)
+                                        <img src="{{ $avatarM }}" class="w-[20px] h-[20px] rounded-full object-cover flex-shrink-0" alt="">
+                                    @else
+                                        <span class="w-[20px] h-[20px] rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-[10px] font-bold flex-shrink-0">{{ mb_strtoupper(mb_substr($nombreM, 0, 1)) }}</span>
+                                    @endif
+                                    <span class="max-w-[140px] truncate">{{ $nombreM }}</span>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                    @if($categoria || $miembroId || $propiedadId)
+                    <div class="flex-shrink-0 pt-[26px]">
+                        <a href="{{ route('dashboard.documentos-legales.index') }}"
+                           class="{{ $pillBase }} border-gray-200 dark:border-[#172036] text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#15203c]">
+                            <i class="material-symbols-outlined !text-[16px]">close</i>
+                            Limpiar filtros
+                        </a>
+                    </div>
+                    @endif
+                </div>
             </div>
 
             <!-- Tabla -->
@@ -256,7 +306,7 @@
                                     <td colspan="6" class="text-center py-[40px] text-gray-400">
                                         <i class="material-symbols-outlined !text-[40px] block mb-[8px]">gavel</i>
                                         No se encontraron documentos legales.
-                                        @if(!$categoria && !$estadoId && !$miembroId && !$propiedadId)
+                                        @if(!$categoria && !$miembroId && !$propiedadId)
                                         <div class="mt-[12px]">
                                             <a href="{{ route('dashboard.documentos-legales.create') }}"
                                                 class="inline-block bg-primary-500 text-white px-[16px] py-[8px] rounded-md text-sm hover:bg-primary-400 transition-all">

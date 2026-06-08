@@ -60,30 +60,28 @@ class DocumentoLegalController extends Controller
 
     public function index(Request $request): View
     {
-        $hogarId    = $this->hogarId();
-        $categoria  = $request->get('categoria', '');
-        $estadoId   = $request->get('estado_documento_legal_id', '');
-        $miembroId  = $request->get('hogar_miembro_id', '');
+        $hogarId     = $this->hogarId();
+        $categoria   = $request->get('categoria', '');
+        $miembroId   = $request->get('hogar_miembro_id', '');
         $propiedadId = $request->get('propiedad_inmueble_id', '');
 
         $documentos = DocumentoLegal::with([
                 'tipoDocumentoLegal',
                 'estadoDocumentoLegal',
                 'hogarMiembro.user.persona',
-                'propiedadInmueble',
+                'propiedadInmueble.tipoInmueble',
             ])
             ->where('hogar_id', $hogarId)
             ->when($categoria, fn ($q) => $q->whereHas('tipoDocumentoLegal', fn ($sq) => $sq->where('categoria', $categoria)))
-            ->when($estadoId,  fn ($q) => $q->where('estado_documento_legal_id', $estadoId))
             ->when($miembroId, fn ($q) => $q->where('hogar_miembro_id', $miembroId))
-            ->when($propiedadId, fn ($q) => $q->where('propiedad_inmueble_id', $propiedadId))
+            ->when($propiedadId === 'none', fn ($q) => $q->whereNull('propiedad_inmueble_id'))
+            ->when($propiedadId && $propiedadId !== 'none', fn ($q) => $q->where('propiedad_inmueble_id', $propiedadId))
             ->orderBy('fecha_vencimiento')
             ->orderBy('titulo')
-            ->paginate(20)
+            ->paginate(15)
             ->withQueryString();
 
-        $estados    = EstadoDocumentoLegal::orderBy('nombre')->get();
-        $miembros   = $this->miembrosHogar();
+        $miembros    = $this->miembrosHogar();
         $propiedades = $this->propiedadesHogar();
 
         $categorias = [
@@ -96,8 +94,8 @@ class DocumentoLegalController extends Controller
         ];
 
         return view('dashboard.documentos-legales.index', compact(
-            'documentos', 'estados', 'miembros', 'propiedades', 'categorias',
-            'categoria', 'estadoId', 'miembroId', 'propiedadId'
+            'documentos', 'miembros', 'propiedades', 'categorias',
+            'categoria', 'miembroId', 'propiedadId'
         ));
     }
 
