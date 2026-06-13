@@ -323,6 +323,54 @@ return [
     ],
     [
         'type' => 'section',
+        'name' => 'Laboral',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Documento',
+                'icon' => 'description',
+                'url'  => '/dashboard/tipo-documento-laboral'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Modalidades',
+                'icon' => 'work',
+                'url'  => '/dashboard/modalidad-laboral'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Estados de Empleo',
+                'icon' => 'flag',
+                'url'  => '/dashboard/estado-empleo'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Capacitación',
+                'icon' => 'school',
+                'url'  => '/dashboard/tipo-capacitacion'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Tipos de Beneficio',
+                'icon' => 'card_giftcard',
+                'url'  => '/dashboard/tipo-beneficio'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Empleadores',
+                'icon' => 'corporate_fare',
+                'url'  => '/dashboard/empleadores'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Empleos',
+                'icon' => 'work_history',
+                'url'  => '/dashboard/empleos'
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
         'name' => 'Empresas',
         'items' => [
             [

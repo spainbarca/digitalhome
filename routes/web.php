@@ -50,6 +50,17 @@ use App\Http\Controllers\Dashboard\TipoEntidadLegalController;
 use App\Http\Controllers\Dashboard\EntidadLegalController;
 use App\Http\Controllers\Dashboard\EstadoDocumentoLegalController;
 use App\Http\Controllers\Dashboard\DocumentoLegalController;
+use App\Http\Controllers\Dashboard\TipoDocumentoLaboralController;
+use App\Http\Controllers\Dashboard\ModalidadLaboralController;
+use App\Http\Controllers\Dashboard\EstadoEmpleoController;
+use App\Http\Controllers\Dashboard\TipoCapacitacionController;
+use App\Http\Controllers\Dashboard\TipoBeneficioController;
+use App\Http\Controllers\Dashboard\EmpleadorController;
+use App\Http\Controllers\Dashboard\EmpleoController;
+use App\Http\Controllers\Dashboard\DocumentoLaboralController;
+use App\Http\Controllers\Dashboard\EmpleoBeneficioController;
+use App\Http\Controllers\Dashboard\EmpleoReferenciaController;
+use App\Http\Controllers\Dashboard\CapacitacionController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -443,6 +454,59 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::resource('documentos-legales', DocumentoLegalController::class)
         ->names('documentos-legales')
         ->parameters(['documentos-legales' => 'documentoLegal']);
+
+    // ── Módulo Laboral ────────────────────────────────────────────────────────
+    Route::resource('tipo-documento-laboral', TipoDocumentoLaboralController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-documento-laboral')
+        ->parameters(['tipo-documento-laboral' => 'tipoDocumentoLaboral']);
+    Route::resource('modalidad-laboral', ModalidadLaboralController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('modalidad-laboral')
+        ->parameters(['modalidad-laboral' => 'modalidadLaboral']);
+    Route::resource('estado-empleo', EstadoEmpleoController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('estado-empleo')
+        ->parameters(['estado-empleo' => 'estadoEmpleo']);
+    Route::resource('tipo-capacitacion', TipoCapacitacionController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-capacitacion')
+        ->parameters(['tipo-capacitacion' => 'tipoCapacitacion']);
+    Route::resource('tipo-beneficio', TipoBeneficioController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-beneficio')
+        ->parameters(['tipo-beneficio' => 'tipoBeneficio']);
+    Route::resource('empleadores', EmpleadorController::class)
+        ->names('empleadores')
+        ->parameters(['empleadores' => 'empleador']);
+    // ── Empleos (CRUD principal + sub-recursos) ───────────────────────────────
+    Route::resource('empleos', EmpleoController::class)
+        ->parameters(['empleos' => 'empleo'])
+        ->names('empleos');
+    Route::post('empleos/{empleo}/documentos-laborales', [DocumentoLaboralController::class, 'store'])
+        ->name('empleos.documentos-laborales.store');
+    Route::put('documentos-laborales/{documento}', [DocumentoLaboralController::class, 'update'])
+        ->name('documentos-laborales.update');
+    Route::delete('documentos-laborales/{documento}', [DocumentoLaboralController::class, 'destroy'])
+        ->name('documentos-laborales.destroy');
+    Route::post('empleos/{empleo}/beneficios', [EmpleoBeneficioController::class, 'store'])
+        ->name('empleos.beneficios.store');
+    Route::put('empleo-beneficios/{beneficio}', [EmpleoBeneficioController::class, 'update'])
+        ->name('empleo-beneficios.update');
+    Route::delete('empleo-beneficios/{beneficio}', [EmpleoBeneficioController::class, 'destroy'])
+        ->name('empleo-beneficios.destroy');
+    Route::post('empleos/{empleo}/referencias', [EmpleoReferenciaController::class, 'store'])
+        ->name('empleos.referencias.store');
+    Route::put('empleo-referencias/{referencia}', [EmpleoReferenciaController::class, 'update'])
+        ->name('empleo-referencias.update');
+    Route::delete('empleo-referencias/{referencia}', [EmpleoReferenciaController::class, 'destroy'])
+        ->name('empleo-referencias.destroy');
+    Route::post('empleos/{empleo}/capacitaciones', [CapacitacionController::class, 'store'])
+        ->name('empleos.capacitaciones.store');
+    Route::put('capacitaciones/{capacitacion}', [CapacitacionController::class, 'update'])
+        ->name('capacitaciones.update');
+    Route::delete('capacitaciones/{capacitacion}', [CapacitacionController::class, 'destroy'])
+        ->name('capacitaciones.destroy');
 
     Route::get('/my-profile', function () { return view('dashboard.my-profile'); });
     Route::get('/settings', function () { return view('dashboard.settings'); });

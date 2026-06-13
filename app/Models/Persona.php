@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Persona extends Model
 {
@@ -47,6 +48,17 @@ class Persona extends Model
     public function tipoDocumento(): BelongsTo
     {
         return $this->belongsTo(TipoDocumento::class, 'tipo_documento_id');
+    }
+
+    public function getFotoUrlAttribute(): ?string
+    {
+        $foto = $this->avatar_url;
+        if (empty($foto)) {
+            return null;
+        }
+        return Str::startsWith($foto, ['http://', 'https://'])
+            ? $foto
+            : asset('storage/' . $foto);
     }
 
     public function user(): HasOne
