@@ -17,6 +17,7 @@ class UpdateCentroMedicoRequest extends FormRequest
             'empresa_id'           => ['required', 'exists:empresas,id'],
             'tipo_centro_medico_id' => ['nullable', 'exists:tipos_centro_medico,id'],
             'nombre_referencial'   => ['nullable', 'string', 'max:150'],
+            'sigla'                => ['nullable', 'string', 'max:50'],
             'notas'                => ['nullable', 'string'],
             'imagen'               => ['nullable', 'image', 'max:2048'],
             'activo'               => ['nullable', 'boolean'],

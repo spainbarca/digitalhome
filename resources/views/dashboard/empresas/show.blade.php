@@ -79,6 +79,10 @@
 
                         <h5 class="font-semibold text-black dark:text-white mb-[4px]">{{ $empresa->razon_social }}</h5>
 
+                        @if($empresa->sigla)
+                            <span class="inline-block text-xs font-mono font-semibold px-[8px] py-[2px] rounded bg-gray-100 dark:bg-[#15203c] text-gray-500 dark:text-gray-400 mb-[8px]">{{ $empresa->sigla }}</span>
+                        @endif
+
                         @if($empresa->nombre_comercial)
                             <p class="text-sm text-gray-500 dark:text-gray-400 mb-[12px]">{{ $empresa->nombre_comercial }}</p>
                         @endif

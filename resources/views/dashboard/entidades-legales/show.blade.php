@@ -80,6 +80,10 @@
 
                             <h4 class="font-semibold text-black dark:text-white mb-[4px]">{{ $entidadLegal->nombre }}</h4>
 
+                            @if($entidadLegal->sigla_resuelta)
+                                <span class="inline-block text-xs font-mono font-semibold px-[8px] py-[2px] rounded bg-gray-100 dark:bg-[#15203c] text-gray-500 dark:text-gray-400 mb-[8px]">{{ $entidadLegal->sigla_resuelta }}</span>
+                            @endif
+
                             <div class="flex items-center gap-[6px] mb-[12px]">
                                 <i class="material-symbols-outlined !text-[16px] text-gray-400">{{ $entidadLegal->tipoEntidadLegal->icono ?? 'gavel' }}</i>
                                 <span class="text-sm text-gray-500 dark:text-gray-400">{{ $entidadLegal->tipoEntidadLegal->nombre }}</span>

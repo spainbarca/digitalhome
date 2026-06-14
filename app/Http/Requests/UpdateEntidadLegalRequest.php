@@ -15,6 +15,7 @@ class UpdateEntidadLegalRequest extends FormRequest
     {
         return [
             'nombre'                => 'required|string|max:200',
+            'sigla'                 => 'nullable|string|max:50',
             'tipo_entidad_legal_id' => 'required|uuid|exists:tipo_entidad_legal,id',
             'empresa_id'            => 'nullable|uuid|exists:empresas,id',
             'descripcion'           => 'nullable|string|max:1000',

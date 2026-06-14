@@ -96,6 +96,10 @@
 
                             <h5 class="font-semibold text-black dark:text-white mb-[4px]">{{ $nombreEfectivo }}</h5>
 
+                            @if($institucion->sigla_resuelta)
+                                <span class="inline-block text-xs font-mono font-semibold px-[8px] py-[2px] rounded bg-gray-100 dark:bg-[#15203c] text-gray-500 dark:text-gray-400 mb-[8px]">{{ $institucion->sigla_resuelta }}</span>
+                            @endif
+
                             @if($institucion->empresa)
                                 <a href="{{ route('dashboard.empresas.show', $institucion->empresa) }}"
                                     class="block text-sm text-primary-500 hover:underline mb-[4px]">

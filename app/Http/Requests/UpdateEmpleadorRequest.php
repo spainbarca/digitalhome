@@ -16,6 +16,7 @@ class UpdateEmpleadorRequest extends FormRequest
         return [
             'empresa_id'    => ['nullable', 'exists:empresas,id'],
             'nombre'        => ['required', 'string', 'max:255'],
+            'sigla'         => ['nullable', 'string', 'max:50'],
             'descripcion'   => ['nullable', 'string'],
             'telefono'      => ['nullable', 'string', 'max:30'],
             'email'         => ['nullable', 'email', 'max:150'],

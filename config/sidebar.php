@@ -111,6 +111,12 @@ return [
             ],
             [
                 'type' => 'link',
+                'name' => 'Proveedores',
+                'icon' => 'handshake',
+                'url'  => '/dashboard/proveedores'
+            ],
+            [
+                'type' => 'link',
                 'name' => 'Cuentas de Servicio',
                 'icon' => 'electrical_services',
                 'url'  => '/dashboard/cuentas-servicio'
@@ -390,12 +396,6 @@ return [
                 'name' => 'Tipos de Contribuyente',
                 'icon' => 'receipt_long',
                 'url'  => '/dashboard/tipo-contribuyente'
-            ],
-            [
-                'type' => 'link',
-                'name' => 'Proveedores',
-                'icon' => 'handshake',
-                'url'  => '/dashboard/proveedores'
             ],
         ]
     ],

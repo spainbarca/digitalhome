@@ -106,6 +106,7 @@
                                         @endphp
                                         <option value="{{ $emp->id }}"
                                             data-logo="{{ $logoEmp ?? '' }}"
+                                            data-sigla="{{ $emp->sigla_resuelta ?? '' }}"
                                             {{ old('empleador_id') == $emp->id ? 'selected' : '' }}>
                                             {{ $emp->nombre }}
                                         </option>
@@ -318,11 +319,13 @@
         function logoTemplate(opt) {
             if (!opt.id) return opt.text;
             const logo  = opt.element?.dataset?.logo;
+            const sigla = opt.element?.dataset?.sigla;
             const letra = opt.text.charAt(0).toUpperCase();
             const img   = logo
                 ? `<img src="${logo}" style="width:24px;height:24px;border-radius:4px;object-fit:cover;" />`
                 : `<span style="width:24px;height:24px;border-radius:4px;background:#dbeafe;color:#1d4ed8;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${letra}</span>`;
-            return $(`<span style="display:flex;align-items:center;gap:8px;">${img}<span>${opt.text}</span></span>`);
+            const label = sigla ? `${opt.text} - (${sigla})` : opt.text;
+            return $(`<span style="display:flex;align-items:center;gap:8px;">${img}<span>${label}</span></span>`);
         }
 
         function iconoTemplate(opt) {

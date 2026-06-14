@@ -20,6 +20,7 @@ class CentroMedico extends Model
         'empresa_id',
         'tipo_centro_medico_id',
         'nombre_referencial',
+        'sigla',
         'imagen_path',
         'notas',
         'activo',
@@ -50,5 +51,10 @@ class CentroMedico extends Model
     public function consultasMedicas(): HasMany
     {
         return $this->hasMany(ConsultaMedica::class, 'centro_medico_id');
+    }
+
+    public function getSiglaResueltaAttribute(): ?string
+    {
+        return $this->sigla ?: $this->empresa?->sigla;
     }
 }

@@ -100,6 +100,10 @@
 
                         <h5 class="font-semibold text-black dark:text-white mb-[4px]">{{ $empleador->nombre }}</h5>
 
+                        @if($empleador->sigla_resuelta)
+                            <span class="inline-block text-xs font-mono font-semibold px-[8px] py-[2px] rounded bg-gray-100 dark:bg-[#15203c] text-gray-500 dark:text-gray-400 mb-[8px]">{{ $empleador->sigla_resuelta }}</span>
+                        @endif
+
                         <div class="flex flex-wrap justify-center gap-[6px] mb-[16px]">
                             <span class="inline-block text-xs font-medium px-[8px] py-[3px] rounded-[100px] {{ $empleador->activo ? 'text-success-600 border border-success-600 bg-success-100' : 'text-danger-600 border border-danger-600 bg-danger-100' }}">
                                 {{ $empleador->activo ? 'Activo' : 'Inactivo' }}

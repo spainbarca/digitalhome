@@ -19,6 +19,7 @@ class ProveedorServicio extends Model
         'empresa_id',
         'tipo_servicio_id',
         'nombre_comercial',
+        'sigla',
         'telefono',
         'sitio_web',
         'logo_url',
@@ -45,5 +46,10 @@ class ProveedorServicio extends Model
     public function cuentasServicio(): HasMany
     {
         return $this->hasMany(CuentaServicio::class, 'proveedor_id');
+    }
+
+    public function getSiglaResueltaAttribute(): ?string
+    {
+        return $this->sigla ?: $this->empresa?->sigla;
     }
 }

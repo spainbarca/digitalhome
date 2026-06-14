@@ -19,6 +19,7 @@ class EntidadLegal extends Model
         'empresa_id',
         'tipo_entidad_legal_id',
         'nombre',
+        'sigla',
         'descripcion',
         'logo_path',
         'imagen_path',
@@ -56,5 +57,10 @@ class EntidadLegal extends Model
     public function documentosLegales(): HasMany
     {
         return $this->hasMany(DocumentoLegal::class, 'entidad_legal_id');
+    }
+
+    public function getSiglaResueltaAttribute(): ?string
+    {
+        return $this->sigla ?: $this->empresa?->sigla;
     }
 }

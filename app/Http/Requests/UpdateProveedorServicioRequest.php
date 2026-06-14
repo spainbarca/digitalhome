@@ -17,6 +17,7 @@ class UpdateProveedorServicioRequest extends FormRequest
             'empresa_id'       => ['nullable', 'exists:empresas,id'],
             'tipo_servicio_id' => ['required', 'exists:tipo_servicio,id'],
             'nombre_comercial' => ['nullable', 'string', 'max:150'],
+            'sigla'            => ['nullable', 'string', 'max:50'],
             'telefono'         => ['nullable', 'string', 'max:30'],
             'sitio_web'        => ['nullable', 'url', 'max:200'],
             'logo'             => ['nullable', 'image', 'max:2048'],

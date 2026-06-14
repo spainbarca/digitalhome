@@ -107,6 +107,15 @@
                                     </span>
                                 </div>
                             @endif
+
+                            @if($empleo->empleador?->sigla_resuelta)
+                                <div class="mt-[6px]">
+                                    <span class="inline-flex items-center gap-[4px] text-[11px] font-semibold py-[2px] px-[8px] rounded-full bg-gray-100 dark:bg-[#1a2d4d] text-gray-500 dark:text-gray-400">
+                                        <i class="material-symbols-outlined !text-[12px]">domain</i>
+                                        {{ $empleo->empleador->sigla_resuelta }}
+                                    </span>
+                                </div>
+                            @endif
                         </div>
 
                         <!-- Miembro -->

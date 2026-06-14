@@ -53,7 +53,8 @@
                                 <h6 class="!mb-0 font-semibold text-black dark:text-white">1. Empresa Vinculada</h6>
                                 <span class="text-xs text-gray-400">Opcional — para empleadores formales con RUC</span>
                             </div>
-                            <div class="max-w-lg" id="empresaWrapper">
+                            <div class="grid grid-cols-12 gap-[20px] md:gap-[25px]">
+                                <div class="col-span-12 sm:col-span-9" id="empresaWrapper">
                                 <label class="mb-[10px] text-black dark:text-white font-medium block">Empresa</label>
                                 <div class="relative">
                                     <div id="empresaTrigger"
@@ -82,7 +83,8 @@
                                                 data-id="{{ $emp->id }}"
                                                 data-nombre="{{ $emp->razon_social }}{{ $emp->ruc ? ' — ' . $emp->ruc : '' }}"
                                                 data-buscar="{{ strtolower($emp->razon_social . ' ' . $emp->ruc) }}"
-                                                data-logo="{{ $emp->logo_url ? asset('storage/' . $emp->logo_url) : '' }}">
+                                                data-logo="{{ $emp->logo_url ? asset('storage/' . $emp->logo_url) : '' }}"
+                                                data-sigla="{{ $emp->sigla ?? '' }}">
                                                 @if($emp->logo_url)
                                                     <img src="{{ asset('storage/' . $emp->logo_url) }}" class="w-[24px] h-[24px] rounded-[4px] object-cover flex-shrink-0" alt="">
                                                 @else
@@ -98,6 +100,19 @@
                                     </div>
                                 </div>
                                 @error('empresa_id')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
+                                </div>
+                                <div class="col-span-12 sm:col-span-3">
+                                <label class="mb-[10px] text-black dark:text-white font-medium block">
+                                    Sigla
+                                    <span class="text-xs text-gray-400 font-normal ml-[4px]">Opcional</span>
+                                </label>
+                                <input type="text" name="sigla" id="sigla"
+                                    value="{{ old('sigla', '') }}"
+                                    maxlength="50"
+                                    placeholder="Ej. BCP"
+                                    class="h-[55px] rounded-md text-black dark:text-white border {{ $errors->has('sigla') ? 'border-danger-500' : 'border-gray-200 dark:border-[#172036]' }} bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 focus:border-primary-500">
+                                @error('sigla')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
+                                </div>
                             </div>
                         </div>
 
@@ -353,6 +368,8 @@
                 opciones.forEach(li => {
                     li.addEventListener('click', () => {
                         aplicar(li.dataset.id, li.dataset.nombre, li.dataset.logo);
+                        const siglaInput = document.getElementById('sigla');
+                        if (siglaInput) siglaInput.value = li.dataset.id ? (li.dataset.sigla || '') : '';
                         cerrar();
                     });
                 });

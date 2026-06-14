@@ -18,6 +18,7 @@ class StoreComercioRequest extends FormRequest
             'empresa_id'       => ['required', 'exists:empresas,id'],
             'tipo_comercio_id' => ['nullable', 'exists:tipo_comercio,id'],
             'nombre_referencial' => ['nullable', 'string', 'max:255'],
+            'sigla'              => ['nullable', 'string', 'max:50'],
             'es_online'        => ['boolean'],
             'direccion'        => ['nullable', 'string', 'max:255'],
             'pais_iso2'        => ['nullable', 'string', 'size:2', 'exists:paises,iso2'],

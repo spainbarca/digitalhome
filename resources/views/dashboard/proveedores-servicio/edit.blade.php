@@ -101,18 +101,69 @@
                                 <h6 class="!mb-0 font-semibold text-black dark:text-white">2. Empresa Vinculada</h6>
                                 <span class="text-xs text-gray-400">Opcional</span>
                             </div>
-                            <div class="max-w-lg">
-                                <label class="mb-[10px] text-black dark:text-white font-medium block">Empresa</label>
-                                <select name="empresa_id"
-                                    class="h-[55px] rounded-md text-black dark:text-white border {{ $errors->has('empresa_id') ? 'border-danger-500' : 'border-gray-200 dark:border-[#172036]' }} bg-white dark:bg-[#0c1427] px-[14px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
-                                    <option value="">Sin empresa (proveedor informal)</option>
-                                    @foreach($empresas as $emp)
-                                        <option value="{{ $emp->id }}" {{ old('empresa_id', $proveedor->empresa_id) == $emp->id ? 'selected' : '' }}>
-                                            {{ $emp->razon_social }}{{ $emp->ruc ? ' — ' . $emp->ruc : '' }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="grid grid-cols-12 gap-[20px] md:gap-[25px]">
+                                <div class="col-span-12 sm:col-span-9" id="empresaWrapper">
+                                <label class="mb-[10px] text-black dark:text-white font-medium block">
+                                    Empresa
+                                </label>
+                                <div class="relative">
+                                    <div id="empresaTrigger"
+                                        class="h-[55px] flex items-center rounded-md border {{ $errors->has('empresa_id') ? 'border-danger-500' : 'border-gray-200 dark:border-[#172036]' }} bg-white dark:bg-[#0c1427] px-[14px] cursor-pointer select-none transition-all hover:border-primary-500">
+                                        <div id="empresaIconContainer" class="mr-[8px] flex-shrink-0 w-[24px] h-[24px] flex items-center justify-center">
+                                            <i class="material-symbols-outlined !text-[20px] text-gray-400">business</i>
+                                        </div>
+                                        <span id="empresaLabel" class="text-gray-500 dark:text-gray-400 text-sm flex-1 truncate">Sin empresa (proveedor informal)</span>
+                                        <i class="material-symbols-outlined !text-[20px] text-gray-400 transition-transform duration-200 flex-shrink-0" id="empresaChevron">expand_more</i>
+                                    </div>
+                                    <input type="hidden" name="empresa_id" id="empresa_id" value="{{ old('empresa_id', $proveedor->empresa_id ?? '') }}">
+                                    <div id="empresaDropdown"
+                                        class="hidden absolute z-[50] w-full bg-white dark:bg-[#0c1427] border border-gray-200 dark:border-[#172036] rounded-md shadow-lg mt-[4px]">
+                                        <div class="p-[8px] border-b border-gray-100 dark:border-[#172036]">
+                                            <input type="text" id="empresaBuscar" placeholder="Buscar por razón social o RUC..."
+                                                class="w-full px-[10px] py-[6px] text-sm border border-gray-200 dark:border-[#172036] rounded-md bg-white dark:bg-[#0c1427] text-black dark:text-white outline-0 focus:border-primary-500 placeholder:text-gray-400">
+                                        </div>
+                                        <ul id="empresaOpciones" class="max-h-[240px] overflow-y-auto py-[4px]">
+                                            <li class="empresa-opcion flex items-center gap-[8px] px-[12px] py-[9px] cursor-pointer hover:bg-primary-50 dark:hover:bg-[#15203c] transition-colors"
+                                                data-id="" data-nombre="Sin empresa (proveedor informal)" data-buscar="" data-logo="">
+                                                <i class="material-symbols-outlined !text-[18px] text-gray-400">remove_circle_outline</i>
+                                                <span class="text-sm text-gray-500 dark:text-gray-400">Sin empresa (proveedor informal)</span>
+                                            </li>
+                                            @foreach($empresas as $emp)
+                                            @php $logoEmp = $emp->logo_url ? (str_starts_with($emp->logo_url, 'http') ? $emp->logo_url : asset('storage/' . $emp->logo_url)) : ''; @endphp
+                                            <li class="empresa-opcion flex items-center gap-[8px] px-[12px] py-[9px] cursor-pointer hover:bg-primary-50 dark:hover:bg-[#15203c] transition-colors"
+                                                data-id="{{ $emp->id }}"
+                                                data-nombre="{{ $emp->razon_social }}"
+                                                data-buscar="{{ strtolower($emp->razon_social . ' ' . $emp->ruc) }}"
+                                                data-logo="{{ $logoEmp }}"
+                                                data-sigla="{{ $emp->sigla ?? '' }}">
+                                                @if($logoEmp)
+                                                    <img src="{{ $logoEmp }}" class="w-[24px] h-[24px] rounded-[4px] object-cover flex-shrink-0" alt="">
+                                                @else
+                                                    <i class="material-symbols-outlined !text-[18px] text-primary-500 flex-shrink-0">business</i>
+                                                @endif
+                                                <div class="min-w-0">
+                                                    <span class="text-sm text-black dark:text-white block truncate">{{ $emp->razon_social }}</span>
+                                                    @if($emp->ruc)<span class="text-xs text-gray-400 font-mono">RUC: {{ $emp->ruc }}</span>@endif
+                                                </div>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
                                 @error('empresa_id')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
+                                </div>
+                                <div class="col-span-12 sm:col-span-3">
+                                <label class="mb-[10px] text-black dark:text-white font-medium block">
+                                    Sigla
+                                    <span class="text-xs text-gray-400 font-normal ml-[4px]">Opcional</span>
+                                </label>
+                                <input type="text" name="sigla" id="sigla"
+                                    value="{{ old('sigla', $proveedor->sigla ?? '') }}"
+                                    maxlength="50"
+                                    placeholder="Ej. BCP"
+                                    class="h-[55px] rounded-md text-black dark:text-white border {{ $errors->has('sigla') ? 'border-danger-500' : 'border-gray-200 dark:border-[#172036]' }} bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 focus:border-primary-500">
+                                @error('sigla')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
+                                </div>
                             </div>
                         </div>
 
@@ -290,6 +341,70 @@
                 if (initId) {
                     const m = [...opciones].find(li => li.dataset.id === initId);
                     if (m) aplicarSeleccion(m.dataset.id, m.dataset.nombre, m.dataset.icono);
+                }
+            })();
+
+            // ── Custom select Empresa ────────────────────────────────────
+            (function () {
+                const wrapper  = document.getElementById('empresaWrapper');
+                const trigger  = document.getElementById('empresaTrigger');
+                const dropdown = document.getElementById('empresaDropdown');
+                const chevron  = document.getElementById('empresaChevron');
+                const buscar   = document.getElementById('empresaBuscar');
+                const hidden   = document.getElementById('empresa_id');
+                const label    = document.getElementById('empresaLabel');
+                const opciones = document.querySelectorAll('.empresa-opcion');
+
+                function abrir() {
+                    dropdown.classList.remove('hidden');
+                    chevron.style.transform = 'rotate(180deg)';
+                    buscar.value = '';
+                    opciones.forEach(li => li.style.display = '');
+                    setTimeout(() => buscar.focus(), 50);
+                }
+                function cerrar() {
+                    dropdown.classList.add('hidden');
+                    chevron.style.transform = '';
+                }
+                function aplicar(id, nombre, logo) {
+                    hidden.value = id;
+                    const iconContainer = document.getElementById('empresaIconContainer');
+                    if (id) {
+                        label.textContent = nombre;
+                        label.className = 'text-black dark:text-white text-sm flex-1 truncate';
+                        iconContainer.innerHTML = logo
+                            ? `<img src="${logo}" style="width:24px;height:24px;border-radius:4px;object-fit:cover;">`
+                            : '<i class="material-symbols-outlined !text-[20px] text-primary-500">business</i>';
+                    } else {
+                        label.textContent = nombre;
+                        label.className = 'text-gray-500 dark:text-gray-400 text-sm flex-1 truncate';
+                        iconContainer.innerHTML = '<i class="material-symbols-outlined !text-[20px] text-gray-400">business</i>';
+                    }
+                }
+                trigger.addEventListener('click', () =>
+                    dropdown.classList.contains('hidden') ? abrir() : cerrar()
+                );
+                buscar.addEventListener('input', () => {
+                    const q = buscar.value.toLowerCase();
+                    opciones.forEach(li => {
+                        const buscarData = (li.dataset.buscar || li.dataset.nombre || '').toLowerCase();
+                        li.style.display = buscarData.includes(q) ? '' : 'none';
+                    });
+                });
+                opciones.forEach(li => {
+                    li.addEventListener('click', () => {
+                        aplicar(li.dataset.id, li.dataset.nombre, li.dataset.logo);
+                        const siglaInput = document.getElementById('sigla');
+                        if (siglaInput) siglaInput.value = li.dataset.id ? (li.dataset.sigla || '') : '';
+                        cerrar();
+                    });
+                });
+                document.addEventListener('click', e => { if (!wrapper.contains(e.target)) cerrar(); });
+
+                const initId = hidden.value;
+                if (initId) {
+                    const m = [...opciones].find(li => li.dataset.id === initId);
+                    if (m) aplicar(m.dataset.id, m.dataset.nombre, m.dataset.logo);
                 }
             })();
         </script>

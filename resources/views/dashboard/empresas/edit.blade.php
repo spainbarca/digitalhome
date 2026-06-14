@@ -89,43 +89,59 @@
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-[20px] md:gap-[25px]">
 
-                                <!-- Sector — custom select con íconos Remixicon -->
+                                <!-- Sector + Sigla — grid 9/3 -->
                                 <div class="sm:col-span-2">
-                                    <label class="mb-[10px] text-black dark:text-white font-medium block">Sector</label>
-                                    <div class="relative" id="sectorWrapper">
-                                        <div id="sectorTrigger"
-                                            class="h-[55px] flex items-center rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[14px] cursor-pointer select-none transition-all hover:border-primary-500">
-                                            <i class="ri-building-line text-[18px] mr-[8px] text-gray-400" id="sectorIconPreview"></i>
-                                            <span id="sectorLabel" class="text-gray-500 dark:text-gray-400 text-sm flex-1 truncate">Seleccionar sector...</span>
-                                            <i class="material-symbols-outlined !text-[20px] text-gray-400 transition-transform duration-200" id="sectorChevron">expand_more</i>
-                                        </div>
-                                        <input type="hidden" name="sector_id" id="sector_id"
-                                            value="{{ old('sector_id', $empresa->sector_id ?? '') }}">
-                                        <div id="sectorDropdown"
-                                            class="hidden absolute z-[50] w-full bg-white dark:bg-[#0c1427] border border-gray-200 dark:border-[#172036] rounded-md shadow-lg mt-[4px]">
-                                            <div class="p-[8px] border-b border-gray-100 dark:border-[#172036]">
-                                                <input type="text" id="sectorBuscar" placeholder="Buscar sector..."
-                                                    class="w-full px-[10px] py-[6px] text-sm border border-gray-200 dark:border-[#172036] rounded-md bg-white dark:bg-[#0c1427] text-black dark:text-white outline-0 focus:border-primary-500 placeholder:text-gray-400">
+                                    <div class="grid grid-cols-12 gap-[20px] md:gap-[25px]">
+
+                                        <!-- Sector — custom select con íconos Remixicon -->
+                                        <div class="col-span-12 sm:col-span-9">
+                                            <label class="mb-[10px] text-black dark:text-white font-medium block">Sector</label>
+                                            <div class="relative" id="sectorWrapper">
+                                                <div id="sectorTrigger"
+                                                    class="h-[55px] flex items-center rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[14px] cursor-pointer select-none transition-all hover:border-primary-500">
+                                                    <i class="ri-building-line text-[18px] mr-[8px] text-gray-400" id="sectorIconPreview"></i>
+                                                    <span id="sectorLabel" class="text-gray-500 dark:text-gray-400 text-sm flex-1 truncate">Seleccionar sector...</span>
+                                                    <i class="material-symbols-outlined !text-[20px] text-gray-400 transition-transform duration-200" id="sectorChevron">expand_more</i>
+                                                </div>
+                                                <input type="hidden" name="sector_id" id="sector_id"
+                                                    value="{{ old('sector_id', $empresa->sector_id ?? '') }}">
+                                                <div id="sectorDropdown"
+                                                    class="hidden absolute z-[50] w-full bg-white dark:bg-[#0c1427] border border-gray-200 dark:border-[#172036] rounded-md shadow-lg mt-[4px]">
+                                                    <div class="p-[8px] border-b border-gray-100 dark:border-[#172036]">
+                                                        <input type="text" id="sectorBuscar" placeholder="Buscar sector..."
+                                                            class="w-full px-[10px] py-[6px] text-sm border border-gray-200 dark:border-[#172036] rounded-md bg-white dark:bg-[#0c1427] text-black dark:text-white outline-0 focus:border-primary-500 placeholder:text-gray-400">
+                                                    </div>
+                                                    <ul id="sectorOpciones" class="max-h-[240px] overflow-y-auto py-[4px]">
+                                                        <li class="sector-opcion flex items-center gap-[8px] px-[12px] py-[9px] cursor-pointer hover:bg-primary-50 dark:hover:bg-[#15203c] transition-colors"
+                                                            data-id="" data-nombre="Sin sector" data-icono="ri-building-line">
+                                                            <i class="ri-building-line text-[18px] text-gray-400"></i>
+                                                            <span class="text-sm text-gray-500 dark:text-gray-400">Sin sector</span>
+                                                        </li>
+                                                        @foreach($sectores as $sec)
+                                                        <li class="sector-opcion flex items-center gap-[8px] px-[12px] py-[9px] cursor-pointer hover:bg-primary-50 dark:hover:bg-[#15203c] transition-colors"
+                                                            data-id="{{ $sec->id }}"
+                                                            data-nombre="{{ $sec->nombre }}"
+                                                            data-icono="{{ $sec->icono ?? 'ri-building-line' }}">
+                                                            <i class="{{ $sec->icono ?? 'ri-building-line' }} text-[18px] text-primary-500"></i>
+                                                            <span class="text-sm text-black dark:text-white">{{ $sec->nombre }}</span>
+                                                        </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
                                             </div>
-                                            <ul id="sectorOpciones" class="max-h-[240px] overflow-y-auto py-[4px]">
-                                                <li class="sector-opcion flex items-center gap-[8px] px-[12px] py-[9px] cursor-pointer hover:bg-primary-50 dark:hover:bg-[#15203c] transition-colors"
-                                                    data-id="" data-nombre="Sin sector" data-icono="ri-building-line">
-                                                    <i class="ri-building-line text-[18px] text-gray-400"></i>
-                                                    <span class="text-sm text-gray-500 dark:text-gray-400">Sin sector</span>
-                                                </li>
-                                                @foreach($sectores as $sec)
-                                                <li class="sector-opcion flex items-center gap-[8px] px-[12px] py-[9px] cursor-pointer hover:bg-primary-50 dark:hover:bg-[#15203c] transition-colors"
-                                                    data-id="{{ $sec->id }}"
-                                                    data-nombre="{{ $sec->nombre }}"
-                                                    data-icono="{{ $sec->icono ?? 'ri-building-line' }}">
-                                                    <i class="{{ $sec->icono ?? 'ri-building-line' }} text-[18px] text-primary-500"></i>
-                                                    <span class="text-sm text-black dark:text-white">{{ $sec->nombre }}</span>
-                                                </li>
-                                                @endforeach
-                                            </ul>
+                                            @error('sector_id')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
                                         </div>
+
+                                        <!-- Sigla -->
+                                        <div class="col-span-12 sm:col-span-3">
+                                            <label class="mb-[10px] text-black dark:text-white font-medium block">Sigla</label>
+                                            <input type="text" name="sigla" value="{{ old('sigla', $empresa->sigla) }}" maxlength="50"
+                                                placeholder="Ej. BCP"
+                                                class="h-[55px] rounded-md text-black dark:text-white border {{ $errors->has('sigla') ? 'border-danger-500' : 'border-gray-200 dark:border-[#172036]' }} bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 focus:border-primary-500">
+                                            @error('sigla')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
+                                        </div>
+
                                     </div>
-                                    @error('sector_id')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
                                 </div>
 
                                 <div>

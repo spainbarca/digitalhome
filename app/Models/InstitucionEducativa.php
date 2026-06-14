@@ -20,6 +20,7 @@ class InstitucionEducativa extends Model
         'empresa_id',
         'tipo_institucion_educativa_id',
         'nombre_referencial',
+        'sigla',
         'imagen_path',
         'banner_path',
         'logo_path',
@@ -52,5 +53,10 @@ class InstitucionEducativa extends Model
     public function matriculas(): HasMany
     {
         return $this->hasMany(Matricula::class, 'institucion_educativa_id');
+    }
+
+    public function getSiglaResueltaAttribute(): ?string
+    {
+        return $this->sigla ?: $this->empresa?->sigla;
     }
 }

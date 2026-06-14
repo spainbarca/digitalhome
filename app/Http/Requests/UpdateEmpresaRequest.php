@@ -22,6 +22,7 @@ class UpdateEmpresaRequest extends FormRequest
             'ruc'                      => ['required', 'digits:11', Rule::unique('empresas', 'ruc')->ignore($empresa)],
             'razon_social'             => ['required', 'string', 'max:200'],
             'nombre_comercial'         => ['nullable', 'string', 'max:200'],
+            'sigla'                    => ['nullable', 'string', 'max:50'],
             'estado_sunat'             => ['nullable', 'string', 'max:50'],
             'condicion_sunat'          => ['nullable', 'string', 'max:50'],
             'direccion_fiscal'         => ['nullable', 'string'],

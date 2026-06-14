@@ -21,6 +21,7 @@ class Empresa extends Model
         'ruc',
         'razon_social',
         'nombre_comercial',
+        'sigla',
         'estado_sunat',
         'condicion_sunat',
         'direccion_fiscal',

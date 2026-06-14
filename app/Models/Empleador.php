@@ -19,6 +19,7 @@ class Empleador extends Model
     protected $fillable = [
         'empresa_id',
         'nombre',
+        'sigla',
         'descripcion',
         'logo_path',
         'imagen_path',
@@ -80,5 +81,10 @@ class Empleador extends Model
     public function getDistritoEfectivoAttribute(): ?UbigeoDistrito
     {
         return $this->distrito ?? $this->empresa?->distrito;
+    }
+
+    public function getSiglaResueltaAttribute(): ?string
+    {
+        return $this->sigla ?: $this->empresa?->sigla;
     }
 }

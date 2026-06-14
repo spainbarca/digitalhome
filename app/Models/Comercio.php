@@ -21,6 +21,7 @@ class Comercio extends Model
         'empresa_id',
         'tipo_comercio_id',
         'nombre_referencial',
+        'sigla',
         'logo_path',
         'imagen_path',
         'banner_path',
@@ -81,5 +82,10 @@ class Comercio extends Model
     public function getDireccionEfectivaAttribute(): ?string
     {
         return $this->direccion ?: $this->empresa?->direccion_fiscal;
+    }
+
+    public function getSiglaResueltaAttribute(): ?string
+    {
+        return $this->sigla ?: $this->empresa?->sigla;
     }
 }
