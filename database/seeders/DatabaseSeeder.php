@@ -44,6 +44,11 @@ class DatabaseSeeder extends Seeder
             TipoDocumentoLegalSeeder::class,
             TipoEntidadLegalSeeder::class,
             EstadoDocumentoLegalSeeder::class,
+            TipoEntidadFinancieraSeeder::class,
+            TipoProductoFinancieroSeeder::class,
+            EstadoProductoSeeder::class,
+            TipoTransaccionSeeder::class,
+            TipoDocumentoFinancieroSeeder::class,
         ]);
     }
 }

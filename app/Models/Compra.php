@@ -19,6 +19,7 @@ class Compra extends Model
         'hogar_id',
         'miembro_id',
         'comercio_id',
+        'producto_financiero_id',
         'categoria_compra_id',
         'metodo_pago_id',
         'moneda_id',
@@ -64,6 +65,11 @@ class Compra extends Model
     public function moneda(): BelongsTo
     {
         return $this->belongsTo(Moneda::class, 'moneda_id');
+    }
+
+    public function productoFinanciero(): BelongsTo
+    {
+        return $this->belongsTo(ProductoFinanciero::class, 'producto_financiero_id');
     }
 
     public function documentos(): HasMany

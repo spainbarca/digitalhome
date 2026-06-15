@@ -377,6 +377,48 @@ return [
     ],
     [
         'type' => 'section',
+        'name' => 'Finanzas',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Entidades Financieras',
+                'icon' => 'account_balance',
+                'url'  => '/dashboard/entidades-financieras'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Productos Financieros',
+                'icon' => 'savings',
+                'url'  => '/dashboard/productos-financieros'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Transacciones',
+                'icon' => 'swap_horiz',
+                'url'  => '/dashboard/transacciones'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Documentos',
+                'icon' => 'receipt_long',
+                'url'  => '/dashboard/documentos-financieros'
+            ],
+            [
+                'type' => 'accordion',
+                'name' => 'Catálogos',
+                'icon' => 'tune',
+                'sub_items' => [
+                    ['name' => 'Tipos de Entidad',    'url' => '/dashboard/tipo-entidad-financiera'],
+                    ['name' => 'Tipos de Producto',   'url' => '/dashboard/tipo-producto-financiero'],
+                    ['name' => 'Tipos de Documento',  'url' => '/dashboard/tipo-documento-financiero'],
+                    ['name' => 'Estados de Producto', 'url' => '/dashboard/estado-producto'],
+                    ['name' => 'Tipos de Transacción','url' => '/dashboard/tipo-transaccion'],
+                ],
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
         'name' => 'Empresas',
         'items' => [
             [

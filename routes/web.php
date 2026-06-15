@@ -61,6 +61,11 @@ use App\Http\Controllers\Dashboard\DocumentoLaboralController;
 use App\Http\Controllers\Dashboard\EmpleoBeneficioController;
 use App\Http\Controllers\Dashboard\EmpleoReferenciaController;
 use App\Http\Controllers\Dashboard\CapacitacionController;
+use App\Http\Controllers\Dashboard\TipoEntidadFinancieraController;
+use App\Http\Controllers\Dashboard\TipoProductoFinancieroController;
+use App\Http\Controllers\Dashboard\TipoDocumentoFinancieroController;
+use App\Http\Controllers\Dashboard\EstadoProductoController;
+use App\Http\Controllers\Dashboard\TipoTransaccionController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -507,6 +512,28 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->name('capacitaciones.update');
     Route::delete('capacitaciones/{capacitacion}', [CapacitacionController::class, 'destroy'])
         ->name('capacitaciones.destroy');
+
+    // ── Finanzas: catálogos ───────────────────────────────────────────────────
+    Route::resource('tipo-entidad-financiera', TipoEntidadFinancieraController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-entidad-financiera')
+        ->parameters(['tipo-entidad-financiera' => 'tipoEntidadFinanciera']);
+    Route::resource('tipo-producto-financiero', TipoProductoFinancieroController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-producto-financiero')
+        ->parameters(['tipo-producto-financiero' => 'tipoProductoFinanciero']);
+    Route::resource('tipo-documento-financiero', TipoDocumentoFinancieroController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-documento-financiero')
+        ->parameters(['tipo-documento-financiero' => 'tipoDocumentoFinanciero']);
+    Route::resource('estado-producto', EstadoProductoController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('estado-producto')
+        ->parameters(['estado-producto' => 'estadoProducto']);
+    Route::resource('tipo-transaccion', TipoTransaccionController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-transaccion')
+        ->parameters(['tipo-transaccion' => 'tipoTransaccion']);
 
     Route::get('/my-profile', function () { return view('dashboard.my-profile'); });
     Route::get('/settings', function () { return view('dashboard.settings'); });
