@@ -66,6 +66,10 @@ use App\Http\Controllers\Dashboard\TipoProductoFinancieroController;
 use App\Http\Controllers\Dashboard\TipoDocumentoFinancieroController;
 use App\Http\Controllers\Dashboard\EstadoProductoController;
 use App\Http\Controllers\Dashboard\TipoTransaccionController;
+use App\Http\Controllers\Dashboard\CategoriaConceptoController;
+use App\Http\Controllers\Dashboard\ConceptoPagoController;
+use App\Http\Controllers\Dashboard\PrestatarioController;
+use App\Http\Controllers\Dashboard\MovimientoPrestamoController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -534,6 +538,26 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->except(['create', 'edit', 'show'])
         ->names('tipo-transaccion')
         ->parameters(['tipo-transaccion' => 'tipoTransaccion']);
+
+    // ── Préstamos Personales: catálogos ──────────────────────────────────────
+    Route::prefix('finanzas/prestamos')->name('prestamos.')->group(function () {
+        Route::resource('categorias-concepto', CategoriaConceptoController::class)
+            ->except(['create', 'edit', 'show'])
+            ->names('categorias-concepto')
+            ->parameters(['categorias-concepto' => 'categoriaConcepto']);
+        Route::patch('conceptos-pago/{conceptoPago}/toggle-activo', [ConceptoPagoController::class, 'toggleActivo'])
+            ->name('conceptos-pago.toggle-activo');
+        Route::resource('conceptos-pago', ConceptoPagoController::class)
+            ->parameters(['conceptos-pago' => 'conceptoPago'])
+            ->names('conceptos-pago');
+        Route::resource('prestatarios', PrestatarioController::class)
+            ->parameters(['prestatarios' => 'prestatario'])
+            ->names('prestatarios');
+        Route::resource('prestatarios.movimientos', MovimientoPrestamoController::class)
+            ->only(['store', 'update', 'destroy'])
+            ->parameters(['prestatarios' => 'prestatario', 'movimientos' => 'movimiento'])
+            ->names('prestatarios.movimientos');
+    });
 
     Route::get('/my-profile', function () { return view('dashboard.my-profile'); });
     Route::get('/settings', function () { return view('dashboard.settings'); });

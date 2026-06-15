@@ -404,6 +404,24 @@ return [
                 'url'  => '/dashboard/documentos-financieros'
             ],
             [
+                'type' => 'link',
+                'name' => 'Prestatarios',
+                'icon' => 'person_pin',
+                'url'  => '/dashboard/finanzas/prestamos/prestatarios'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Conceptos de Pago',
+                'icon' => 'payments',
+                'url'  => '/dashboard/finanzas/prestamos/conceptos-pago'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Categ. de Concepto',
+                'icon' => 'sell',
+                'url'  => '/dashboard/finanzas/prestamos/categorias-concepto'
+            ],
+            [
                 'type' => 'accordion',
                 'name' => 'Catálogos',
                 'icon' => 'tune',
