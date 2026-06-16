@@ -510,12 +510,11 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->name('empleo-referencias.update');
     Route::delete('empleo-referencias/{referencia}', [EmpleoReferenciaController::class, 'destroy'])
         ->name('empleo-referencias.destroy');
-    Route::post('empleos/{empleo}/capacitaciones', [CapacitacionController::class, 'store'])
+    Route::resource('capacitaciones', CapacitacionController::class)
+        ->parameters(['capacitaciones' => 'capacitacion'])
+        ->names('capacitaciones');
+    Route::post('empleos/{empleo}/capacitaciones', [CapacitacionController::class, 'storeFromEmpleo'])
         ->name('empleos.capacitaciones.store');
-    Route::put('capacitaciones/{capacitacion}', [CapacitacionController::class, 'update'])
-        ->name('capacitaciones.update');
-    Route::delete('capacitaciones/{capacitacion}', [CapacitacionController::class, 'destroy'])
-        ->name('capacitaciones.destroy');
 
     // ── Finanzas: catálogos ───────────────────────────────────────────────────
     Route::resource('tipo-entidad-financiera', TipoEntidadFinancieraController::class)

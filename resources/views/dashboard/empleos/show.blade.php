@@ -549,6 +549,9 @@
                                                                 'fecha_inicio'             => $cap->fecha_inicio?->format('Y-m-d'),
                                                                 'fecha_fin'                => $cap->fecha_fin?->format('Y-m-d'),
                                                                 'fecha_vencimiento'        => $cap->fecha_vencimiento?->format('Y-m-d'),
+                                                                'codigo_certificado'       => $cap->codigo_certificado,
+                                                                'url_verificacion'         => $cap->url_verificacion,
+                                                                'horas_academicas'         => $cap->horas_academicas,
                                                                 'notas'                    => $cap->notas,
                                                                 'activo'                   => (bool) $cap->activo,
                                                             ]) }})"
@@ -897,6 +900,27 @@
                             <input type="date" name="fecha_vencimiento" id="capFechaVenc"
                                 class="h-[44px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[12px] block w-full outline-0 text-sm transition-all focus:border-primary-500">
                         </div>
+                        {{-- Detalles del certificado --}}
+                        <div class="sm:col-span-2">
+                            <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-[10px] mt-[2px]">Detalles del certificado</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-[14px]">
+                                <div>
+                                    <label class="mb-[6px] text-black dark:text-white font-medium block text-sm">Código / Folio</label>
+                                    <input type="text" name="codigo_certificado" id="capCodigoCert" placeholder="Ej: ABC-123456"
+                                        class="h-[44px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[12px] block w-full outline-0 text-sm transition-all focus:border-primary-500">
+                                </div>
+                                <div>
+                                    <label class="mb-[6px] text-black dark:text-white font-medium block text-sm">Horas académicas</label>
+                                    <input type="number" name="horas_academicas" id="capHorasAcad" min="0" placeholder="Ej: 40"
+                                        class="h-[44px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[12px] block w-full outline-0 text-sm transition-all focus:border-primary-500">
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="mb-[6px] text-black dark:text-white font-medium block text-sm">URL de verificación</label>
+                                    <input type="url" name="url_verificacion" id="capUrlVerif" placeholder="https://coursera.org/verify/..."
+                                        class="h-[44px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[12px] block w-full outline-0 text-sm transition-all focus:border-primary-500">
+                                </div>
+                            </div>
+                        </div>
                         <div>
                             <label class="mb-[6px] text-black dark:text-white font-medium block text-sm" id="capArchivoLabel">
                                 Certificado
@@ -1001,7 +1025,7 @@
                 document.getElementById('modalCapTitulo').textContent = 'Agregar Capacitación';
                 document.getElementById('formCap').action = STORE_CAP;
                 document.getElementById('capMethodSpoof').innerHTML = '';
-                ['capNombre','capInstitucionNombre','capFechaInicio','capFechaFin','capFechaVenc','capDescripcion','capNotas'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+                ['capNombre','capInstitucionNombre','capFechaInicio','capFechaFin','capFechaVenc','capCodigoCert','capUrlVerif','capHorasAcad','capDescripcion','capNotas'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
                 document.getElementById('capArchivo').value = '';
                 document.getElementById('capArchivoReq').classList.remove('hidden');
                 document.getElementById('capArchivoOpc').classList.add('hidden');
@@ -1059,6 +1083,9 @@
                 document.getElementById('capFechaInicio').value        = data.fecha_inicio || '';
                 document.getElementById('capFechaFin').value           = data.fecha_fin || '';
                 document.getElementById('capFechaVenc').value          = data.fecha_vencimiento || '';
+                document.getElementById('capCodigoCert').value         = data.codigo_certificado || '';
+                document.getElementById('capUrlVerif').value           = data.url_verificacion || '';
+                document.getElementById('capHorasAcad').value          = data.horas_academicas ?? '';
                 document.getElementById('capDescripcion').value        = data.descripcion || '';
                 document.getElementById('capNotas').value              = data.notas || '';
                 document.getElementById('capArchivoReq').classList.add('hidden');

@@ -26,6 +26,9 @@ class Capacitacion extends Model
         'fecha_inicio',
         'fecha_fin',
         'fecha_vencimiento',
+        'codigo_certificado',
+        'url_verificacion',
+        'horas_academicas',
         'file_path',
         'notas',
         'activo',
@@ -38,6 +41,7 @@ class Capacitacion extends Model
             'fecha_fin'         => 'date',
             'fecha_vencimiento' => 'date',
             'activo'            => 'boolean',
+            'horas_academicas'  => 'integer',
         ];
     }
 
