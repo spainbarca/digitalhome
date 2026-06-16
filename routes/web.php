@@ -61,6 +61,7 @@ use App\Http\Controllers\Dashboard\DocumentoLaboralController;
 use App\Http\Controllers\Dashboard\EmpleoBeneficioController;
 use App\Http\Controllers\Dashboard\EmpleoReferenciaController;
 use App\Http\Controllers\Dashboard\CapacitacionController;
+use App\Http\Controllers\Dashboard\CapacitacionPerfilController;
 use App\Http\Controllers\Dashboard\TipoEntidadFinancieraController;
 use App\Http\Controllers\Dashboard\TipoProductoFinancieroController;
 use App\Http\Controllers\Dashboard\TipoDocumentoFinancieroController;
@@ -515,6 +516,10 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->names('capacitaciones');
     Route::post('empleos/{empleo}/capacitaciones', [CapacitacionController::class, 'storeFromEmpleo'])
         ->name('empleos.capacitaciones.store');
+    Route::get('capacitaciones-perfil', [CapacitacionPerfilController::class, 'index'])
+        ->name('capacitaciones-perfil.index');
+    Route::get('capacitaciones-perfil/{miembro}', [CapacitacionPerfilController::class, 'show'])
+        ->name('capacitaciones-perfil.show');
 
     // ── Finanzas: catálogos ───────────────────────────────────────────────────
     Route::resource('tipo-entidad-financiera', TipoEntidadFinancieraController::class)

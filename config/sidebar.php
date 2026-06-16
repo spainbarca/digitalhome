@@ -373,6 +373,18 @@ return [
                 'icon' => 'work_history',
                 'url'  => '/dashboard/empleos'
             ],
+            [
+                'type' => 'link',
+                'name' => 'Capacitaciones',
+                'icon' => 'list_alt',
+                'url'  => '/dashboard/capacitaciones'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Perfil por Miembro',
+                'icon' => 'workspace_premium',
+                'url'  => '/dashboard/capacitaciones-perfil'
+            ],
         ]
     ],
     [

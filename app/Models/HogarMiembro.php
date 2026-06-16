@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class HogarMiembro extends Model
 {
@@ -35,5 +36,10 @@ class HogarMiembro extends Model
     public function parentesco(): BelongsTo
     {
         return $this->belongsTo(Parentesco::class, 'parentesco_id');
+    }
+
+    public function capacitaciones(): HasMany
+    {
+        return $this->hasMany(Capacitacion::class, 'hogar_miembro_id');
     }
 }

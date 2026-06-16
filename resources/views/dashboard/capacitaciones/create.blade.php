@@ -318,12 +318,7 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
-        // Datos de empleos para filtrar por miembro
-        const empleosData = @json($empleos->map(fn($e) => [
-            'id'         => $e->id,
-            'miembro_id' => $e->hogar_miembro_id,
-            'text'       => $e->cargo . ($e->empleador?->empresa?->razon_social ?? $e->empleador?->nombre ?? null ? ' — ' . ($e->empleador?->empresa?->razon_social ?? $e->empleador?->nombre) : ''),
-        ]));
+        const empleosData = @json($empleosData);
 
         function avatarTemplate(opt) {
             if (!opt.id) return opt.text;

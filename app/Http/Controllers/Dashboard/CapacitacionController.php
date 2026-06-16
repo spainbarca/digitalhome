@@ -57,13 +57,22 @@ class CapacitacionController extends Controller
         $hogarId       = $this->hogarId();
         $miembros      = HogarMiembro::where('hogar_id', $hogarId)->with('user.persona')->get();
         $empleos       = Empleo::where('hogar_id', $hogarId)
-            ->with(['hogarMiembro.user.persona', 'empleador'])
+            ->with('empleador.empresa')
             ->orderByDesc('fecha_inicio')->get();
         $tipos         = TipoCapacitacion::orderBy('nombre')->get();
         $instituciones = InstitucionEducativa::where('hogar_id', $hogarId)
             ->orderBy('nombre_referencial')->get();
 
-        return view('dashboard.capacitaciones.create', compact('miembros', 'empleos', 'tipos', 'instituciones'));
+        $empleosData = $empleos->map(function ($e) {
+            $empresa = $e->empleador?->empresa?->razon_social ?? $e->empleador?->nombre;
+            return [
+                'id'         => $e->id,
+                'miembro_id' => $e->hogar_miembro_id,
+                'text'       => $e->cargo . ($empresa ? ' — ' . $empresa : ''),
+            ];
+        })->values();
+
+        return view('dashboard.capacitaciones.create', compact('miembros', 'empleos', 'empleosData', 'tipos', 'instituciones'));
     }
 
     public function store(StoreCapacitacionRequest $request)
@@ -103,13 +112,22 @@ class CapacitacionController extends Controller
         $hogarId       = $this->hogarId();
         $miembros      = HogarMiembro::where('hogar_id', $hogarId)->with('user.persona')->get();
         $empleos       = Empleo::where('hogar_id', $hogarId)
-            ->with(['hogarMiembro.user.persona', 'empleador'])
+            ->with('empleador.empresa')
             ->orderByDesc('fecha_inicio')->get();
         $tipos         = TipoCapacitacion::orderBy('nombre')->get();
         $instituciones = InstitucionEducativa::where('hogar_id', $hogarId)
             ->orderBy('nombre_referencial')->get();
 
-        return view('dashboard.capacitaciones.edit', compact('capacitacion', 'miembros', 'empleos', 'tipos', 'instituciones'));
+        $empleosData = $empleos->map(function ($e) {
+            $empresa = $e->empleador?->empresa?->razon_social ?? $e->empleador?->nombre;
+            return [
+                'id'         => $e->id,
+                'miembro_id' => $e->hogar_miembro_id,
+                'text'       => $e->cargo . ($empresa ? ' — ' . $empresa : ''),
+            ];
+        })->values();
+
+        return view('dashboard.capacitaciones.edit', compact('capacitacion', 'miembros', 'empleos', 'empleosData', 'tipos', 'instituciones'));
     }
 
     public function update(UpdateCapacitacionRequest $request, Capacitacion $capacitacion)
