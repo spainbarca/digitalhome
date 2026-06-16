@@ -63,6 +63,7 @@ use App\Http\Controllers\Dashboard\EmpleoReferenciaController;
 use App\Http\Controllers\Dashboard\CapacitacionController;
 use App\Http\Controllers\Dashboard\CapacitacionPerfilController;
 use App\Http\Controllers\Dashboard\TipoEntidadFinancieraController;
+use App\Http\Controllers\Dashboard\EntidadFinancieraController;
 use App\Http\Controllers\Dashboard\TipoProductoFinancieroController;
 use App\Http\Controllers\Dashboard\TipoDocumentoFinancieroController;
 use App\Http\Controllers\Dashboard\EstadoProductoController;
@@ -71,6 +72,7 @@ use App\Http\Controllers\Dashboard\CategoriaConceptoController;
 use App\Http\Controllers\Dashboard\ConceptoPagoController;
 use App\Http\Controllers\Dashboard\PrestatarioController;
 use App\Http\Controllers\Dashboard\MovimientoPrestamoController;
+use App\Http\Controllers\Dashboard\ProductoFinancieroController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -521,6 +523,11 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::get('capacitaciones-perfil/{miembro}', [CapacitacionPerfilController::class, 'show'])
         ->name('capacitaciones-perfil.show');
 
+    // ── Finanzas: CRUD principal ──────────────────────────────────────────────
+    Route::resource('entidades-financieras', EntidadFinancieraController::class)
+        ->names('entidades-financieras')
+        ->parameters(['entidades-financieras' => 'entidadFinanciera']);
+
     // ── Finanzas: catálogos ───────────────────────────────────────────────────
     Route::resource('tipo-entidad-financiera', TipoEntidadFinancieraController::class)
         ->except(['create', 'edit', 'show'])
@@ -542,6 +549,13 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->except(['create', 'edit', 'show'])
         ->names('tipo-transaccion')
         ->parameters(['tipo-transaccion' => 'tipoTransaccion']);
+
+    // ── Finanzas: Productos Financieros (CRUD principal) ────────────────────
+    Route::prefix('finanzas')->group(function () {
+        Route::resource('productos-financieros', ProductoFinancieroController::class)
+            ->parameters(['productos-financieros' => 'productoFinanciero'])
+            ->names('productos-financieros');
+    });
 
     // ── Préstamos Personales: catálogos ──────────────────────────────────────
     Route::prefix('finanzas/prestamos')->name('prestamos.')->group(function () {

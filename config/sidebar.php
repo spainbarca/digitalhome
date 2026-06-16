@@ -401,19 +401,7 @@ return [
                 'type' => 'link',
                 'name' => 'Productos Financieros',
                 'icon' => 'savings',
-                'url'  => '/dashboard/productos-financieros'
-            ],
-            [
-                'type' => 'link',
-                'name' => 'Transacciones',
-                'icon' => 'swap_horiz',
-                'url'  => '/dashboard/transacciones'
-            ],
-            [
-                'type' => 'link',
-                'name' => 'Documentos',
-                'icon' => 'receipt_long',
-                'url'  => '/dashboard/documentos-financieros'
+                'url'  => '/dashboard/finanzas/productos-financieros'
             ],
             [
                 'type' => 'link',
