@@ -66,6 +66,9 @@ use App\Http\Controllers\Dashboard\TipoEntidadFinancieraController;
 use App\Http\Controllers\Dashboard\EntidadFinancieraController;
 use App\Http\Controllers\Dashboard\TipoProductoFinancieroController;
 use App\Http\Controllers\Dashboard\TipoDocumentoFinancieroController;
+use App\Http\Controllers\Dashboard\DocumentoFinancieroController;
+use App\Http\Controllers\Dashboard\TransaccionController;
+use App\Http\Controllers\Dashboard\BeneficiarioController;
 use App\Http\Controllers\Dashboard\EstadoProductoController;
 use App\Http\Controllers\Dashboard\TipoTransaccionController;
 use App\Http\Controllers\Dashboard\CategoriaConceptoController;
@@ -555,6 +558,26 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         Route::resource('productos-financieros', ProductoFinancieroController::class)
             ->parameters(['productos-financieros' => 'productoFinanciero'])
             ->names('productos-financieros');
+        Route::post('productos-financieros/{productoFinanciero}/documentos', [DocumentoFinancieroController::class, 'store'])
+            ->name('productos-financieros.documentos.store');
+        Route::put('documentos-financieros/{documentoFinanciero}', [DocumentoFinancieroController::class, 'update'])
+            ->name('productos-financieros.documentos.update');
+        Route::delete('documentos-financieros/{documentoFinanciero}', [DocumentoFinancieroController::class, 'destroy'])
+            ->name('productos-financieros.documentos.destroy');
+
+        Route::post('productos-financieros/{productoFinanciero}/transacciones', [TransaccionController::class, 'store'])
+            ->name('productos-financieros.transacciones.store');
+        Route::put('transacciones/{transaccion}', [TransaccionController::class, 'update'])
+            ->name('productos-financieros.transacciones.update');
+        Route::delete('transacciones/{transaccion}', [TransaccionController::class, 'destroy'])
+            ->name('productos-financieros.transacciones.destroy');
+
+        Route::post('productos-financieros/{productoFinanciero}/beneficiarios', [BeneficiarioController::class, 'store'])
+            ->name('productos-financieros.beneficiarios.store');
+        Route::put('beneficiarios/{beneficiario}', [BeneficiarioController::class, 'update'])
+            ->name('productos-financieros.beneficiarios.update');
+        Route::delete('beneficiarios/{beneficiario}', [BeneficiarioController::class, 'destroy'])
+            ->name('productos-financieros.beneficiarios.destroy');
     });
 
     // ── Préstamos Personales: catálogos ──────────────────────────────────────

@@ -10,7 +10,11 @@ use App\Models\EstadoProducto;
 use App\Models\HogarMiembro;
 use App\Models\Moneda;
 use App\Models\ProductoFinanciero;
+use App\Models\MetodoPago;
+use App\Models\TipoDocumentoFinanciero;
 use App\Models\TipoProductoFinanciero;
+use App\Models\TipoTransaccion;
+use App\Models\Transaccion;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,7 +68,8 @@ class ProductoFinancieroController extends Controller
 
     public function show(ProductoFinanciero $productoFinanciero): View
     {
-        abort_unless($productoFinanciero->miembro?->hogar_id === $this->hogarId(), 403);
+        $hogarId = $this->hogarId();
+        abort_unless($productoFinanciero->miembro?->hogar_id === $hogarId, 403);
 
         $productoFinanciero->load([
             'entidadFinanciera.empresa',
@@ -73,9 +78,40 @@ class ProductoFinancieroController extends Controller
             'moneda',
             'miembro.user.persona',
             'productoPadre.entidadFinanciera',
+            'documentosFinancieros.tipoDocumentoFinanciero',
+            'beneficiarios.hogarMiembro.user.persona',
         ]);
 
-        return view('dashboard.productos-financieros.show', compact('productoFinanciero'));
+        $transacciones = Transaccion::where('producto_financiero_id', $productoFinanciero->id)
+            ->orWhere('producto_destino_id', $productoFinanciero->id)
+            ->with(['tipoTransaccion', 'metodoPago', 'moneda', 'productoDestino.entidadFinanciera.empresa', 'producto.entidadFinanciera.empresa'])
+            ->orderBy('fecha', 'desc')
+            ->get();
+
+        $tiposDocumento   = TipoDocumentoFinanciero::where('activo', true)->orderBy('nombre')->get();
+        $tiposTransaccion = TipoTransaccion::where('activo', true)->orderBy('nombre')->get();
+        $metodosPago      = MetodoPago::where('activo', true)->orderBy('nombre')->get();
+        $monedas          = Moneda::orderByDesc('moneda_local')->orderBy('nombre')->get();
+        $miembros         = HogarMiembro::with('user.persona')
+                                ->where('hogar_id', $hogarId)
+                                ->where('estado', 'activo')
+                                ->get();
+        $productosDestino = ProductoFinanciero::whereHas('miembro', fn ($q) => $q->where('hogar_id', $hogarId))
+                                ->where('id', '!=', $productoFinanciero->id)
+                                ->with(['entidadFinanciera.empresa'])
+                                ->orderBy('alias')
+                                ->get();
+
+        return view('dashboard.productos-financieros.show', compact(
+            'productoFinanciero',
+            'transacciones',
+            'tiposDocumento',
+            'tiposTransaccion',
+            'metodosPago',
+            'monedas',
+            'miembros',
+            'productosDestino',
+        ));
     }
 
     public function edit(ProductoFinanciero $productoFinanciero): View
