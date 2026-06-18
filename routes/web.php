@@ -75,6 +75,7 @@ use App\Http\Controllers\Dashboard\CategoriaConceptoController;
 use App\Http\Controllers\Dashboard\ConceptoPagoController;
 use App\Http\Controllers\Dashboard\PrestatarioController;
 use App\Http\Controllers\Dashboard\MovimientoPrestamoController;
+use App\Http\Controllers\Dashboard\FinanzasResumenController;
 use App\Http\Controllers\Dashboard\ProductoFinancieroController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
@@ -525,6 +526,9 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->name('capacitaciones-perfil.index');
     Route::get('capacitaciones-perfil/{miembro}', [CapacitacionPerfilController::class, 'show'])
         ->name('capacitaciones-perfil.show');
+
+    // ── Finanzas: Resumen (solo lectura) ─────────────────────────────────────
+    Route::get('finanzas/resumen', [FinanzasResumenController::class, 'index'])->name('finanzas.resumen');
 
     // ── Finanzas: CRUD principal ──────────────────────────────────────────────
     Route::resource('entidades-financieras', EntidadFinancieraController::class)
