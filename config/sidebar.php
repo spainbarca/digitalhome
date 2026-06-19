@@ -393,6 +393,12 @@ return [
         'items' => [
             [
                 'type' => 'link',
+                'name' => 'Resumen',
+                'icon' => 'dashboard',
+                'url'  => '/dashboard/finanzas/resumen'
+            ],
+            [
+                'type' => 'link',
                 'name' => 'Entidades Financieras',
                 'icon' => 'account_balance',
                 'url'  => '/dashboard/entidades-financieras'

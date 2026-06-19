@@ -4,6 +4,20 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         @include('partials.front.styles')
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+        <style>
+            .select2-container--default .select2-selection--single { height:55px;border-radius:6px;border-color:#e5e7eb;display:flex;align-items:center;padding:0 14px; }
+            .select2-container--default .select2-selection--single .select2-selection__rendered { line-height:normal;padding:0;color:inherit;display:flex;align-items:center;gap:8px; }
+            .select2-container--default .select2-selection--single .select2-selection__arrow { height:55px;top:0; }
+            .select2-dropdown { border-color:#e5e7eb;border-radius:6px; }
+            .select2-search--dropdown .select2-search__field { border-radius:4px;border-color:#e5e7eb;outline:none; }
+            .select2-results__option { display:flex;align-items:center;gap:8px;padding:9px 12px; }
+            .select2-container--default .select2-results__option--highlighted { background-color:#f0f6ff;color:#4f88e4; }
+            .dark .select2-container--default .select2-selection--single { background-color:#0c1427;border-color:#172036; }
+            .dark .select2-dropdown { background-color:#0c1427;border-color:#172036; }
+            .dark .select2-results__option { color:#fff; }
+            .dark .select2-container--default .select2-results__option--highlighted { background-color:#15203c; }
+        </style>
         <title>Editar Producto Financiero</title>
         @vite('resources/css/app.css')
     </head>
@@ -191,15 +205,20 @@
                             <div class="grid grid-cols-12 gap-[20px] md:gap-[25px]">
                                 <div class="col-span-12 sm:col-span-6">
                                     <label class="mb-[10px] text-black dark:text-white font-medium block">Titular <span class="text-danger-500">*</span></label>
-                                    <select name="miembro_id"
-                                        class="h-[55px] rounded-md text-black dark:text-white border {{ $errors->has('miembro_id') ? 'border-danger-500' : 'border-gray-200 dark:border-[#172036]' }} bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all focus:border-primary-500">
-                                        <option value="">Seleccionar miembro...</option>
+                                    <select name="miembro_id" id="miembro_id" class="w-full">
+                                        <option value="">Seleccionar titular...</option>
                                         @foreach($miembros as $mi)
                                         @php
                                             $persona  = $mi->user?->persona;
-                                            $nombreMi = $mi->apodo ?: trim(($persona->nombres ?? '') . ' ' . ($persona->apellido_paterno ?? ''));
+                                            $nombreMi = trim(collect([
+                                                $persona?->nombres,
+                                                $persona?->apellido_paterno,
+                                                $persona?->apellido_materno,
+                                            ])->filter()->implode(' ')) ?: '—';
                                         @endphp
-                                        <option value="{{ $mi->id }}" {{ old('miembro_id', $productoFinanciero->miembro_id) == $mi->id ? 'selected' : '' }}>{{ $nombreMi ?: 'Miembro' }}</option>
+                                        <option value="{{ $mi->id }}"
+                                            data-avatar="{{ $mi->user?->persona?->foto_url ?? '' }}"
+                                            {{ old('miembro_id', $productoFinanciero->miembro_id) == $mi->id ? 'selected' : '' }}>{{ $nombreMi }}</option>
                                         @endforeach
                                     </select>
                                     @error('miembro_id')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
@@ -388,6 +407,27 @@
         </div>
 
         @include('partials.front.scripts')
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+        function fmtTitular(opt) {
+            if (!opt.id) return opt.text;
+            var av  = $(opt.element).data('avatar');
+            var ini = opt.text.charAt(0).toUpperCase();
+            if (av) {
+                return $('<span style="display:flex;align-items:center;gap:8px"><img src="' + av + '" style="width:26px;height:26px;border-radius:50%;object-fit:cover;">' + opt.text + '</span>');
+            }
+            return $('<span style="display:flex;align-items:center;gap:8px"><span style="width:26px;height:26px;border-radius:50%;background:#dbeafe;color:#1d4ed8;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">' + ini + '</span>' + opt.text + '</span>');
+        }
+        $(function() {
+            $('#miembro_id').select2({
+                width: '100%',
+                placeholder: 'Seleccionar titular...',
+                templateResult: fmtTitular,
+                templateSelection: fmtTitular,
+            });
+        });
+        </script>
 
         <script>
             // ── Mapeo naturaleza/nombre de tipo -> bloque dinámico ───────
