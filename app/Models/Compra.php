@@ -23,6 +23,7 @@ class Compra extends Model
         'categoria_compra_id',
         'metodo_pago_id',
         'moneda_id',
+        'viaje_id',
         'fecha_compra',
         'total',
         'concepto',
@@ -70,6 +71,11 @@ class Compra extends Model
     public function productoFinanciero(): BelongsTo
     {
         return $this->belongsTo(ProductoFinanciero::class, 'producto_financiero_id');
+    }
+
+    public function viaje(): BelongsTo
+    {
+        return $this->belongsTo(Viaje::class, 'viaje_id');
     }
 
     public function documentos(): HasMany

@@ -443,6 +443,38 @@ return [
     ],
     [
         'type' => 'section',
+        'name' => 'Viajes',
+        'items' => [
+            [
+                'type' => 'link',
+                'name' => 'Mis Viajes',
+                'icon' => 'luggage',
+                'url'  => '/dashboard/viajes'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Operadores de Viaje',
+                'icon' => 'flight',
+                'url'  => '/dashboard/operadores-viaje'
+            ],
+            [
+                'type' => 'accordion',
+                'name' => 'Catálogos',
+                'icon' => 'tune',
+                'sub_items' => [
+                    ['name' => 'Tipos de Viaje',      'url' => '/dashboard/tipo-viaje'],
+                    ['name' => 'Tipos de Transporte', 'url' => '/dashboard/tipo-transporte'],
+                    ['name' => 'Tipos de Reserva',    'url' => '/dashboard/tipo-reserva'],
+                    ['name' => 'Tipos de Documento',  'url' => '/dashboard/tipo-documento-viaje'],
+                    ['name' => 'Tipos de Operador',   'url' => '/dashboard/tipo-operador-viaje'],
+                    ['name' => 'Estados de Reserva',  'url' => '/dashboard/estado-reserva'],
+                    ['name' => 'Categ. de Gasto',     'url' => '/dashboard/categoria-gasto-viaje'],
+                ],
+            ],
+        ]
+    ],
+    [
+        'type' => 'section',
         'name' => 'Empresas',
         'items' => [
             [

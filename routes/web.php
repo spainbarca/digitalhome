@@ -77,6 +77,20 @@ use App\Http\Controllers\Dashboard\PrestatarioController;
 use App\Http\Controllers\Dashboard\MovimientoPrestamoController;
 use App\Http\Controllers\Dashboard\FinanzasResumenController;
 use App\Http\Controllers\Dashboard\ProductoFinancieroController;
+use App\Http\Controllers\Dashboard\OperadorViajeController;
+use App\Http\Controllers\Dashboard\TipoViajeController;
+use App\Http\Controllers\Dashboard\TipoTransporteController;
+use App\Http\Controllers\Dashboard\TipoReservaController;
+use App\Http\Controllers\Dashboard\TipoDocumentoViajeController;
+use App\Http\Controllers\Dashboard\TipoOperadorViajeController;
+use App\Http\Controllers\Dashboard\EstadoReservaController;
+use App\Http\Controllers\Dashboard\CategoriaGastoViajeController;
+use App\Http\Controllers\Dashboard\ViajeController;
+use App\Http\Controllers\Dashboard\ViajeDestinoController;
+use App\Http\Controllers\Dashboard\ReservaViajeController;
+use App\Http\Controllers\Dashboard\GastoViajeController;
+use App\Http\Controllers\Dashboard\ViajeParticipanteController;
+use App\Http\Controllers\Dashboard\DocumentoViajeController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -603,6 +617,63 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
             ->parameters(['prestatarios' => 'prestatario', 'movimientos' => 'movimiento'])
             ->names('prestatarios.movimientos');
     });
+
+    // ── Viajes: Operadores ───────────────────────────────────────────────────
+    Route::resource('operadores-viaje', OperadorViajeController::class)
+        ->names('operadores-viaje')
+        ->parameters(['operadores-viaje' => 'operadoresViaje']);
+
+    // ── Viajes: catálogos ────────────────────────────────────────────────────
+    Route::resource('tipo-viaje', TipoViajeController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-viaje')
+        ->parameters(['tipo-viaje' => 'tipoViaje']);
+    Route::resource('tipo-transporte', TipoTransporteController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-transporte')
+        ->parameters(['tipo-transporte' => 'tipoTransporte']);
+    Route::resource('tipo-reserva', TipoReservaController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-reserva')
+        ->parameters(['tipo-reserva' => 'tipoReserva']);
+    Route::resource('tipo-documento-viaje', TipoDocumentoViajeController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-documento-viaje')
+        ->parameters(['tipo-documento-viaje' => 'tipoDocumentoViaje']);
+    Route::resource('tipo-operador-viaje', TipoOperadorViajeController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-operador-viaje')
+        ->parameters(['tipo-operador-viaje' => 'tipoOperadorViaje']);
+    Route::resource('estado-reserva', EstadoReservaController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('estado-reserva')
+        ->parameters(['estado-reserva' => 'estadoReserva']);
+    Route::resource('categoria-gasto-viaje', CategoriaGastoViajeController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('categoria-gasto-viaje')
+        ->parameters(['categoria-gasto-viaje' => 'categoriaGastoViaje']);
+
+    // ── Módulo Viajes: CRUD principal ────────────────────────────────────────
+    Route::resource('viajes', ViajeController::class)->names('viajes');
+    // Destinos
+    Route::post('viajes/{viaje}/destinos', [ViajeDestinoController::class, 'store'])->name('viajes.destinos.store');
+    Route::put('viaje-destino/{viajeDestino}', [ViajeDestinoController::class, 'update'])->name('viaje-destino.update');
+    Route::delete('viaje-destino/{viajeDestino}', [ViajeDestinoController::class, 'destroy'])->name('viaje-destino.destroy');
+    // Reservas
+    Route::post('viajes/{viaje}/reservas', [ReservaViajeController::class, 'store'])->name('viajes.reservas.store');
+    Route::put('viajes-reserva/{reserva}', [ReservaViajeController::class, 'update'])->name('viajes.reservas.update');
+    Route::delete('viajes-reserva/{reserva}', [ReservaViajeController::class, 'destroy'])->name('viajes.reservas.destroy');
+    // Gastos
+    Route::post('viajes/{viaje}/gastos', [GastoViajeController::class, 'store'])->name('viajes.gastos.store');
+    Route::put('gasto-viaje/{gastoViaje}', [GastoViajeController::class, 'update'])->name('gasto-viaje.update');
+    Route::delete('gasto-viaje/{gastoViaje}', [GastoViajeController::class, 'destroy'])->name('gasto-viaje.destroy');
+    // Participantes
+    Route::post('viajes/{viaje}/participantes', [ViajeParticipanteController::class, 'store'])->name('viajes.participantes.store');
+    Route::delete('viaje-participante/{viajeParticipante}', [ViajeParticipanteController::class, 'destroy'])->name('viaje-participante.destroy');
+    // Documentos
+    Route::post('viajes/{viaje}/documentos', [DocumentoViajeController::class, 'store'])->name('viajes.documentos.store');
+    Route::put('documento-viaje/{documentoViaje}', [DocumentoViajeController::class, 'update'])->name('documento-viaje.update');
+    Route::delete('documento-viaje/{documentoViaje}', [DocumentoViajeController::class, 'destroy'])->name('documento-viaje.destroy');
 
     Route::get('/my-profile', function () { return view('dashboard.my-profile'); });
     Route::get('/settings', function () { return view('dashboard.settings'); });
