@@ -16,10 +16,12 @@ use App\Models\Pais;
 use App\Models\TipoDocumentoViaje;
 use App\Models\TipoReserva;
 use App\Models\TipoTransporte;
+use App\Models\EstadoViaje;
 use App\Models\TipoViaje;
 use App\Models\UbigeoDepartamento;
 use App\Models\UbigeoDistrito;
 use App\Models\UbigeoProvincia;
+use App\Models\DocumentoLegal;
 use App\Models\Viaje;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -40,9 +42,11 @@ class ViajeController extends Controller
 
     public function index(): View
     {
-        $hoy  = now()->startOfDay();
+        $hoy   = now()->startOfDay();
+        $aviso = now()->addDays(90)->startOfDay();
+
         $todos = $this->scopedQuery()
-            ->with(['tipoViaje', 'moneda'])
+            ->with(['tipoViaje', 'moneda', 'estadoViaje'])
             ->orderBy('fecha_inicio', 'desc')
             ->get();
 
@@ -54,7 +58,19 @@ class ViajeController extends Controller
             $v->fecha_fin !== null && $v->fecha_fin->lt($hoy)
         );
 
-        return view('dashboard.viajes.index', compact('proximos', 'pasados'));
+        // Alerta de documentos de viajero
+        $docViajerosBase = DocumentoLegal::where('hogar_id', $this->hogarId())
+            ->where('activo', true)
+            ->whereHas('tipoDocumentoLegal', fn($q) => $q->where('relevante_viaje', true))
+            ->whereNotNull('fecha_vencimiento')
+            ->get(['fecha_vencimiento']);
+
+        $docVencidos  = $docViajerosBase->filter(fn($d) => $d->fecha_vencimiento->lt($hoy))->count();
+        $docPorVencer = $docViajerosBase->filter(fn($d) => $d->fecha_vencimiento->gte($hoy) && $d->fecha_vencimiento->lte($aviso))->count();
+
+        return view('dashboard.viajes.index', compact(
+            'proximos', 'pasados', 'docVencidos', 'docPorVencer'
+        ));
     }
 
     public function create(): View
@@ -83,7 +99,7 @@ class ViajeController extends Controller
         $hogarId = $this->hogarId();
         abort_unless($viaje->hogar_id === $hogarId, 403);
 
-        $viaje->load(['tipoViaje', 'moneda']);
+        $viaje->load(['tipoViaje', 'moneda', 'estadoViaje']);
 
         $destinos = $viaje->destinos()->with(['distrito', 'pais', 'ciudad'])->orderBy('orden')->get();
 
@@ -169,9 +185,11 @@ class ViajeController extends Controller
                 return ['id' => $c->id, 'nombre' => $c->nombre, 'pais_iso2' => $c->pais_iso2];
             })->values()->all();
 
+        $checklist = $viaje->checklist()->with('hogarMiembro.user.persona')->get();
+
         return view('dashboard.viajes.show', compact(
             'viaje', 'destinos', 'reservas', 'comprasViaje', 'gastosViaje', 'resumenGastos',
-            'participantes', 'documentos',
+            'participantes', 'documentos', 'checklist',
             'operadores', 'tiposReserva', 'tiposTransporte', 'estadosReserva',
             'monedas', 'miembros', 'categoriasGasto', 'tiposDocViaje', 'reservasSelect',
             'departamentos', 'paises', 'provinciasArr', 'distritosArr', 'ciudadesArr',
@@ -220,15 +238,10 @@ class ViajeController extends Controller
 
     private function formData(): array
     {
-        $tipos   = TipoViaje::where('activo', true)->orderBy('nombre')->get();
-        $monedas = Moneda::orderByDesc('moneda_local')->orderBy('nombre')->get();
-        $estados = [
-            'planificado' => 'Planificado',
-            'en_curso'    => 'En curso',
-            'completado'  => 'Completado',
-            'cancelado'   => 'Cancelado',
-        ];
+        $tipos         = TipoViaje::where('activo', true)->orderBy('nombre')->get();
+        $monedas       = Moneda::orderByDesc('moneda_local')->orderBy('nombre')->get();
+        $estadosViaje  = EstadoViaje::where('activo', true)->orderBy('nombre')->get();
 
-        return compact('tipos', 'monedas', 'estados');
+        return compact('tipos', 'monedas', 'estadosViaje');
     }
 }

@@ -11,18 +11,6 @@
         @include('partials.dashboard.sidebar')
         @include('partials.dashboard.header')
 
-        @php
-            function colorEstadoViaje(?string $estado): array {
-                return match($estado) {
-                    'planificado' => ['bg' => 'bg-primary-100', 'text' => 'text-primary-600', 'icon' => 'schedule'],
-                    'en_curso'    => ['bg' => 'bg-success-100', 'text' => 'text-success-600', 'icon' => 'play_circle'],
-                    'completado'  => ['bg' => 'bg-gray-100',    'text' => 'text-gray-500',    'icon' => 'check_circle'],
-                    'cancelado'   => ['bg' => 'bg-danger-100',  'text' => 'text-danger-600',  'icon' => 'cancel'],
-                    default       => ['bg' => 'bg-gray-100',    'text' => 'text-gray-500',    'icon' => 'flight'],
-                };
-            }
-        @endphp
-
         <div class="main-content transition-all flex flex-col overflow-hidden min-h-screen" id="main-content">
 
             <div class="mb-[25px] md:flex items-center justify-between">
@@ -62,6 +50,45 @@
                 </div>
             </div>
 
+            {{-- ── Panel documentos de viajero ─────────────────────────────────── --}}
+            @if($docVencidos > 0 || $docPorVencer > 0)
+            <a href="{{ route('dashboard.viajes.documentos-viajero') }}"
+               class="flex items-center justify-between gap-[14px] mb-[25px] px-[20px] py-[14px] rounded-md border
+                      {{ $docVencidos > 0 ? 'bg-danger-50 dark:bg-[#2a1a1a] border-danger-300 dark:border-danger-700' : 'bg-warning-50 dark:bg-[#2a2200] border-warning-300 dark:border-warning-700' }}
+                      hover:opacity-90 transition-opacity group">
+                <div class="flex items-center gap-[12px]">
+                    <i class="material-symbols-outlined !text-[24px] {{ $docVencidos > 0 ? 'text-danger-600' : 'text-warning-600' }}">
+                        {{ $docVencidos > 0 ? 'cancel' : 'schedule' }}
+                    </i>
+                    <div>
+                        <span class="block text-sm font-semibold {{ $docVencidos > 0 ? 'text-danger-700 dark:text-danger-400' : 'text-warning-700 dark:text-warning-400' }}">
+                            @if($docVencidos > 0)
+                                {{ $docVencidos }} documento{{ $docVencidos > 1 ? 's' : '' }} de viajero vencido{{ $docVencidos > 1 ? 's' : '' }}
+                                @if($docPorVencer > 0) y {{ $docPorVencer }} por vencer @endif
+                            @else
+                                {{ $docPorVencer }} documento{{ $docPorVencer > 1 ? 's' : '' }} de viajero por vencer (próx. 90 días)
+                            @endif
+                        </span>
+                        <span class="text-xs {{ $docVencidos > 0 ? 'text-danger-600' : 'text-warning-600' }}">
+                            Pasaporte, visa, permiso de menor, etc. — Haz clic para ver el detalle.
+                        </span>
+                    </div>
+                </div>
+                <i class="material-symbols-outlined !text-[20px] {{ $docVencidos > 0 ? 'text-danger-400' : 'text-warning-400' }} group-hover:translate-x-1 transition-transform">
+                    chevron_right
+                </i>
+            </a>
+            @else
+            <a href="{{ route('dashboard.viajes.documentos-viajero') }}"
+               class="flex items-center justify-between gap-[14px] mb-[25px] px-[20px] py-[12px] rounded-md border border-success-200 dark:border-success-800 bg-success-50 dark:bg-[#0a2a15] hover:opacity-90 transition-opacity group">
+                <div class="flex items-center gap-[10px]">
+                    <i class="material-symbols-outlined !text-[20px] text-success-600">verified</i>
+                    <span class="text-sm font-medium text-success-700 dark:text-success-400">Documentos de viajero — todos vigentes</span>
+                </div>
+                <i class="material-symbols-outlined !text-[18px] text-success-400 group-hover:translate-x-1 transition-transform">chevron_right</i>
+            </a>
+            @endif
+
             {{-- ── Próximos viajes ──────────────────────────────────────────────── --}}
             <div class="mb-[25px]">
                 <div class="flex items-center gap-[8px] mb-[16px]">
@@ -84,9 +111,9 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[25px]">
                     @foreach($proximos as $viaje)
                     @php
-                        $colEs = colorEstadoViaje($viaje->estado);
                         $gradients = ['from-primary-400 to-primary-600','from-orange-400 to-orange-600','from-purple-400 to-purple-600','from-success-400 to-success-600','from-pink-400 to-pink-600'];
                         $grad = $gradients[abs(crc32($viaje->id)) % count($gradients)];
+                        $estadoColor = $viaje->estadoViaje?->color ?? null;
                     @endphp
                     <div class="bg-white dark:bg-[#0c1427] rounded-md overflow-hidden shadow-sm border border-gray-100 dark:border-[#172036]">
                         <!-- Portada -->
@@ -96,12 +123,15 @@
                             @else
                                 <i class="material-symbols-outlined !text-[56px] text-white opacity-70">{{ $viaje->tipoViaje?->icono ?? 'luggage' }}</i>
                             @endif
+                            @if($viaje->estadoViaje)
                             <div class="absolute top-[10px] ltr:right-[10px] rtl:left-[10px]">
-                                <span class="inline-flex items-center gap-[4px] px-[8px] py-[3px] rounded-full text-[11px] font-semibold {{ $colEs['bg'] }} {{ $colEs['text'] }}">
-                                    <i class="material-symbols-outlined !text-[11px]">{{ $colEs['icon'] }}</i>
-                                    {{ ucfirst(str_replace('_', ' ', $viaje->estado ?? 'planificado')) }}
+                                <span class="inline-flex items-center gap-[4px] px-[8px] py-[3px] rounded-full text-[11px] font-semibold"
+                                      style="background-color: {{ $estadoColor }}22; color: {{ $estadoColor }}; border: 1px solid {{ $estadoColor }}55; backdrop-filter: blur(4px)">
+                                    <i class="material-symbols-outlined !text-[11px]">{{ $viaje->estadoViaje->icono ?? 'flag' }}</i>
+                                    {{ $viaje->estadoViaje->nombre }}
                                 </span>
                             </div>
+                            @endif
                         </div>
                         <!-- Info -->
                         <div class="p-[16px]">
@@ -150,7 +180,6 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[25px]">
                     @foreach($pasados as $viaje)
                     @php
-                        $colEs = colorEstadoViaje($viaje->estado);
                         $gradients = ['from-primary-400 to-primary-600','from-orange-400 to-orange-600','from-purple-400 to-purple-600','from-success-400 to-success-600','from-pink-400 to-pink-600'];
                         $grad = $gradients[abs(crc32($viaje->id)) % count($gradients)];
                     @endphp

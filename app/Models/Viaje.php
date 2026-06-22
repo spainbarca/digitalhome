@@ -18,11 +18,11 @@ class Viaje extends Model
     protected $fillable = [
         'hogar_id',
         'tipo_viaje_id',
+        'estado_viaje_id',
         'nombre',
         'descripcion',
         'fecha_inicio',
         'fecha_fin',
-        'estado',
         'presupuesto',
         'moneda_id',
         'portada_path',
@@ -46,6 +46,11 @@ class Viaje extends Model
     public function tipoViaje(): BelongsTo
     {
         return $this->belongsTo(TipoViaje::class, 'tipo_viaje_id');
+    }
+
+    public function estadoViaje(): BelongsTo
+    {
+        return $this->belongsTo(EstadoViaje::class, 'estado_viaje_id');
     }
 
     public function moneda(): BelongsTo
@@ -81,6 +86,11 @@ class Viaje extends Model
     public function documentos(): HasMany
     {
         return $this->hasMany(DocumentoViaje::class, 'viaje_id');
+    }
+
+    public function checklist(): HasMany
+    {
+        return $this->hasMany(ChecklistViaje::class, 'viaje_id')->orderBy('orden');
     }
 
     public function getPortadaUrlAttribute(): ?string

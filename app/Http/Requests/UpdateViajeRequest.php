@@ -19,7 +19,7 @@ class UpdateViajeRequest extends FormRequest
             'descripcion'   => ['nullable', 'string'],
             'fecha_inicio'  => ['nullable', 'date'],
             'fecha_fin'     => ['nullable', 'date', 'after_or_equal:fecha_inicio'],
-            'estado'        => ['nullable', 'string', 'in:planificado,en_curso,completado,cancelado'],
+            'estado_viaje_id' => ['nullable', 'exists:estado_viaje,id'],
             'presupuesto'   => ['nullable', 'numeric', 'min:0'],
             'moneda_id'     => ['nullable', 'exists:monedas,id'],
             'portada'       => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],

@@ -22,20 +22,11 @@
         @include('partials.dashboard.header')
 
         @php
-            if (!function_exists('colorEstadoViajeShow')) {
-                function colorEstadoViajeShow(?string $estado): array {
-                    return match($estado) {
-                        'planificado' => ['bg' => 'bg-primary-100', 'text' => 'text-primary-600', 'icon' => 'schedule'],
-                        'en_curso'    => ['bg' => 'bg-success-100', 'text' => 'text-success-600', 'icon' => 'play_circle'],
-                        'completado'  => ['bg' => 'bg-gray-100',    'text' => 'text-gray-500',    'icon' => 'check_circle'],
-                        'cancelado'   => ['bg' => 'bg-danger-100',  'text' => 'text-danger-600',  'icon' => 'cancel'],
-                        default       => ['bg' => 'bg-gray-100',    'text' => 'text-gray-500',    'icon' => 'flight'],
-                    };
-                }
-            }
-            $colEs     = colorEstadoViajeShow($viaje->estado);
             $gradients = ['from-primary-400 to-primary-600','from-orange-400 to-orange-600','from-purple-400 to-purple-600','from-success-400 to-success-600','from-pink-400 to-pink-600'];
             $grad      = $gradients[abs(crc32($viaje->id)) % count($gradients)];
+            $evColor   = $viaje->estadoViaje?->color ?? '#6b7280';
+            $evIcono   = $viaje->estadoViaje?->icono ?? 'flag';
+            $evNombre  = $viaje->estadoViaje?->nombre ?? 'Sin estado';
         @endphp
 
         <div class="main-content transition-all flex flex-col overflow-hidden min-h-screen" id="main-content">
@@ -94,10 +85,13 @@
                                 {{ $viaje->tipoViaje->nombre }}
                             </span>
                             @endif
-                            <span class="inline-flex items-center gap-[4px] text-[11px] font-semibold py-[3px] px-[10px] rounded-full {{ $colEs['bg'] }} {{ $colEs['text'] }}">
-                                <i class="material-symbols-outlined !text-[11px]">{{ $colEs['icon'] }}</i>
-                                {{ ucfirst(str_replace('_', ' ', $viaje->estado ?? 'planificado')) }}
+                            @if($viaje->estadoViaje)
+                            <span class="inline-flex items-center gap-[4px] text-[11px] font-semibold py-[3px] px-[10px] rounded-full"
+                                  style="background-color: {{ $evColor }}22; color: {{ $evColor }}; border: 1px solid {{ $evColor }}55">
+                                <i class="material-symbols-outlined !text-[11px]">{{ $evIcono }}</i>
+                                {{ $evNombre }}
                             </span>
+                            @endif
                         </div>
 
                         @if($viaje->fecha_inicio || $viaje->fecha_fin)
@@ -249,6 +243,13 @@
                                 @if($documentos->count())<span class="inline-flex items-center justify-center min-w-[18px] h-[18px] px-[4px] text-[10px] font-bold bg-purple-500 text-white rounded-full">{{ $documentos->count() }}</span>@endif
                             </button>
                         </li>
+                        <li class="nav-item inline-block ltr:mr-[24px] rtl:ml-[24px]">
+                            <button type="button" data-tab="tabChecklist" class="nav-link flex items-center gap-[6px] pb-[10px] transition-all relative font-medium text-sm">
+                                <i class="material-symbols-outlined !text-[18px]">checklist</i> Checklist
+                                @php $totalCheck = $checklist->count(); $doneCheck = $checklist->where('completado', true)->count(); @endphp
+                                @if($totalCheck)<span class="inline-flex items-center justify-center min-w-[18px] h-[18px] px-[4px] text-[10px] font-bold {{ $doneCheck === $totalCheck ? 'bg-success-500' : 'bg-gray-400' }} text-white rounded-full">{{ $doneCheck }}/{{ $totalCheck }}</span>@endif
+                            </button>
+                        </li>
                     </ul>
 
                     <div class="tab-content">
@@ -288,10 +289,15 @@
                                         </div>
                                         <div class="flex items-center justify-between py-[8px] border-b border-gray-100 dark:border-[#172036]">
                                             <span class="text-xs text-gray-400">Estado</span>
-                                            <span class="inline-flex items-center gap-[4px] text-[11px] font-semibold py-[2px] px-[8px] rounded-full {{ $colEs['bg'] }} {{ $colEs['text'] }}">
-                                                <i class="material-symbols-outlined !text-[11px]">{{ $colEs['icon'] }}</i>
-                                                {{ ucfirst(str_replace('_', ' ', $viaje->estado ?? 'planificado')) }}
+                                            @if($viaje->estadoViaje)
+                                            <span class="inline-flex items-center gap-[4px] text-[11px] font-semibold py-[2px] px-[8px] rounded-full"
+                                                  style="background-color: {{ $evColor }}22; color: {{ $evColor }}; border: 1px solid {{ $evColor }}55">
+                                                <i class="material-symbols-outlined !text-[11px]">{{ $evIcono }}</i>
+                                                {{ $evNombre }}
                                             </span>
+                                            @else
+                                            <span class="text-sm text-gray-400">—</span>
+                                            @endif
                                         </div>
                                         <div class="flex items-center justify-between py-[8px] border-b border-gray-100 dark:border-[#172036]">
                                             <span class="text-xs text-gray-400">Fecha inicio</span>
@@ -766,6 +772,113 @@
                             @endif
                         </div>
 
+                        {{-- ─── TAB: Checklist ───────────────────────────────────────── --}}
+                        <div class="tab-pane hidden" id="tabChecklist">
+
+                            <div class="flex items-center justify-between mb-[20px]">
+                                <h6 class="font-semibold text-black dark:text-white flex items-center gap-[8px] !mb-0">
+                                    <i class="material-symbols-outlined !text-[18px] text-primary-500">checklist</i>
+                                    Checklist pre-viaje
+                                </h6>
+                                <button type="button" onclick="abrirModalChecklistCrear()"
+                                    class="inline-flex items-center gap-[6px] px-[14px] py-[7px] rounded-md bg-primary-500 text-white text-sm font-medium hover:bg-primary-400 transition-all">
+                                    <i class="material-symbols-outlined !text-[16px]">add</i> Agregar elemento
+                                </button>
+                            </div>
+
+                            @if($checklist->isNotEmpty())
+                            @php
+                                $ckTotal = $checklist->count();
+                                $ckDone  = $checklist->where('completado', true)->count();
+                                $ckPct   = $ckTotal ? round($ckDone / $ckTotal * 100) : 0;
+                            @endphp
+                            <div class="mb-[20px]">
+                                <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-[6px]">
+                                    <span>{{ $ckDone }} de {{ $ckTotal }} completados</span>
+                                    <span class="font-semibold {{ $ckPct === 100 ? 'text-success-600' : 'text-primary-600' }}">{{ $ckPct }}%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 dark:bg-[#15203c] rounded-full h-[8px] overflow-hidden">
+                                    <div class="h-[8px] rounded-full transition-all {{ $ckPct === 100 ? 'bg-success-500' : 'bg-primary-500' }}"
+                                         id="ckProgressBar" style="width: {{ $ckPct }}%"></div>
+                                </div>
+                            </div>
+                            @endif
+
+                            <div id="ckListContainer" class="space-y-[8px]">
+                                @forelse($checklist as $item)
+                                @php
+                                    $ckPersona = $item->hogarMiembro?->user?->persona;
+                                    $ckNombre  = $ckPersona
+                                        ? trim(implode(' ', array_filter([$ckPersona->nombres, $ckPersona->apellido_paterno])))
+                                        : null;
+                                @endphp
+                                <div class="flex items-center gap-[12px] p-[14px] rounded-md border border-gray-100 dark:border-[#172036] hover:bg-gray-50 dark:hover:bg-[#15203c] transition-colors group"
+                                     id="ck-{{ $item->id }}"
+                                     data-id="{{ $item->id }}"
+                                     data-descripcion="{{ htmlspecialchars($item->descripcion, ENT_QUOTES) }}"
+                                     data-miembro="{{ $item->hogar_miembro_id ?? '' }}"
+                                     data-fecha="{{ $item->fecha_limite?->format('Y-m-d') ?? '' }}"
+                                     data-orden="{{ $item->orden ?? '' }}"
+                                     data-notas="{{ htmlspecialchars($item->notas ?? '', ENT_QUOTES) }}">
+
+                                    <button type="button"
+                                        onclick="toggleChecklist('{{ $item->id }}')"
+                                        class="flex-shrink-0 w-[22px] h-[22px] rounded-md border-2 flex items-center justify-center transition-all
+                                               {{ $item->completado ? 'bg-success-500 border-success-500' : 'border-gray-300 dark:border-gray-500 hover:border-success-400' }}"
+                                        id="ck-btn-{{ $item->id }}">
+                                        @if($item->completado)
+                                        <i class="material-symbols-outlined !text-[14px] text-white">check</i>
+                                        @endif
+                                    </button>
+
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-black dark:text-white {{ $item->completado ? 'line-through text-gray-400 dark:text-gray-500' : '' }}"
+                                           id="ck-desc-{{ $item->id }}">
+                                            {{ $item->descripcion }}
+                                        </p>
+                                        <div class="flex items-center flex-wrap gap-[8px] mt-[4px]">
+                                            @if($ckNombre)
+                                            <span class="inline-flex items-center gap-[3px] text-[10px] text-gray-400">
+                                                <i class="material-symbols-outlined !text-[11px]">person</i>
+                                                {{ $ckNombre }}
+                                            </span>
+                                            @endif
+                                            @if($item->fecha_limite)
+                                            <span class="inline-flex items-center gap-[3px] text-[10px] {{ $item->fecha_limite->lt(now()) && !$item->completado ? 'text-danger-500' : 'text-gray-400' }}">
+                                                <i class="material-symbols-outlined !text-[11px]">event</i>
+                                                {{ $item->fecha_limite->format('d/m/Y') }}
+                                            </span>
+                                            @endif
+                                            @if($item->notas)
+                                            <span class="inline-flex items-center gap-[3px] text-[10px] text-gray-400" title="{{ $item->notas }}">
+                                                <i class="material-symbols-outlined !text-[11px]">notes</i>
+                                                Notas
+                                            </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-[4px] opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button type="button" onclick="abrirModalChecklistEditar('{{ $item->id }}')"
+                                            class="text-gray-400 hover:text-primary-500 p-[4px] transition-colors" title="Editar">
+                                            <i class="material-symbols-outlined !text-[16px]">edit</i>
+                                        </button>
+                                        <button type="button" onclick="eliminarChecklist('{{ $item->id }}')"
+                                            class="text-gray-400 hover:text-danger-500 p-[4px] transition-colors" title="Eliminar">
+                                            <i class="material-symbols-outlined !text-[16px]">delete</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                @empty
+                                <div class="text-center py-[40px]" id="ckVacio">
+                                    <i class="material-symbols-outlined !text-[48px] text-gray-300 dark:text-gray-600 block mb-[10px]">checklist</i>
+                                    <p class="text-sm text-gray-400">Sin elementos en el checklist.</p>
+                                </div>
+                                @endforelse
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -780,7 +893,7 @@
         <div id="modalDestino" class="fixed inset-0 z-[999] hidden">
             <div class="absolute inset-0 bg-black/50" onclick="cerrarModalDestino()"></div>
             <div class="absolute inset-0 flex items-center justify-center p-[16px]">
-                <div class="bg-white dark:bg-[#0c1427] rounded-md shadow-xl w-full max-w-[580px] max-h-[90vh] overflow-y-auto">
+                <div class="bg-white dark:bg-[#0c1427] rounded-md shadow-xl w-full max-w-[780px] max-h-[90vh] overflow-y-auto">
                     <div class="flex items-center justify-between p-[20px] border-b border-gray-100 dark:border-[#172036]">
                         <h6 class="font-semibold text-black dark:text-white !mb-0" id="modalDestinoTitle">Agregar destino</h6>
                         <button type="button" onclick="cerrarModalDestino()" class="text-gray-400 hover:text-gray-600 transition-all">
@@ -1676,6 +1789,322 @@
         @if($errors->has('nombre') && session()->previousUrl() && str_contains(session()->previousUrl(), 'destinos'))
         abrirModalDestino();
         @endif
+
+        // ── Checklist ─────────────────────────────────────────────────────────
+        const CK_STORE_URL  = '{{ route('dashboard.viajes.checklist.store', $viaje) }}';
+        const CK_BASE_URL   = '{{ url('dashboard/checklist-viaje') }}';
+        const CSRF          = document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}';
+
+        let ckModoEdicion = false;
+        let ckIdEditando  = null;
+
+        function initChecklistS2() {
+            if (!$.fn.select2) return;
+            $('#ckMiembro').select2({
+                width: '100%',
+                placeholder: 'Sin asignar',
+                allowClear: true,
+                dropdownParent: $('#modalChecklist'),
+                templateResult: fmtMiembro,
+                templateSelection: fmtMiembro,
+            });
+        }
+
+        function fmtMiembro(opt) {
+            if (!opt.id) return opt.text;
+            var foto = $(opt.element).data('foto') || '';
+            var ini  = opt.text.trim().charAt(0).toUpperCase();
+            var img  = foto
+                ? '<img src="' + foto + '" style="width:22px;height:22px;border-radius:50%;object-fit:cover;flex-shrink:0">'
+                : '<span style="width:22px;height:22px;border-radius:50%;background:#e5e7eb;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0">' + ini + '</span>';
+            return $('<span style="display:flex;align-items:center;gap:8px">' + img + opt.text + '</span>');
+        }
+
+        function abrirModalChecklistCrear() {
+            ckModoEdicion = false; ckIdEditando = null;
+            document.getElementById('ckModalTitulo').textContent = 'Nuevo elemento';
+            document.getElementById('ckDescripcion').value = '';
+            document.getElementById('ckFechaLimite').value = '';
+            document.getElementById('ckOrden').value = '';
+            document.getElementById('ckNotas').value = '';
+            document.getElementById('ckErrDesc').classList.add('hidden');
+            document.getElementById('modalChecklist').classList.remove('hidden');
+            initChecklistS2();
+            $('#ckMiembro').val(null).trigger('change');
+            document.getElementById('ckDescripcion').focus();
+        }
+
+        function abrirModalChecklistEditar(id) {
+            const row = document.getElementById('ck-' + id);
+            if (!row) return;
+            ckModoEdicion = true; ckIdEditando = id;
+            document.getElementById('ckModalTitulo').textContent = 'Editar elemento';
+            document.getElementById('ckDescripcion').value = row.dataset.descripcion || '';
+            document.getElementById('ckFechaLimite').value = row.dataset.fecha || '';
+            document.getElementById('ckOrden').value       = row.dataset.orden || '';
+            document.getElementById('ckNotas').value       = row.dataset.notas || '';
+            document.getElementById('ckErrDesc').classList.add('hidden');
+            document.getElementById('modalChecklist').classList.remove('hidden');
+            initChecklistS2();
+            $('#ckMiembro').val(row.dataset.miembro || null).trigger('change');
+        }
+
+        function cerrarModalChecklist() {
+            document.getElementById('modalChecklist').classList.add('hidden');
+        }
+
+        async function guardarChecklist() {
+            const btn = document.getElementById('ckBtnGuardar');
+            btn.disabled = true;
+            document.getElementById('ckErrDesc').classList.add('hidden');
+
+            const payload = {
+                descripcion:      document.getElementById('ckDescripcion').value.trim(),
+                hogar_miembro_id: $('#ckMiembro').val() || null,
+                fecha_limite:     document.getElementById('ckFechaLimite').value || null,
+                orden:            document.getElementById('ckOrden').value || null,
+                notas:            document.getElementById('ckNotas').value.trim() || null,
+            };
+
+            if (!payload.descripcion) {
+                const el = document.getElementById('ckErrDesc');
+                el.textContent = 'La descripción es obligatoria.';
+                el.classList.remove('hidden');
+                btn.disabled = false;
+                return;
+            }
+
+            const url    = ckModoEdicion ? `${CK_BASE_URL}/${ckIdEditando}` : CK_STORE_URL;
+            const method = ckModoEdicion ? 'PUT' : 'POST';
+
+            try {
+                const resp = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF },
+                    body: JSON.stringify(payload),
+                });
+                if (resp.status === 422) {
+                    const errs = (await resp.json()).errors ?? {};
+                    if (errs.descripcion) {
+                        const el = document.getElementById('ckErrDesc');
+                        el.textContent = errs.descripcion[0];
+                        el.classList.remove('hidden');
+                    }
+                    return;
+                }
+                if (!resp.ok) { alert('Error inesperado.'); return; }
+                const { data } = await resp.json();
+                cerrarModalChecklist();
+                ckModoEdicion ? ckActualizarFila(data) : ckPrependFila(data);
+                ckActualizarProgreso();
+            } catch { alert('Error de conexión.'); }
+            finally { btn.disabled = false; }
+        }
+
+        async function toggleChecklist(id) {
+            try {
+                const resp = await fetch(`${CK_BASE_URL}/${id}/toggle`, {
+                    method: 'PATCH',
+                    headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF },
+                });
+                if (!resp.ok) return;
+                const { completado } = await resp.json();
+                const btn  = document.getElementById('ck-btn-' + id);
+                const desc = document.getElementById('ck-desc-' + id);
+                if (completado) {
+                    btn.classList.add('bg-success-500', 'border-success-500');
+                    btn.classList.remove('border-gray-300', 'dark:border-gray-500', 'hover:border-success-400');
+                    btn.innerHTML = '<i class="material-symbols-outlined !text-[14px] text-white">check</i>';
+                    desc.classList.add('line-through', 'text-gray-400', 'dark:text-gray-500');
+                } else {
+                    btn.classList.remove('bg-success-500', 'border-success-500');
+                    btn.classList.add('border-gray-300', 'dark:border-gray-500', 'hover:border-success-400');
+                    btn.innerHTML = '';
+                    desc.classList.remove('line-through', 'text-gray-400', 'dark:text-gray-500');
+                }
+                ckActualizarProgreso();
+            } catch { alert('Error al actualizar.'); }
+        }
+
+        async function eliminarChecklist(id) {
+            if (!confirm('¿Eliminar este elemento del checklist?')) return;
+            try {
+                const resp = await fetch(`${CK_BASE_URL}/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF },
+                });
+                if (!resp.ok) { alert('No se pudo eliminar.'); return; }
+                const row = document.getElementById('ck-' + id);
+                if (row) { row.style.opacity = '0'; setTimeout(() => { row.remove(); ckActualizarProgreso(); }, 200); }
+            } catch { alert('Error de conexión.'); }
+        }
+
+        function ckActualizarProgreso() {
+            const filas = document.querySelectorAll('#ckListContainer [id^="ck-"]:not([id*="btn"]):not([id*="desc"]):not(#ckVacio)');
+            const total = filas.length;
+            const done  = [...filas].filter(f => {
+                const btn = document.getElementById('ck-btn-' + f.dataset.id);
+                return btn && btn.classList.contains('bg-success-500');
+            }).length;
+            const pct = total ? Math.round(done / total * 100) : 0;
+
+            const bar = document.getElementById('ckProgressBar');
+            if (bar) {
+                bar.style.width = pct + '%';
+                bar.className = 'h-[8px] rounded-full transition-all ' + (pct === 100 ? 'bg-success-500' : 'bg-primary-500');
+            }
+
+            const navBadge = document.querySelector('[data-tab="tabChecklist"] span');
+            if (navBadge && total) {
+                navBadge.textContent = done + '/' + total;
+                navBadge.className = 'inline-flex items-center justify-center min-w-[18px] h-[18px] px-[4px] text-[10px] font-bold ' + (done === total ? 'bg-success-500' : 'bg-gray-400') + ' text-white rounded-full';
+            }
+
+            if (total === 0) {
+                let vacio = document.getElementById('ckVacio');
+                if (!vacio) {
+                    vacio = document.createElement('div');
+                    vacio.id = 'ckVacio';
+                    vacio.className = 'text-center py-[40px]';
+                    vacio.innerHTML = '<i class="material-symbols-outlined !text-[48px] text-gray-300 block mb-[10px]">checklist</i><p class="text-sm text-gray-400">Sin elementos en el checklist.</p>';
+                    document.getElementById('ckListContainer').appendChild(vacio);
+                }
+            }
+        }
+
+        function ckPrependFila(d) {
+            const vacio = document.getElementById('ckVacio');
+            if (vacio) vacio.remove();
+            const div = document.createElement('div');
+            div.className = 'flex items-center gap-[12px] p-[14px] rounded-md border border-gray-100 dark:border-[#172036] hover:bg-gray-50 dark:hover:bg-[#15203c] transition-colors group';
+            div.id = 'ck-' + d.id;
+            div.dataset.id          = d.id;
+            div.dataset.descripcion = d.descripcion;
+            div.dataset.miembro     = d.hogar_miembro_id || '';
+            div.dataset.fecha       = d.fecha_limite || '';
+            div.dataset.orden       = d.orden || '';
+            div.dataset.notas       = d.notas || '';
+            div.innerHTML = ckRowInner(d);
+            document.getElementById('ckListContainer').prepend(div);
+            ckActualizarProgreso();
+        }
+
+        function ckActualizarFila(d) {
+            const div = document.getElementById('ck-' + d.id);
+            if (!div) return;
+            div.dataset.descripcion = d.descripcion;
+            div.dataset.miembro     = d.hogar_miembro_id || '';
+            div.dataset.fecha       = d.fecha_limite || '';
+            div.dataset.orden       = d.orden || '';
+            div.dataset.notas       = d.notas || '';
+            div.innerHTML = ckRowInner(d);
+        }
+
+        function ckRowInner(d) {
+            const miembroHtml = d.miembro_nombre
+                ? `<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;color:#9ca3af"><i class="material-symbols-outlined" style="font-size:11px">person</i>${escHtml(d.miembro_nombre)}</span>`
+                : '';
+            const fechaHtml = d.fecha_limite_fmt
+                ? `<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;color:#9ca3af"><i class="material-symbols-outlined" style="font-size:11px">event</i>${escHtml(d.fecha_limite_fmt)}</span>`
+                : '';
+            const notasHtml = d.notas
+                ? `<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;color:#9ca3af" title="${escHtml(d.notas)}"><i class="material-symbols-outlined" style="font-size:11px">notes</i>Notas</span>`
+                : '';
+            return `
+                <button type="button" onclick="toggleChecklist('${d.id}')"
+                    class="flex-shrink-0 w-[22px] h-[22px] rounded-md border-2 flex items-center justify-center transition-all border-gray-300 dark:border-gray-500 hover:border-success-400"
+                    id="ck-btn-${d.id}"></button>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-black dark:text-white" id="ck-desc-${d.id}">${escHtml(d.descripcion)}</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">${miembroHtml}${fechaHtml}${notasHtml}</div>
+                </div>
+                <div class="flex items-center gap-[4px] opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button type="button" onclick="abrirModalChecklistEditar('${d.id}')" class="text-gray-400 hover:text-primary-500 p-[4px] transition-colors" title="Editar">
+                        <i class="material-symbols-outlined !text-[16px]">edit</i>
+                    </button>
+                    <button type="button" onclick="eliminarChecklist('${d.id}')" class="text-gray-400 hover:text-danger-500 p-[4px] transition-colors" title="Eliminar">
+                        <i class="material-symbols-outlined !text-[16px]">delete</i>
+                    </button>
+                </div>`;
+        }
+
+        function escHtml(str) {
+            const d = document.createElement('div');
+            d.appendChild(document.createTextNode(str ?? ''));
+            return d.innerHTML;
+        }
         </script>
+
+        {{-- ══════════════════════════════════════════════════════════════════════
+             MODAL: Checklist
+        ════════════════════════════════════════════════════════════════════════ --}}
+        <div id="modalChecklist" class="fixed inset-0 z-[999] hidden">
+            <div class="absolute inset-0 bg-black/50" onclick="cerrarModalChecklist()"></div>
+            <div class="absolute inset-0 flex items-center justify-center p-[16px]">
+                <div class="bg-white dark:bg-[#0c1427] rounded-md shadow-xl w-full max-w-[480px] max-h-[90vh] overflow-y-auto">
+                    <div class="flex items-center justify-between p-[20px] border-b border-gray-100 dark:border-[#172036]">
+                        <h6 class="font-semibold text-black dark:text-white !mb-0" id="ckModalTitulo">Nuevo elemento</h6>
+                        <button type="button" onclick="cerrarModalChecklist()" class="text-gray-400 hover:text-gray-600 transition-all">
+                            <i class="material-symbols-outlined">close</i>
+                        </button>
+                    </div>
+                    <div class="p-[20px] space-y-[14px]">
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">
+                                Descripción <span class="text-danger-500">*</span>
+                            </label>
+                            <input type="text" id="ckDescripcion" maxlength="500" placeholder="¿Qué hay que hacer?"
+                                class="h-[42px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[12px] block w-full outline-0 transition-all focus:border-primary-500 text-sm">
+                            <p id="ckErrDesc" class="hidden text-xs text-danger-500 mt-[4px]"></p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">Asignado a</label>
+                            <select id="ckMiembro">
+                                <option value="">Sin asignar</option>
+                                @foreach($miembros as $m)
+                                @php
+                                    $mp = $m->user?->persona;
+                                    $mn = trim(implode(' ', array_filter([$mp?->nombres, $mp?->apellido_paterno]))) ?: ($m->user?->name ?? 'Miembro');
+                                @endphp
+                                <option value="{{ $m->id }}" data-foto="{{ $mp?->foto_url ?? '' }}">{{ $mn }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-[12px]">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">Fecha límite</label>
+                                <input type="date" id="ckFechaLimite"
+                                    class="h-[42px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[12px] block w-full outline-0 transition-all focus:border-primary-500 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">Orden</label>
+                                <input type="number" id="ckOrden" min="0" placeholder="Auto"
+                                    class="h-[42px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[12px] block w-full outline-0 transition-all focus:border-primary-500 text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">Notas</label>
+                            <textarea id="ckNotas" rows="2" placeholder="Notas opcionales..."
+                                class="rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[12px] py-[10px] block w-full outline-0 transition-all focus:border-primary-500 text-sm resize-none"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="flex items-center justify-end gap-[10px] p-[20px] border-t border-gray-100 dark:border-[#172036]">
+                        <button type="button" onclick="cerrarModalChecklist()"
+                            class="px-[16px] py-[8px] rounded-md border border-gray-200 dark:border-[#172036] text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#15203c] transition-all">
+                            Cancelar
+                        </button>
+                        <button type="button" id="ckBtnGuardar" onclick="guardarChecklist()"
+                            class="px-[16px] py-[8px] rounded-md bg-primary-500 text-white text-sm font-medium hover:bg-primary-400 transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

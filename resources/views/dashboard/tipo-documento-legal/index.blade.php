@@ -76,6 +76,7 @@
                                     <th class="text-left py-[13px] px-[16px] text-sm font-semibold text-gray-500 dark:text-gray-400">Nombre</th>
                                     <th class="text-left py-[13px] px-[16px] text-sm font-semibold text-gray-500 dark:text-gray-400 w-[130px]">Categoría</th>
                                     <th class="text-left py-[13px] px-[16px] text-sm font-semibold text-gray-500 dark:text-gray-400 w-[120px]">Req. Vencimiento</th>
+                                    <th class="text-center py-[13px] px-[16px] text-sm font-semibold text-gray-500 dark:text-gray-400 w-[80px]">Viajes</th>
                                     <th class="text-left py-[13px] px-[16px] text-sm font-semibold text-gray-500 dark:text-gray-400 w-[100px]">Estado</th>
                                     <th class="text-right py-[13px] px-[16px] text-sm font-semibold text-gray-500 dark:text-gray-400 w-[100px]">Acciones</th>
                                 </tr>
@@ -89,6 +90,7 @@
                                     data-icono="{{ $t->icono ?? '' }}"
                                     data-categoria="{{ $t->categoria }}"
                                     data-requiere-vencimiento="{{ $t->requiere_vencimiento ? '1' : '0' }}"
+                                    data-relevante-viaje="{{ $t->relevante_viaje ? '1' : '0' }}"
                                     data-activo="{{ $t->activo ? '1' : '0' }}">
                                     <td class="py-[13px] px-[16px]">
                                         <i class="material-symbols-outlined !text-[22px] text-primary-500">{{ $t->icono ?? 'description' }}</i>
@@ -112,6 +114,15 @@
                                             <span class="inline-block text-xs font-medium px-[8px] py-[2px] rounded-[100px] text-gray-600 border border-gray-300 bg-gray-100 dark:bg-[#0c1427]">No</span>
                                         @endif
                                     </td>
+                                    <td class="py-[13px] px-[16px] text-center">
+                                        @if($t->relevante_viaje)
+                                            <span title="Relevante para viajes" class="inline-flex items-center gap-[3px] text-[10px] font-semibold px-[7px] py-[2px] rounded-[100px] text-primary-600 border border-primary-400 bg-primary-50 dark:bg-[#1a2d4d]">
+                                                <i class="material-symbols-outlined !text-[12px]">luggage</i>
+                                            </span>
+                                        @else
+                                            <span class="text-gray-300 dark:text-gray-600">—</span>
+                                        @endif
+                                    </td>
                                     <td class="py-[13px] px-[16px]">
                                         @if($t->activo)
                                             <span class="inline-block text-xs font-medium px-[8px] py-[2px] rounded-[100px] text-success-600 border border-success-600 bg-success-100 dark:bg-[#0c1427]">Activo</span>
@@ -132,7 +143,7 @@
                                 </tr>
                                 @empty
                                 <tr id="filaVacia">
-                                    <td colspan="6" class="text-center py-[50px] text-gray-500 dark:text-gray-400">
+                                    <td colspan="7" class="text-center py-[50px] text-gray-500 dark:text-gray-400">
                                         <i class="material-symbols-outlined !text-[48px] text-gray-300 dark:text-gray-600 block mb-[10px]">gavel</i>
                                         No hay tipos de documento legal registrados.
                                     </td>
@@ -216,6 +227,17 @@
                     </div>
 
                     <div class="flex items-center justify-between pt-[4px]">
+                        <span class="text-sm font-medium text-black dark:text-white flex items-center gap-[6px]">
+                            <i class="material-symbols-outlined !text-[16px] text-primary-500">luggage</i>
+                            Relevante para viajes
+                        </span>
+                        <label class="relative cursor-pointer">
+                            <input type="checkbox" id="modalRelevanteViaje" class="sr-only peer">
+                            <div class="w-[42px] h-[24px] bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[20px] after:w-[20px] after:transition-all peer-checked:bg-primary-500"></div>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-[4px]">
                         <span class="text-sm font-medium text-black dark:text-white">Activo</span>
                         <label class="relative cursor-pointer">
                             <input type="checkbox" id="modalActivo" class="sr-only peer" checked>
@@ -285,6 +307,7 @@
                 document.getElementById('previewIcono').textContent             = iconDefault;
                 document.getElementById('modalCategoria').value                 = 'otro';
                 document.getElementById('modalRequiereVencimiento').checked     = false;
+                document.getElementById('modalRelevanteViaje').checked          = false;
                 document.getElementById('modalActivo').checked                  = true;
                 limpiarErrores();
                 document.getElementById('modalTipo').classList.remove('hidden');
@@ -301,6 +324,7 @@
                 document.getElementById('previewIcono').textContent             = fila.dataset.icono || iconDefault;
                 document.getElementById('modalCategoria').value                 = fila.dataset.categoria || 'otro';
                 document.getElementById('modalRequiereVencimiento').checked     = fila.dataset.requiereVencimiento === '1';
+                document.getElementById('modalRelevanteViaje').checked          = fila.dataset.relevanteViaje === '1';
                 document.getElementById('modalActivo').checked                  = fila.dataset.activo === '1';
                 limpiarErrores();
                 document.getElementById('modalTipo').classList.remove('hidden');
@@ -327,6 +351,7 @@
                     icono:                document.getElementById('modalIcono').value.trim() || null,
                     categoria:            document.getElementById('modalCategoria').value,
                     requiere_vencimiento: document.getElementById('modalRequiereVencimiento').checked,
+                    relevante_viaje:      document.getElementById('modalRelevanteViaje').checked,
                     activo:               document.getElementById('modalActivo').checked,
                 };
 
@@ -377,6 +402,12 @@
                     : '<span class="inline-block text-xs font-medium px-[8px] py-[2px] rounded-[100px] text-gray-600 border border-gray-300 bg-gray-100">No</span>';
             }
 
+            function badgeRelevanteViaje(rv) {
+                return rv
+                    ? '<span class="inline-flex items-center gap-[3px] text-[10px] font-semibold px-[7px] py-[2px] rounded-[100px] text-primary-600 border border-primary-400 bg-primary-50"><i class="material-symbols-outlined !text-[12px]">luggage</i></span>'
+                    : '<span class="text-gray-300">—</span>';
+            }
+
             function badgeActivo(activo) {
                 return activo
                     ? '<span class="inline-block text-xs font-medium px-[8px] py-[2px] rounded-[100px] text-success-600 border border-success-600 bg-success-100">Activo</span>'
@@ -406,6 +437,7 @@
                 tr.dataset.icono               = t.icono ?? '';
                 tr.dataset.categoria           = t.categoria;
                 tr.dataset.requiereVencimiento = t.requiere_vencimiento ? '1' : '0';
+                tr.dataset.relevanteViaje      = t.relevante_viaje ? '1' : '0';
                 tr.dataset.activo              = t.activo ? '1' : '0';
                 tr.innerHTML = `
                     <td class="py-[13px] px-[16px]"><i class="material-symbols-outlined !text-[22px] text-primary-500">${esc(t.icono || iconDefault)}</i></td>
@@ -415,6 +447,7 @@
                     </td>
                     <td class="py-[13px] px-[16px]">${badgeCategoria(t.categoria)}</td>
                     <td class="py-[13px] px-[16px]">${badgeVencimiento(t.requiere_vencimiento)}</td>
+                    <td class="py-[13px] px-[16px] text-center">${badgeRelevanteViaje(t.relevante_viaje)}</td>
                     <td class="py-[13px] px-[16px]">${badgeActivo(t.activo)}</td>
                     <td class="py-[13px] px-[16px] text-right">${botonesHtml(t)}</td>`;
                 document.getElementById('tablaBody').prepend(tr);
@@ -428,20 +461,22 @@
                 tr.dataset.icono               = t.icono ?? '';
                 tr.dataset.categoria           = t.categoria;
                 tr.dataset.requiereVencimiento = t.requiere_vencimiento ? '1' : '0';
+                tr.dataset.relevanteViaje      = t.relevante_viaje ? '1' : '0';
                 tr.dataset.activo              = t.activo ? '1' : '0';
                 const tds = tr.querySelectorAll('td');
                 tds[0].innerHTML = `<i class="material-symbols-outlined !text-[22px] text-primary-500">${esc(t.icono || iconDefault)}</i>`;
                 tds[1].innerHTML = `<div class="text-sm text-black font-medium">${esc(t.nombre)}</div>${t.descripcion ? `<div class="text-xs text-gray-500 mt-[2px]">${esc(t.descripcion.substring(0, 60))}${t.descripcion.length > 60 ? '…' : ''}</div>` : ''}`;
                 tds[2].innerHTML = badgeCategoria(t.categoria);
                 tds[3].innerHTML = badgeVencimiento(t.requiere_vencimiento);
-                tds[4].innerHTML = badgeActivo(t.activo);
-                tds[5].innerHTML = `<div class="flex justify-end">${botonesHtml(t)}</div>`;
+                tds[4].innerHTML = badgeRelevanteViaje(t.relevante_viaje);
+                tds[5].innerHTML = badgeActivo(t.activo);
+                tds[6].innerHTML = `<div class="flex justify-end">${botonesHtml(t)}</div>`;
             }
 
             function mostrarFilaVacia() {
                 const tr = document.createElement('tr');
                 tr.id = 'filaVacia';
-                tr.innerHTML = `<td colspan="6" class="text-center py-[50px] text-gray-500">
+                tr.innerHTML = `<td colspan="7" class="text-center py-[50px] text-gray-500">
                     <i class="material-symbols-outlined !text-[48px] text-gray-300 block mb-[10px]">gavel</i>
                     No hay tipos de documento legal registrados.</td>`;
                 document.getElementById('tablaBody').appendChild(tr);

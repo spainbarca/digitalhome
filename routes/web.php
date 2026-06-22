@@ -91,6 +91,10 @@ use App\Http\Controllers\Dashboard\ReservaViajeController;
 use App\Http\Controllers\Dashboard\GastoViajeController;
 use App\Http\Controllers\Dashboard\ViajeParticipanteController;
 use App\Http\Controllers\Dashboard\DocumentoViajeController;
+use App\Http\Controllers\Dashboard\VisorViajeController;
+use App\Http\Controllers\Dashboard\DocumentoViajeroPanelController;
+use App\Http\Controllers\Dashboard\EstadoViajeController;
+use App\Http\Controllers\Dashboard\ChecklistViajeController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -648,10 +652,19 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->except(['create', 'edit', 'show'])
         ->names('estado-reserva')
         ->parameters(['estado-reserva' => 'estadoReserva']);
+    Route::resource('estado-viaje', EstadoViajeController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('estado-viaje')
+        ->parameters(['estado-viaje' => 'estadoViaje']);
     Route::resource('categoria-gasto-viaje', CategoriaGastoViajeController::class)
         ->except(['create', 'edit', 'show'])
         ->names('categoria-gasto-viaje')
         ->parameters(['categoria-gasto-viaje' => 'categoriaGastoViaje']);
+        // ── Panel documentos de viajero (solo lectura) ───────────────────────────
+    // ⚠️ DEBE ir ANTES del Route::resource('viajes') para que no la capture viajes/{viaje}
+    Route::get('viajes/documentos-viajero', [DocumentoViajeroPanelController::class, 'index'])
+        ->name('viajes.documentos-viajero');
+
 
     // ── Módulo Viajes: CRUD principal ────────────────────────────────────────
     Route::resource('viajes', ViajeController::class)->names('viajes');
@@ -674,6 +687,17 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::post('viajes/{viaje}/documentos', [DocumentoViajeController::class, 'store'])->name('viajes.documentos.store');
     Route::put('documento-viaje/{documentoViaje}', [DocumentoViajeController::class, 'update'])->name('documento-viaje.update');
     Route::delete('documento-viaje/{documentoViaje}', [DocumentoViajeController::class, 'destroy'])->name('documento-viaje.destroy');
+    // Checklist
+    Route::post('viajes/{viaje}/checklist', [ChecklistViajeController::class, 'store'])->name('viajes.checklist.store');
+    Route::put('checklist-viaje/{checklistViaje}', [ChecklistViajeController::class, 'update'])->name('checklist-viaje.update');
+    Route::delete('checklist-viaje/{checklistViaje}', [ChecklistViajeController::class, 'destroy'])->name('checklist-viaje.destroy');
+    Route::patch('checklist-viaje/{checklistViaje}/toggle', [ChecklistViajeController::class, 'toggle'])->name('checklist-viaje.toggle');
+
+    // ── Visor de Viajes (solo lectura) ───────────────────────────────────────
+    Route::get('visor-viajes', [VisorViajeController::class, 'index'])->name('visor-viajes.index');
+
+    // ── Panel documentos de viajero (solo lectura) ────────────────────────────
+    Route::get('viajes/documentos-viajero', [DocumentoViajeroPanelController::class, 'index'])->name('viajes.documentos-viajero');
 
     Route::get('/my-profile', function () { return view('dashboard.my-profile'); });
     Route::get('/settings', function () { return view('dashboard.settings'); });

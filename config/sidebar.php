@@ -453,6 +453,18 @@ return [
             ],
             [
                 'type' => 'link',
+                'name' => 'Visor de Viajes',
+                'icon' => 'map',
+                'url'  => '/dashboard/visor-viajes'
+            ],
+            [
+                'type' => 'link',
+                'name' => 'Docs. Viajero',
+                'icon' => 'badge',
+                'url'  => '/dashboard/viajes/documentos-viajero'
+            ],
+            [
+                'type' => 'link',
                 'name' => 'Operadores de Viaje',
                 'icon' => 'flight',
                 'url'  => '/dashboard/operadores-viaje'
@@ -468,6 +480,7 @@ return [
                     ['name' => 'Tipos de Documento',  'url' => '/dashboard/tipo-documento-viaje'],
                     ['name' => 'Tipos de Operador',   'url' => '/dashboard/tipo-operador-viaje'],
                     ['name' => 'Estados de Reserva',  'url' => '/dashboard/estado-reserva'],
+                    ['name' => 'Estados de Viaje',    'url' => '/dashboard/estado-viaje'],
                     ['name' => 'Categ. de Gasto',     'url' => '/dashboard/categoria-gasto-viaje'],
                 ],
             ],

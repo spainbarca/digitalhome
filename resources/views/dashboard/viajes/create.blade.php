@@ -108,14 +108,19 @@
 
                                 <div class="col-span-12 sm:col-span-3">
                                     <label class="mb-[10px] text-black dark:text-white font-medium block">Estado</label>
-                                    <select name="estado"
-                                        class="h-[55px] rounded-md text-black dark:text-white border {{ $errors->has('estado') ? 'border-danger-500' : 'border-gray-200 dark:border-[#172036]' }} bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all focus:border-primary-500">
+                                    <select id="estadoViajeId" name="estado_viaje_id"
+                                        class="block w-full {{ $errors->has('estado_viaje_id') ? 'border-danger-500' : '' }}">
                                         <option value="">Sin estado</option>
-                                        @foreach($estados as $val => $label)
-                                        <option value="{{ $val }}" {{ old('estado', 'planificado') === $val ? 'selected' : '' }}>{{ $label }}</option>
+                                        @foreach($estadosViaje as $ev)
+                                        <option value="{{ $ev->id }}"
+                                            data-icono="{{ $ev->icono ?? 'flag' }}"
+                                            data-color="{{ $ev->color ?? '#6b7280' }}"
+                                            {{ old('estado_viaje_id') == $ev->id ? 'selected' : '' }}>
+                                            {{ $ev->nombre }}
+                                        </option>
                                         @endforeach
                                     </select>
-                                    @error('estado')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
+                                    @error('estado_viaje_id')<p class="text-danger-500 text-xs mt-[5px]">{{ $message }}</p>@enderror
                                 </div>
 
                                 <div class="col-span-12 sm:col-span-3">
@@ -234,6 +239,13 @@
             return $('<span style="display:flex;align-items:center;gap:8px"><i class="material-symbols-outlined" style="font-size:18px;color:#6b7280">' + icono + '</i>' + opt.text + '</span>');
         }
 
+        function fmtEstado(opt) {
+            if (!opt.id) return opt.text;
+            var icono = $(opt.element).data('icono') || 'flag';
+            var color = $(opt.element).data('color') || '#6b7280';
+            return $('<span style="display:flex;align-items:center;gap:8px"><i class="material-symbols-outlined" style="font-size:16px;color:' + color + '">' + icono + '</i><span style="width:10px;height:10px;border-radius:50%;background:' + color + ';display:inline-block;flex-shrink:0"></span>' + opt.text + '</span>');
+        }
+
         $(function() {
             $('#tipo_viaje_id').select2({
                 width: '100%',
@@ -241,6 +253,13 @@
                 allowClear: true,
                 templateResult: fmtTipoViaje,
                 templateSelection: fmtTipoViaje,
+            });
+            $('#estadoViajeId').select2({
+                width: '100%',
+                placeholder: 'Sin estado',
+                allowClear: true,
+                templateResult: fmtEstado,
+                templateSelection: fmtEstado,
             });
         });
         </script>

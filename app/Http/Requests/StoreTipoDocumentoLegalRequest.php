@@ -20,6 +20,7 @@ class StoreTipoDocumentoLegalRequest extends FormRequest
             'icono'                => ['nullable', 'string', 'max:100'],
             'categoria'            => ['required', Rule::in(['personal', 'propiedad', 'seguro', 'contrato', 'denuncia', 'otro'])],
             'requiere_vencimiento' => ['required', 'boolean'],
+            'relevante_viaje'      => ['required', 'boolean'],
             'activo'               => ['required', 'boolean'],
         ];
     }
@@ -32,6 +33,7 @@ class StoreTipoDocumentoLegalRequest extends FormRequest
             'icono'                => 'ícono',
             'categoria'            => 'categoría',
             'requiere_vencimiento' => 'requiere vencimiento',
+            'relevante_viaje'      => 'relevante para viajes',
             'activo'               => 'estado',
         ];
     }
