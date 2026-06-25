@@ -38,6 +38,7 @@ class ProductoFinanciero extends Model
         'fecha_vencimiento',
         'es_mancomunada',
         'notas',
+        'negocio_id',
     ];
 
     protected function casts(): array
@@ -110,5 +111,10 @@ class ProductoFinanciero extends Model
     public function beneficiarios(): HasMany
     {
         return $this->hasMany(Beneficiario::class, 'producto_financiero_id');
+    }
+
+    public function negocio(): BelongsTo
+    {
+        return $this->belongsTo(Negocio::class, 'negocio_id');
     }
 }

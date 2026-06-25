@@ -20,6 +20,7 @@ class TipoDocumentoLegal extends Model
         'categoria',
         'requiere_vencimiento',
         'relevante_viaje',
+        'relevante_negocio',
         'activo',
     ];
 
@@ -27,8 +28,9 @@ class TipoDocumentoLegal extends Model
     {
         return [
             'requiere_vencimiento' => 'boolean',
-            'relevante_viaje'      => 'boolean',
-            'activo'               => 'boolean',
+            'relevante_viaje'    => 'boolean',
+            'relevante_negocio'  => 'boolean',
+            'activo'             => 'boolean',
         ];
     }
 

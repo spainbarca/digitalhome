@@ -56,6 +56,11 @@ class DatabaseSeeder extends Seeder
             TipoDocumentoViajeSeeder::class,
             CategoriaGastoViajeSeeder::class,
             TipoOperadorViajeSeeder::class,
+            RegimenTributarioSeeder::class,
+            TipoSociedadSeeder::class,
+            TipoDocumentoNegocioSeeder::class,
+            EstadoNegocioSeeder::class,
+            TipoPagoNegocioSeeder::class,
         ]);
     }
 }
