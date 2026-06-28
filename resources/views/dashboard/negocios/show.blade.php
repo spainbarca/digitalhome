@@ -131,7 +131,7 @@
                         @if($representante)
                         <div class="flex items-center gap-[10px] mb-[14px] p-[12px] bg-gray-50 dark:bg-[#15203c] rounded-md">
                             @if(isset($representante->foto_url) && $representante->foto_url)
-                                <img src="{{ asset('storage/'.$representante->foto_url) }}" class="w-[36px] h-[36px] rounded-full object-cover flex-shrink-0" alt="">
+                                <img src="{{ asset($representante->foto_url) }}" class="w-[36px] h-[36px] rounded-full object-cover flex-shrink-0" alt="">
                             @else
                                 <span class="w-[36px] h-[36px] rounded-full bg-gray-200 dark:bg-[#172036] flex items-center justify-center flex-shrink-0">
                                     <i class="material-symbols-outlined !text-[18px] text-gray-400">person</i>
@@ -253,8 +253,8 @@
                         </li>
                         <li class="nav-item inline-block ltr:mr-[24px] rtl:ml-[24px]">
                             <button type="button" data-tab="tabPedidos" class="nav-link flex items-center gap-[6px] pb-[10px] transition-all relative font-medium text-sm">
-                                <i class="material-symbols-outlined !text-[18px]">shopping_cart</i> Pedidos
-                                @if($negocio->pedidos->count()) <span class="inline-flex items-center justify-center min-w-[18px] h-[18px] px-[4px] text-[10px] font-bold bg-primary-500 text-white rounded-full">{{ $negocio->pedidos->count() }}</span> @endif
+                                <i class="material-symbols-outlined !text-[18px]">local_shipping</i> Proveedores afiliados
+                                @if($proveedoresAfiliados->count()) <span class="inline-flex items-center justify-center min-w-[18px] h-[18px] px-[4px] text-[10px] font-bold bg-primary-500 text-white rounded-full">{{ $proveedoresAfiliados->count() }}</span> @endif
                             </button>
                         </li>
                         <li class="nav-item inline-block ltr:mr-[24px] rtl:ml-[24px]">
@@ -359,23 +359,23 @@
                             </div>
                         </div>
 
-                        {{-- ─── TAB: Pedidos ──────────────────────────────────────────── --}}
+                        {{-- ─── TAB: Proveedores afiliados ────────────────────────────── --}}
                         <div class="tab-pane hidden" id="tabPedidos">
                             <div class="flex items-center justify-between mb-[20px]">
                                 <h6 class="font-semibold text-black dark:text-white flex items-center gap-[8px] !mb-0">
-                                    <i class="material-symbols-outlined !text-[18px] text-primary-500">shopping_cart</i>
-                                    Pedidos ({{ $negocio->pedidos->count() }})
+                                    <i class="material-symbols-outlined !text-[18px] text-primary-500">local_shipping</i>
+                                    Proveedores afiliados ({{ $proveedoresAfiliados->count() }})
                                 </h6>
                                 <button type="button" onclick="abrirModalPedido()"
                                     class="inline-flex items-center gap-[6px] px-[14px] py-[7px] rounded-md bg-primary-500 text-white text-sm font-medium hover:bg-primary-400 transition-all">
-                                    <i class="material-symbols-outlined !text-[16px]">add</i> Nuevo pedido
+                                    <i class="material-symbols-outlined !text-[16px]">add</i> Registrar pedido
                                 </button>
                             </div>
 
-                            @if($negocio->pedidos->isEmpty())
+                            @if($proveedoresAfiliados->isEmpty())
                             <div class="text-center py-[40px]">
-                                <i class="material-symbols-outlined !text-[48px] text-gray-300 block mb-[10px]">shopping_cart</i>
-                                <p class="text-sm text-gray-400">Sin pedidos registrados.</p>
+                                <i class="material-symbols-outlined !text-[48px] text-gray-300 block mb-[10px]">local_shipping</i>
+                                <p class="text-sm text-gray-400">Sin proveedores afiliados. Registra un pedido para afiliar un proveedor.</p>
                             </div>
                             @else
                             <div class="overflow-x-auto">
@@ -383,72 +383,56 @@
                                     <thead>
                                         <tr class="border-b border-gray-100 dark:border-[#172036]">
                                             <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">Proveedor</th>
-                                            <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">N°</th>
-                                            <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">Fecha</th>
-                                            <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">Descripción</th>
-                                            <th class="text-right text-xs text-gray-400 py-[10px] pr-[12px]">Total</th>
-                                            <th class="text-center text-xs text-gray-400 py-[10px] pr-[12px]">Docs</th>
+                                            <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">Código Cliente</th>
+                                            <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">Condición pago</th>
+                                            <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">Contacto</th>
+                                            <th class="text-center text-xs text-gray-400 py-[10px] pr-[12px]">Pedidos</th>
+                                            <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">Último pedido</th>
                                             <th class="text-center text-xs text-gray-400 py-[10px]">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($negocio->pedidos as $pedido)
+                                        @foreach($proveedoresAfiliados as $prov)
                                         <tr class="border-b border-gray-50 dark:border-[#172036] hover:bg-gray-50 dark:hover:bg-[#15203c] transition-colors">
                                             <td class="py-[10px] pr-[12px]">
-                                                @php $prov = $pedido->proveedorNegocio; @endphp
-                                                @if($prov)
-                                                <div class="flex items-center gap-[6px]">
+                                                <div class="flex items-center gap-[8px]">
                                                     @if($prov->logo_resuelto)
-                                                        <img src="{{ $prov->logo_resuelto }}" class="w-[24px] h-[24px] rounded object-cover flex-shrink-0" alt="">
+                                                        <img src="{{ $prov->logo_resuelto }}" class="w-[28px] h-[28px] rounded object-cover flex-shrink-0" alt="">
                                                     @else
-                                                        <span class="w-[24px] h-[24px] rounded bg-gray-200 dark:bg-[#172036] flex items-center justify-center flex-shrink-0">
-                                                            <i class="material-symbols-outlined !text-[12px] text-gray-400">local_shipping</i>
+                                                        <span class="w-[28px] h-[28px] rounded bg-gray-200 dark:bg-[#172036] flex items-center justify-center flex-shrink-0">
+                                                            <i class="material-symbols-outlined !text-[14px] text-gray-400">local_shipping</i>
                                                         </span>
                                                     @endif
-                                                    <div class="min-w-0">
-                                                        <p class="text-xs font-medium text-black dark:text-white truncate max-w-[100px]">{{ $prov->sigla_resuelta ?? $prov->nombre }}</p>
-                                                    </div>
+                                                    <span class="flex flex-col leading-tight">
+                                                        <span class="text-sm font-medium text-black dark:text-white">{{ $prov->sigla_resuelta }}</span>
+                                                        <span class="text-xs font-normal text-gray-500 dark:text-gray-400">{{ $prov->nombre }}</span>
+                                                    </span>
                                                 </div>
-                                                @else
-                                                <span class="text-gray-400">—</span>
-                                                @endif
                                             </td>
-                                            <td class="py-[10px] pr-[12px] text-xs font-mono text-gray-500">{{ $pedido->numero ?? '—' }}</td>
-                                            <td class="py-[10px] pr-[12px] text-xs text-gray-500">{{ $pedido->fecha?->format('d/m/Y') ?? '—' }}</td>
+                                            <td class="py-[10px] pr-[12px] text-xs text-gray-500">{{ $prov->condicion_pago ?? '—' }}</td>
+                                            <td class="py-[10px] pr-[12px] text-xs text-gray-500">{{ $prov->condicion_pago ?? '—' }}</td>
                                             <td class="py-[10px] pr-[12px]">
-                                                <p class="text-xs text-black dark:text-white max-w-[160px] truncate" title="{{ $pedido->descripcion }}">
-                                                    {{ $pedido->descripcion ? Str::limit($pedido->descripcion, 50) : '—' }}
-                                                </p>
-                                            </td>
-                                            <td class="py-[10px] pr-[12px] text-right">
-                                                @if($pedido->total !== null)
-                                                <span class="text-sm font-semibold text-black dark:text-white">
-                                                    {{ $pedido->moneda?->simbolo }} {{ number_format((float)$pedido->total, 2) }}
-                                                </span>
+                                                @if($prov->contacto || $prov->telefono)
+                                                <div>
+                                                    @if($prov->contacto) <p class="text-xs text-black dark:text-white">{{ $prov->contacto }}</p> @endif
+                                                    @if($prov->telefono) <p class="text-[10px] text-gray-400 font-mono">{{ $prov->telefono }}</p> @endif
+                                                </div>
                                                 @else
                                                 <span class="text-gray-400">—</span>
                                                 @endif
                                             </td>
                                             <td class="py-[10px] pr-[12px] text-center">
-                                                @php $ndoc = $pedido->documentosNegocio?->count() ?? 0; @endphp
-                                                <div class="flex items-center justify-center gap-[4px]">
-                                                    @if($ndoc)
-                                                    <span class="inline-flex items-center justify-center min-w-[18px] h-[18px] px-[4px] text-[10px] font-bold bg-purple-500 text-white rounded-full">{{ $ndoc }}</span>
-                                                    @endif
-                                                    <button type="button" onclick="abrirBoletaPedido('{{ $pedido->id }}')"
-                                                        class="text-gray-400 hover:text-purple-500 transition-all p-[4px]" title="Adjuntar boleta">
-                                                        <i class="material-symbols-outlined !text-[16px]">attach_file</i>
-                                                    </button>
-                                                </div>
+                                                <span class="inline-flex items-center justify-center min-w-[22px] h-[22px] px-[5px] text-[11px] font-bold bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 rounded-full">{{ $prov->pedidos_negocio_count }}</span>
+                                            </td>
+                                            <td class="py-[10px] pr-[12px] text-xs text-gray-500">
+                                                {{ $prov->pedidos_max_fecha ? \Carbon\Carbon::parse($prov->pedidos_max_fecha)->format('d/m/Y') : '—' }}
                                             </td>
                                             <td class="py-[10px] text-center">
-                                                <form method="POST" action="{{ route('dashboard.pedidos.destroy', $pedido) }}" class="inline"
-                                                    onsubmit="return confirm('¿Eliminar este pedido?')">
-                                                    @csrf @method('DELETE')
-                                                    <button type="submit" class="text-gray-400 hover:text-danger-500 transition-all p-[4px]">
-                                                        <i class="material-symbols-outlined !text-[16px]">delete</i>
-                                                    </button>
-                                                </form>
+                                                <a href="{{ route('dashboard.pedidos.index', ['negocio_id' => $negocio->id, 'proveedor_negocio_id' => $prov->id]) }}"
+                                                    class="inline-flex items-center gap-[4px] text-xs text-primary-600 dark:text-primary-400 hover:underline">
+                                                    <i class="material-symbols-outlined !text-[14px]">open_in_new</i>
+                                                    Ver pedidos
+                                                </a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -567,7 +551,6 @@
                                         <tr class="border-b border-gray-100 dark:border-[#172036]">
                                             <th class="text-left text-xs text-gray-400 py-[8px] pr-[12px]">Tipo</th>
                                             <th class="text-left text-xs text-gray-400 py-[8px] pr-[12px]">Nombre</th>
-                                            <th class="text-left text-xs text-gray-400 py-[8px] pr-[12px]">Contexto</th>
                                             <th class="text-left text-xs text-gray-400 py-[8px] pr-[12px]">Emisión</th>
                                             <th class="text-left text-xs text-gray-400 py-[8px] pr-[12px]">Vencimiento</th>
                                             <th class="text-center text-xs text-gray-400 py-[8px] pr-[12px]">Archivo</th>
@@ -584,9 +567,6 @@
                                                 elseif ($dd <= 30) $docBadge = '<span class="inline-flex text-[9px] font-semibold py-[1px] px-[6px] rounded-full bg-orange-100 text-orange-700">Por vencer</span>';
                                                 else               $docBadge = '<span class="inline-flex text-[9px] font-semibold py-[1px] px-[6px] rounded-full bg-success-100 text-success-700">Vigente</span>';
                                             }
-                                            if ($doc->pedido_id)           $ctx = 'Pedido: ' . ($doc->pedido?->numero ?? substr($doc->pedido_id, 0, 8));
-                                            elseif ($doc->pago_negocio_id) $ctx = 'Pago ' . ($doc->pagoNegocio?->fecha_pago?->format('d/m/Y') ?? '');
-                                            else                           $ctx = 'Negocio';
                                         @endphp
                                         <tr class="border-b border-gray-50 dark:border-[#172036] hover:bg-gray-50 dark:hover:bg-[#15203c] transition-colors">
                                             <td class="py-[8px] pr-[12px]">
@@ -600,7 +580,6 @@
                                                 @endif
                                             </td>
                                             <td class="py-[8px] pr-[12px] text-sm font-medium text-black dark:text-white">{{ $doc->nombre }}</td>
-                                            <td class="py-[8px] pr-[12px] text-xs text-gray-500">{{ $ctx }}</td>
                                             <td class="py-[8px] pr-[12px] text-xs text-gray-500">{{ $doc->fecha_emision?->format('d/m/Y') ?? '—' }}</td>
                                             <td class="py-[8px] pr-[12px]">
                                                 @if($doc->fecha_vencimiento)
@@ -719,69 +698,7 @@
                     <form method="POST" action="{{ route('dashboard.negocios.pedidos.store', $negocio) }}">
                         @csrf
                         <div class="p-[20px] space-y-[14px]">
-
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">
-                                    Proveedor <span class="text-danger-500">*</span>
-                                </label>
-                                <select name="proveedor_negocio_id" id="pedidoProveedor" required
-                                    class="select2-proveedor h-[42px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] block w-full outline-0">
-                                    <option value="">Selecciona proveedor…</option>
-                                    @foreach($proveedores as $prov)
-                                    <option value="{{ $prov->id }}"
-                                        data-logo="{{ $prov->logo_resuelto }}"
-                                        data-sigla="{{ $prov->sigla_resuelta }}">
-                                        {{ $prov->sigla_resuelta ? $prov->sigla_resuelta . ' — ' : '' }}{{ $prov->nombre ?? $prov->empresa?->razon_social }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-[12px]">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">N° de pedido / factura</label>
-                                    <input type="text" name="numero" placeholder="Ej: F001-0001234"
-                                        class="h-[42px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] text-black dark:text-white px-[14px] block w-full outline-0 focus:border-primary-500 text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">Fecha <span class="text-danger-500">*</span></label>
-                                    <input type="date" name="fecha" required
-                                        class="h-[42px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] text-black dark:text-white px-[14px] block w-full outline-0 focus:border-primary-500 text-sm">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">Descripción <span class="text-danger-500">*</span></label>
-                                <textarea name="descripcion" rows="2" required placeholder="Detalle de los bienes o servicios…"
-                                    class="w-full rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] text-black dark:text-white px-[14px] py-[10px] text-sm outline-0 focus:border-primary-500"></textarea>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-[12px]">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">Moneda</label>
-                                    <select name="moneda_id"
-                                        class="h-[42px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] block w-full outline-0 text-sm text-black dark:text-white px-[14px]">
-                                        <option value="">— moneda —</option>
-                                        @foreach($monedas as $mon)
-                                        <option value="{{ $mon->id }}" {{ $mon->moneda_local ? 'selected' : '' }}>
-                                            {{ $mon->simbolo }} {{ $mon->codigo }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">Total</label>
-                                    <input type="number" name="total" step="0.01" min="0" placeholder="0.00"
-                                        class="h-[42px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] text-black dark:text-white px-[14px] block w-full outline-0 focus:border-primary-500 text-sm">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-[6px]">Observaciones</label>
-                                <textarea name="observaciones" rows="2"
-                                    class="w-full rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] text-black dark:text-white px-[14px] py-[10px] text-sm outline-0 focus:border-primary-500"></textarea>
-                            </div>
-
+                            @include('dashboard.pedidos._form', ['pedido' => null])
                         </div>
                         <div class="flex items-center justify-end gap-[10px] px-[20px] pb-[20px]">
                             <button type="button" onclick="cerrarModalPedido()"

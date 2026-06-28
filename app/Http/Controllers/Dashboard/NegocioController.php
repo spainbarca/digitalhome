@@ -114,17 +114,20 @@ class NegocioController extends Controller
             ->orderBy('fecha_vencimiento')
             ->get();
 
-        // Todos los documentos_negocio del negocio (directos + de pedidos + de pagos)
-        $pedidoIds = $negocio->pedidos->pluck('id');
-        $pagoIds   = $negocio->pagosNegocio->pluck('id');
-
-        $todosLosDocumentos = DocumentoNegocio::where(function ($q) use ($negocio, $pedidoIds, $pagoIds) {
-                $q->where('negocio_id', $negocio->id)
-                  ->orWhereIn('pedido_id', $pedidoIds)
-                  ->orWhereIn('pago_negocio_id', $pagoIds);
-            })
-            ->with(['tipoDocumentoNegocio', 'pedido.proveedorNegocio', 'pagoNegocio.tipoPagoNegocio'])
+        // Solo documentos directos del negocio (excluye boletas de pedidos y pagos)
+        $todosLosDocumentos = DocumentoNegocio::where('negocio_id', $negocio->id)
+            ->whereNull('pedido_id')
+            ->whereNull('pago_negocio_id')
+            ->with(['tipoDocumentoNegocio'])
             ->orderBy('fecha_emision', 'desc')
+            ->get();
+
+        // Proveedores afiliados: proveedores_negocio distintos alcanzados por pedidos de este negocio
+        $proveedoresAfiliados = ProveedorNegocio::where('hogar_id', $hogarId)
+            ->whereHas('pedidos', fn($q) => $q->where('negocio_id', $negocio->id))
+            ->withCount(['pedidos as pedidos_negocio_count' => fn($q) => $q->where('negocio_id', $negocio->id)])
+            ->withMax(['pedidos' => fn($q) => $q->where('negocio_id', $negocio->id)], 'fecha')
+            ->with('empresa')
             ->get();
 
         return view('dashboard.negocios.show', compact(
@@ -137,6 +140,7 @@ class NegocioController extends Controller
             'empresas',
             'documentosLegalesRelevantes',
             'todosLosDocumentos',
+            'proveedoresAfiliados',
         ));
     }
 

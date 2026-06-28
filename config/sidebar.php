@@ -504,6 +504,7 @@ return [
             ],
             ['type' => 'link', 'name' => 'Proveedores',  'icon' => 'local_shipping', 'url' => '/dashboard/proveedores-negocio'],
             ['type' => 'link', 'name' => 'Negocios',     'icon' => 'store',          'url' => '/dashboard/negocios'],
+            ['type' => 'link', 'name' => 'Pedidos',      'icon' => 'receipt_long',   'url' => '/dashboard/pedidos'],
         ]
     ],
     [

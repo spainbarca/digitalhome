@@ -736,6 +736,14 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         ->names('proveedores-negocio')
         ->parameters(['proveedores-negocio' => 'proveedoresNegocio']);
 
+    // ── Módulo Pedidos standalone ────────────────────────────────────────────
+    Route::get('pedidos',                [PedidoController::class, 'index'])->name('pedidos.index');
+    Route::get('pedidos/create',         [PedidoController::class, 'create'])->name('pedidos.create');
+    Route::post('pedidos',               [PedidoController::class, 'storeModulo'])->name('pedidos.store');
+    Route::get('pedidos/{pedido}',       [PedidoController::class, 'show'])->name('pedidos.show');
+    Route::get('pedidos/{pedido}/edit',  [PedidoController::class, 'edit'])->name('pedidos.edit');
+    Route::put('pedidos/{pedido}',       [PedidoController::class, 'update'])->name('pedidos.update');
+
     // ── Negocios: hijos del Negocio ─────────────────────────────────────────
     Route::post('negocios/{negocio}/pedidos', [PedidoController::class, 'store'])->name('negocios.pedidos.store');
     Route::delete('pedidos/{pedido}', [PedidoController::class, 'destroy'])->name('pedidos.destroy');
