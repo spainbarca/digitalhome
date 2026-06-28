@@ -95,6 +95,16 @@ use App\Http\Controllers\Dashboard\VisorViajeController;
 use App\Http\Controllers\Dashboard\DocumentoViajeroPanelController;
 use App\Http\Controllers\Dashboard\EstadoViajeController;
 use App\Http\Controllers\Dashboard\ChecklistViajeController;
+use App\Http\Controllers\Dashboard\RegimenTributarioController;
+use App\Http\Controllers\Dashboard\TipoSociedadController;
+use App\Http\Controllers\Dashboard\EstadoNegocioController;
+use App\Http\Controllers\Dashboard\TipoDocumentoNegocioController;
+use App\Http\Controllers\Dashboard\TipoPagoNegocioController;
+use App\Http\Controllers\Dashboard\ProveedorNegocioController;
+use App\Http\Controllers\Dashboard\NegocioController;
+use App\Http\Controllers\Dashboard\PedidoController;
+use App\Http\Controllers\Dashboard\PagoNegocioController;
+use App\Http\Controllers\Dashboard\DocumentoNegocioController;
 
 // ─── Rutas públicas ────────────────────────────────────────────────────────
 Route::get('/', function () { return view('welcome'); });
@@ -698,6 +708,45 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
 
     // ── Panel documentos de viajero (solo lectura) ────────────────────────────
     Route::get('viajes/documentos-viajero', [DocumentoViajeroPanelController::class, 'index'])->name('viajes.documentos-viajero');
+
+    // ── Negocios: catálogos ──────────────────────────────────────────────────
+    Route::resource('regimen-tributario', RegimenTributarioController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('regimen-tributario')
+        ->parameters(['regimen-tributario' => 'regimenTributario']);
+    Route::resource('tipo-sociedad', TipoSociedadController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-sociedad')
+        ->parameters(['tipo-sociedad' => 'tipoSociedad']);
+    Route::resource('estado-negocio', EstadoNegocioController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('estado-negocio')
+        ->parameters(['estado-negocio' => 'estadoNegocio']);
+    Route::resource('tipo-documento-negocio', TipoDocumentoNegocioController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-documento-negocio')
+        ->parameters(['tipo-documento-negocio' => 'tipoDocumentoNegocio']);
+    Route::resource('tipo-pago-negocio', TipoPagoNegocioController::class)
+        ->except(['create', 'edit', 'show'])
+        ->names('tipo-pago-negocio')
+        ->parameters(['tipo-pago-negocio' => 'tipoPagoNegocio']);
+
+    // ── Negocios: entidades principales ─────────────────────────────────────
+    Route::resource('proveedores-negocio', ProveedorNegocioController::class)
+        ->names('proveedores-negocio')
+        ->parameters(['proveedores-negocio' => 'proveedoresNegocio']);
+
+    // ── Negocios: hijos del Negocio ─────────────────────────────────────────
+    Route::post('negocios/{negocio}/pedidos', [PedidoController::class, 'store'])->name('negocios.pedidos.store');
+    Route::delete('pedidos/{pedido}', [PedidoController::class, 'destroy'])->name('pedidos.destroy');
+    Route::post('negocios/{negocio}/pagos', [PagoNegocioController::class, 'store'])->name('negocios.pagos.store');
+    Route::delete('pagos-negocio/{pagoNegocio}', [PagoNegocioController::class, 'destroy'])->name('pagos-negocio.destroy');
+    Route::post('negocios/{negocio}/documentos', [DocumentoNegocioController::class, 'store'])->name('negocios.documentos.store');
+    Route::delete('documentos-negocio/{documentoNegocio}', [DocumentoNegocioController::class, 'destroy'])->name('documentos-negocio.destroy');
+
+    Route::resource('negocios', NegocioController::class)
+        ->names('negocios')
+        ->parameters(['negocios' => 'negocio']);
 
     Route::get('/my-profile', function () { return view('dashboard.my-profile'); });
     Route::get('/settings', function () { return view('dashboard.settings'); });

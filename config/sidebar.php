@@ -488,6 +488,26 @@ return [
     ],
     [
         'type' => 'section',
+        'name' => 'Negocios',
+        'items' => [
+            [
+                'type' => 'accordion',
+                'name' => 'Catálogos',
+                'icon' => 'tune',
+                'sub_items' => [
+                    ['name' => 'Regímenes Tributarios', 'url' => '/dashboard/regimen-tributario'],
+                    ['name' => 'Tipos de Sociedad',     'url' => '/dashboard/tipo-sociedad'],
+                    ['name' => 'Estados de Negocio',    'url' => '/dashboard/estado-negocio'],
+                    ['name' => 'Tipos de Documento',    'url' => '/dashboard/tipo-documento-negocio'],
+                    ['name' => 'Tipos de Pago',         'url' => '/dashboard/tipo-pago-negocio'],
+                ],
+            ],
+            ['type' => 'link', 'name' => 'Proveedores',  'icon' => 'local_shipping', 'url' => '/dashboard/proveedores-negocio'],
+            ['type' => 'link', 'name' => 'Negocios',     'icon' => 'store',          'url' => '/dashboard/negocios'],
+        ]
+    ],
+    [
+        'type' => 'section',
         'name' => 'Empresas',
         'items' => [
             [
