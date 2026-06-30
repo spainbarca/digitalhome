@@ -61,6 +61,7 @@ class DatabaseSeeder extends Seeder
             TipoDocumentoNegocioSeeder::class,
             EstadoNegocioSeeder::class,
             TipoPagoNegocioSeeder::class,
+            MascotaCatalogosSeeder::class,
         ]);
     }
 }

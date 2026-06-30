@@ -28,6 +28,7 @@ class Compra extends Model
         'total',
         'concepto',
         'notas',
+        'mascota_id',
     ];
 
     protected function casts(): array
@@ -81,5 +82,10 @@ class Compra extends Model
     public function documentos(): HasMany
     {
         return $this->hasMany(DocumentoCompra::class, 'compra_id');
+    }
+
+    public function mascota(): BelongsTo
+    {
+        return $this->belongsTo(Mascota::class, 'mascota_id');
     }
 }

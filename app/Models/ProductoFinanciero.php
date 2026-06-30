@@ -39,6 +39,7 @@ class ProductoFinanciero extends Model
         'es_mancomunada',
         'notas',
         'negocio_id',
+        'mascota_id',
     ];
 
     protected function casts(): array
@@ -116,5 +117,10 @@ class ProductoFinanciero extends Model
     public function negocio(): BelongsTo
     {
         return $this->belongsTo(Negocio::class, 'negocio_id');
+    }
+
+    public function mascota(): BelongsTo
+    {
+        return $this->belongsTo(Mascota::class, 'mascota_id');
     }
 }

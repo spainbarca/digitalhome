@@ -383,7 +383,6 @@
                                     <thead>
                                         <tr class="border-b border-gray-100 dark:border-[#172036]">
                                             <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">Proveedor</th>
-                                            <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">Código Cliente</th>
                                             <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">Condición pago</th>
                                             <th class="text-left text-xs text-gray-400 py-[10px] pr-[12px]">Contacto</th>
                                             <th class="text-center text-xs text-gray-400 py-[10px] pr-[12px]">Pedidos</th>
@@ -409,7 +408,6 @@
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td class="py-[10px] pr-[12px] text-xs text-gray-500">{{ $prov->condicion_pago ?? '—' }}</td>
                                             <td class="py-[10px] pr-[12px] text-xs text-gray-500">{{ $prov->condicion_pago ?? '—' }}</td>
                                             <td class="py-[10px] pr-[12px]">
                                                 @if($prov->contacto || $prov->telefono)
